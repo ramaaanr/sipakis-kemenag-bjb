@@ -230,12 +230,13 @@ delete
     $('#detailModal').removeClass('hidden');
   });
 
+  $('#detailModalClose').on('click', function() {
+    $('#detailModal').addClass('hidden');
+  });
+
   // Event handler for modal close button
   $('#editModalClose').on('click', function() {
     $('#editModal').addClass('hidden');
-  });
-  $('#detailModalClose').on('click', function() {
-    $('#detailModal').addClass('hidden');
   });
 
   // Handle form submission for editing lembaga

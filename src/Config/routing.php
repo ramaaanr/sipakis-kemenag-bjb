@@ -2,11 +2,13 @@
 
 use Sfy\AplikasiDataKemenagPAI\Controller\Auth;
 use Sfy\AplikasiDataKemenagPAI\Controller\DataPontren;
+use Sfy\AplikasiDataKemenagPAI\Controller\DataMDT;
 
 return function () {
     // Instantiate controllers
     $authController = new Auth();
     $pontrenController = new DataPontren();
+    $mdtController = new DataMDT();
     // Get the requested URI and parse it
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $uri = trim($uri, '/'); // Trim leading and trailing slashes
@@ -77,6 +79,46 @@ return function () {
                 case 'add':
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $pontrenController->addPontren($_POST);
+                    } else {
+                        echo 'Invalid request method';
+                    }
+                    break;
+
+                default:
+                    // Handle unknown methods
+                    header('HTTP/1.0 404 Not Found');
+                    echo '404 Not Found';
+                    break;
+            }
+            break;
+        case 'mdt':
+            switch (strtolower($method)) {
+                case 'show':
+                    $mdtController->index();
+                    break;
+                case 'cetak':
+                    $mdtController->print($id);
+                    break;
+                case 'edit':
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                        $mdtController->edit($id, $_POST);
+                    } else {
+                        echo 'Invalid request method';
+                    }
+                    break;
+
+                case 'delete':
+                    $mdtController->delete($id);
+                    break;
+
+                case 'getall':
+                    $mdtController->getAllJson();
+                    break;
+
+
+                case 'add':
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                        $mdtController->addMDT($_POST);
                     } else {
                         echo 'Invalid request method';
                     }
