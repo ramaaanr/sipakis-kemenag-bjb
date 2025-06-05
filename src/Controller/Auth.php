@@ -31,11 +31,11 @@ class Auth
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['id_user'] = $user['id'];
                 $_SESSION['user_username'] = $user['username'];
-                $_SESSION['role'] = 'user';
-
+                $_SESSION['role'] = $user['role'];
                 // Redirect to dashboard and set success message
                 $success = 'Login berhasil!';
                 include __DIR__ . '/../View/Admin/login.php';
+
                 echo "<script>
                 Swal.fire({
                   icon: 'success',
@@ -48,6 +48,8 @@ class Auth
                 </script>";
                 exit();
             } else {
+                include __DIR__ . '/../View/Admin/login.php';
+
                 $error = 'Username atau password salah';
                 echo "<script>
                 Swal.fire({

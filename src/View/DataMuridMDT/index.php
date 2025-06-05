@@ -2,21 +2,22 @@
 
 <div class="container px-6 py-8 mx-auto ">
   <div class="flex items-center space-x-2 ">
-    <h3 class="text-3xl font-medium text-gray-700">Data Lembaga MDT</h3>
-    <a id="btn-cetak-mdt" target="__blank"
+    <h3 class="text-3xl font-medium text-gray-700">Data Murid MDT</h3>
+    <a id="btn-cetak-murid" target="__blank"
       class="cetak-container bg-blue-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:blue-700"
-      href="/mdt/cetak">
+      href="/murid_mdt/cetak">
       <span class="material-symbols-outlined text-sm">
         print
       </span> <span>Cetak Semua Data</span>
     </a>
-    <button id="btn-add"
+      <button id="btn-add"
       class="add-container bg-green-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:green-700">
       <span class="material-symbols-outlined text-sm">
         add
       </span> <span>Tambah</span>
     </button>
   </div>
+
   <div x-data="{ status: 'disetujui' }" class="flex space-x-2 mt-6">
     <!-- Tombol Disetujui -->
     <button id="btn-disetujui" @click="status = 'disetujui'"
@@ -31,38 +32,34 @@
       Diproses
     </button>
   </div>
+
   <div class="flex flex-col mt-8">
     <div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
       <div class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-        <table id="lembagaTable" class="min-w-full divide-y divide-gray-200">
+        <table id="muridTable" class="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama
+                Murid</th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nama Lembaga
+                Lembaga</th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">TTL
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NISN
               </th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                NSS
+                Jenis Kelamin</th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Rombel Kelas</th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Tingkat</th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Status
               </th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Alamat
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nama Kepala
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Jumlah Murid
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Jumlah Pengajar
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                status
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
+                Actions</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
@@ -83,12 +80,12 @@ $(document).ready(function() {
   const role = "<?= $role ?>"
 
   function fetch(status = "DISETUJUI") {
-    if ($.fn.DataTable.isDataTable('#lembagaTable')) {
-      $('#lembagaTable').DataTable().destroy(); // Hapus instance sebelumnya
+    if ($.fn.DataTable.isDataTable('#muridTable')) {
+      $('#muridTable').DataTable().destroy(); // Hapus instance sebelumnya
     }
-    $('#lembagaTable').DataTable({
+    $('#muridTable').DataTable({
       ajax: {
-        url: `/mdt/getall?status=${status}`, // URL to fetch data from
+        url: `/murid_mdt/getall?status=${status}`, // URL to fetch data from
         dataSrc: '' // Indicate that data is a flat array
       },
       order: [
@@ -100,22 +97,25 @@ $(document).ready(function() {
             return `<p class="hidden"> ${row.id} </p>`
           }
         }, {
+          data: 'nama'
+        },
+        {
           data: 'lembaga'
         },
         {
-          data: 'nomor_statistik'
+          data: 'ttl'
         },
         {
-          data: 'alamat'
+          data: 'nisn'
         },
         {
-          data: 'nama_kepala'
+          data: 'jenis_kelamin'
         },
         {
-          data: 'jumlah_murid'
+          data: 'rombel_kelas'
         },
         {
-          data: 'jumlah_pengajar'
+          data: 'tingkat'
         }, {
           data: 'status',
           render: function(data, type, row) {
@@ -139,85 +139,64 @@ $(document).ready(function() {
         {
           data: null,
           render: function(data, type, row) {
-            if (row.status == "DISETUJUI") {
+            if (row.status === 'DISETUJUI') {
               return `
             <div class="flex space-x-1">
-              <button class="detail-btn bg-green-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-data-lembaga="${row.lembaga}"
-data-nomor_statistik="${row.nomor_statistik}"
-data-alamat="${row.alamat}"
-data-keterangan="${row.keterangan}"
-data-nama_kepala="${row.nama_kepala}"
-data-jumlah_murid="${row.jumlah_murid}"
-data-jumlah_pengajar="${row.jumlah_pengajar}">
-                <span class="material-symbols-outlined">info</span>
-              </button>
-
-              <button class="edit-btn bg-blue-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-data-lembaga="${row.lembaga}"
-data-status="${row.status}"
-data-nomor_statistik="${row.nomor_statistik}"
-data-alamat="${row.alamat}"
-data-keterangan="${row.keterangan}"
-data-nama_kepala="${row.nama_kepala}"
-data-jumlah_murid="${row.jumlah_murid}"
-data-jumlah_pengajar="${row.jumlah_pengajar}">
+            <button class="edit-btn bg-blue-500 text-white px-2 py-1 rounded" 
+                data-id="${row.id}" data-status="${row.status}" data-lembaga="${row.lembaga_id}" data-nama="${row.nama}" data-ttl="${row.ttl}" 
+                data-nisn="${row.nisn}" data-jenis_kelamin="${row.jenis_kelamin}" data-rombel_kelas="${row.rombel_kelas}" 
+                data-tingkat="${row.tingkat}">
                 <span class="material-symbols-outlined">edit</span>
               </button>
-             
+              <button data-keterangan="${row.keterangan}" class="detail-btn bg-green-500 text-white px-2 py-1 rounded" 
+                data-id="${row.id}" data-lembaga="${row.lembaga}" data-nama="${row.nama}" data-ttl="${row.ttl}" 
+                data-nisn="${row.nisn}" data-jenis_kelamin="${row.jenis_kelamin}" data-rombel_kelas="${row.rombel_kelas}" 
+                data-tingkat="${row.tingkat}">
+                <span class="material-symbols-outlined">info</span>
+              </button>
+              
               <button class="delete-btn bg-red-500 text-white px-2 py-1 rounded" data-id="${row.id}">
                 <span class="material-symbols-outlined">delete</span>
               </button>
-            </div>`;
+            </div>`
             }
             if (role == 'admin') {
               return `
-                        <div class="flex space-x-1">
-                          <button data-id="${row.id}" class = "disetujui-btn bg-lime-500 text-white px-2 py-1 rounded"><span class = "material-symbols-outlined"> check_circle </span></button>
+            <div class="flex space-x-1">
+              <button data-id="${row.id}" class = "disetujui-btn bg-lime-500 text-white px-2 py-1 rounded"><span class = "material-symbols-outlined"> check_circle </span></button>
                           <button data-id="${row.id}" class = "ditolak-btn bg-red-500 text-white px-2 py-1 rounded"><span class = "material-symbols-outlined">cancel</span></button>
-                       <button class="detail-btn bg-green-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-data-lembaga="${row.lembaga}"
-data-nomor_statistik="${row.nomor_statistik}"
-data-alamat="${row.alamat}"
-data-keterangan="${row.keterangan}"
-data-nama_kepala="${row.nama_kepala}"
-data-jumlah_murid="${row.jumlah_murid}"
-data-jumlah_pengajar="${row.jumlah_pengajar}">
+                       
+              <button data-keterangan="${row.keterangan}" class="detail-btn bg-green-500 text-white px-2 py-1 rounded" 
+                data-id="${row.id}" data-lembaga="${row.lembaga}" data-nama="${row.nama}" data-ttl="${row.ttl}" 
+                data-nisn="${row.nisn}" data-jenis_kelamin="${row.jenis_kelamin}" data-rombel_kelas="${row.rombel_kelas}" 
+                data-tingkat="${row.tingkat}">
                 <span class="material-symbols-outlined">info</span>
               </button>
-                   </div> `;
+            
+            </div>`
             }
             return `
             <div class="flex space-x-1">
-              <button class="detail-btn bg-green-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-data-lembaga="${row.lembaga}"
-data-nomor_statistik="${row.nomor_statistik}"
-data-alamat="${row.alamat}"
-data-keterangan="${row.keterangan}"
-data-nama_kepala="${row.nama_kepala}"
-data-jumlah_murid="${row.jumlah_murid}"
-data-jumlah_pengajar="${row.jumlah_pengajar}">
+              <button data-keterangan="${row.keterangan}" class="detail-btn bg-green-500 text-white px-2 py-1 rounded" 
+                data-id="${row.id}" data-lembaga="${row.lembaga}" data-nama="${row.nama}" data-ttl="${row.ttl}" 
+                data-nisn="${row.nisn}" data-jenis_kelamin="${row.jenis_kelamin}" data-rombel_kelas="${row.rombel_kelas}" 
+                data-tingkat="${row.tingkat}">
                 <span class="material-symbols-outlined">info</span>
               </button>
-              <button class="edit-btn bg-blue-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-data-lembaga="${row.lembaga}"
-data-nomor_statistik="${row.nomor_statistik}"
-data-alamat="${row.alamat}"
-data-keterangan="${row.keterangan}"
-data-nama_kepala="${row.nama_kepala}"
-data-jumlah_murid="${row.jumlah_murid}"
-data-jumlah_pengajar="${row.jumlah_pengajar}">
+              <button class="edit-btn bg-blue-500 text-white px-2 py-1 rounded" 
+                data-id="${row.id}" data-lembaga="${row.lembaga_id}" data-nama="${row.nama}" data-ttl="${row.ttl}" 
+                data-nisn="${row.nisn}" data-jenis_kelamin="${row.jenis_kelamin}" data-rombel_kelas="${row.rombel_kelas}" 
+                data-tingkat="${row.tingkat}">
                 <span class="material-symbols-outlined">edit</span>
               </button>
-              <button class="delete-btn bg-red-500 text-white px-2 py-1 rounded" data-id="${row.id}">
-                <span class="material-symbols-outlined">delete</span>
-              </button>
+              
             </div>`;
           }
         }
       ]
     });
   }
+
   fetch();
   $('#btn-disetujui').on('click', () => {
     fetch('DISETUJUI');
@@ -228,7 +207,7 @@ data-jumlah_pengajar="${row.jumlah_pengajar}">
 
   function updateStatus(id, status, keterangan) {
     $.ajax({
-      url: `/mdt/update/${id}`,
+      url: `/murid_mdt/update/${id}`,
       type: "POST",
       data: {
         id: id,
@@ -289,10 +268,10 @@ data-jumlah_pengajar="${row.jumlah_pengajar}">
     });
   });
 
-  $('#lembagaTable tbody').on('click', '.delete-btn', function() {
+  $('#muridTable tbody').on('click', '.delete-btn', function() {
     var id = $(this).data('id');
     Swal.fire({
-      title: 'Yakin ingin menghapus MDT ini?',
+      title: 'Yakin ingin menghapus Murid ini?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -301,14 +280,14 @@ data-jumlah_pengajar="${row.jumlah_pengajar}">
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
-          url: '/mdt/delete/' + id, // Include id in the URL
+          url: '/murid_mdt/delete/' + id,
           type: 'POST',
           success: function(response) {
             if (response.success) {
-              $('#lembagaTable').DataTable().ajax.reload(); // Reload DataTable data
-              Swal.fire('Deleted!', 'Lembaga berhasil dihapus.', 'success');
+              $('#muridTable').DataTable().ajax.reload();
+              Swal.fire('Deleted!', 'Murid berhasil dihapus.', 'success');
             } else {
-              Swal.fire('Error', 'Terjadi kesalahan saat menghapus lembaga', 'error');
+              Swal.fire('Error', 'Terjadi kesalahan saat menghapus murid', 'error');
             }
           },
           error: function() {

@@ -34,6 +34,10 @@
         <label class="block text-sm font-medium text-gray-700">Jumlah Pengajar</label>
         <p id="detailJumlahPengajar" class="mt-1 block text-gray-800"></p>
       </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Keterangan</label>
+        <p id="detailKeterangan" class="mt-1 block text-gray-800"></p>
+      </div>
 
       <div class="flex justify-end">
         <button type="button" id="detailModalClose" class="bg-gray-500 text-white px-4 py-2 rounded-md">Tutup</button>
@@ -54,6 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var nama_kepala = $(this).data('nama_kepala');
     var jumlah_murid = $(this).data('jumlah_murid');
     var jumlah_pengajar = $(this).data('jumlah_pengajar');
+    var keterangan = $(this).data('keterangan');
 
     $('#detailId').text(id);
     $('#detailLembaga').text(lembaga);
@@ -61,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
     $('#detailAlamat').text(alamat);
     $('#detailNamaKepala').text(nama_kepala);
     $('#detailJumlahMurid').text(jumlah_murid);
+    $('#detailKeterangan').text(keterangan);
     $('#detailJumlahPengajar').text(jumlah_pengajar);
 
 

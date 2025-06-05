@@ -28,19 +28,29 @@ class DataPontren
 
         $username = SessionHelper::getUsername();
         $isKepalaLab = SessionHelper::isKepalaLab();
-        $data = $this->pontrenModel->getAll(); // Fetch all lembaga_pontren data
+        $role = SessionHelper::getRole();
+        $data = $this->pontrenModel->getAll('DISETUJUI'); // Fetch all lembaga_pontren data
         include __DIR__ . '/../View/DataPontren/index.php';
     }
     public function print($id)
     {
-        $data = $this->pontrenModel->getAll();
+        $data = $this->pontrenModel->getAll('DISETUJUI');
         include __DIR__ . '/../View/DataPontren/cetak.php';
     }
 
     // Handle lembaga_pontren editing
     public function edit($id, $data)
     {
+        if (!$data['status']) {
+            $data['status'] = 'DIPROSES';
+        }
         $result = $this->pontrenModel->edit($id, $data);
+        header('Content-Type: application/json');
+        echo json_encode($result ? ['success' => true] : ['success' => false]);
+    }
+    public function updateStatus($id, $data)
+    {
+        $result = $this->pontrenModel->updateStatus($id, $data);
         header('Content-Type: application/json');
         echo json_encode($result ? ['success' => true] : ['success' => false]);
     }
@@ -55,10 +65,11 @@ class DataPontren
 
 
     // Get all lembaga_pontren records in JSON format
-    public function getAllJson()
+    public function getAllJson($status)
     {
         header('Content-Type: application/json');
-        $data = $this->pontrenModel->getAll();
+        $data = $this->pontrenModel->getAll($status);
+
         echo json_encode($data);
     }
 

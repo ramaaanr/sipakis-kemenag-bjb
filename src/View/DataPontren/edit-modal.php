@@ -4,6 +4,7 @@
     <h2 class="text-xl font-bold mb-4">Edit Lembaga Pontren</h2>
     <form id="editForm">
       <input type="hidden" name="id" id="editId">
+      <input type="hidden" name="status" id="editStatus">
 
       <div class="mb-4">
         <label for="editNamaLembaga" class="block text-sm font-medium text-gray-700">Nama Lembaga</label>

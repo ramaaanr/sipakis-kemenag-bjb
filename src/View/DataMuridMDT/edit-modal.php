@@ -1,13 +1,13 @@
 <!-- Edit Modal -->
 <div id="editModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
   <div class="relative top-20 mx-auto p-5 border w-1/3 shadow-lg rounded-md bg-white">
-    <h2 class="text-xl font-bold mb-4">Edit Staff MDT</h2>
+    <h2 class="text-xl font-bold mb-4">Edit Murid MDT</h2>
     <form id="editForm">
       <input type="hidden" name="id" id="editId">
       <input type="hidden" name="status" id="editStatus">
 
       <div class="mb-4">
-        <label for="editNama" class="block text-sm font-medium text-gray-700">Nama Staff</label>
+        <label for="editNama" class="block text-sm font-medium text-gray-700">Nama Murid</label>
         <input type="text" id="editNama" name="nama" required
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
@@ -20,22 +20,36 @@
         </select>
       </div>
 
-
       <div class="mb-4">
-        <label for="editNIK" class="block text-sm font-medium text-gray-700">NIK</label>
-        <input type="text" id="editNIK" name="nik" required
+        <label for="editTTL" class="block text-sm font-medium text-gray-700">Tanggal Lahir</label>
+        <input type="date" id="editTTL" name="ttl"
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
 
       <div class="mb-4">
-        <label for="editJabatan" class="block text-sm font-medium text-gray-700">Jabatan</label>
-        <input type="text" id="editJabatan" name="jabatan" required
+        <label for="editNISN" class="block text-sm font-medium text-gray-700">NISN</label>
+        <input type="text" id="editNISN" name="nisn"
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
 
       <div class="mb-4">
-        <label for="editAlamat" class="block text-sm font-medium text-gray-700">Alamat</label>
-        <input type="text" id="editAlamat" name="alamat" required
+        <label for="editJenisKelamin" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
+        <select id="editJenisKelamin" name="jenis_kelamin" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
+          <option value="laki-laki">Laki-laki</option>
+          <option value="Perempuan">Perempuan</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label for="editRombelKelas" class="block text-sm font-medium text-gray-700">Rombel Kelas</label>
+        <input type="text" id="editRombelKelas" name="rombel_kelas" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
+      </div>
+
+      <div class="mb-4">
+        <label for="editTingkat" class="block text-sm font-medium text-gray-700">Tingkat</label>
+        <input type="text" id="editTingkat" name="tingkat" required
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
 
@@ -49,7 +63,6 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  // Open Edit Modal and Populate Form Fields
   // Fetch and populate lembaga options for the edit modal
   function fetchAndPopulateLembagaOptions(selectedId = null) {
     $.ajax({
@@ -78,28 +91,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Open Edit Modal and Populate Form Fields
   let id = 0;
-  $('#staffTable tbody').on('click', '.edit-btn', function() {
+  $('#muridTable tbody').on('click', '.edit-btn', function() {
     id = $(this).data('id');
     const nama = $(this).data('nama');
+    const ttl = $(this).data('ttl');
     const status = $(this).data('status');
-    const nik = $(this).data('nik');
-    const jabatan = $(this).data('jabatan');
-    const alamat = $(this).data('alamat');
-    const lembagaId = $(this).data('lembaga'); // Add data attribute for lembaga ID in your HTML
+    const nisn = $(this).data('nisn');
+    const jenis_kelamin = $(this).data('jenis_kelamin');
+    const rombel_kelas = $(this).data('rombel_kelas');
+    const tingkat = $(this).data('tingkat');
+    const lembagaId = $(this).data('lembaga');
 
     $('#editId').val(id);
     $('#editStatus').val(status);
     $('#editNama').val(nama);
-    $('#editNIK').val(nik);
-    $('#editJabatan').val(jabatan);
-    $('#editAlamat').val(alamat);
-    $('#editLembagaId').val(lembagaId);
+    $('#editTTL').val(ttl);
+    $('#editNISN').val(nisn);
+    $('#editJenisKelamin').val(jenis_kelamin);
+    $('#editRombelKelas').val(rombel_kelas);
+    $('#editTingkat').val(tingkat);
 
     fetchAndPopulateLembagaOptions(lembagaId); // Load and preselect lembaga options
 
     $('#editModal').removeClass('hidden');
   });
-
 
   // Close Edit Modal
   $('#editModalClose').on('click', function() {
@@ -108,10 +123,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // AJAX Form Submission for Edit
   $('#editForm').on('submit', function(e) {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
 
     $.ajax({
-      url: `/staff_mdt/edit/${id}`,
+      url: `/murid_mdt/edit/${id}`,
       method: 'POST',
       data: $(this).serialize(),
       success: function(response) {
@@ -123,7 +138,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }).then(() => {
           $('#editModal').addClass('hidden'); // Close modal
           $('#editForm')[0].reset(); // Reset form fields
-          // Refresh the data table (use your specific table refresh function here)
           location.reload();
         });
       },

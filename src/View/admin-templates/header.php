@@ -1,26 +1,26 @@
 <?php include __DIR__ . '/../templates/header.php'; ?>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const navLinks = document.querySelectorAll('nav a');
+  document.addEventListener("DOMContentLoaded", function() {
+    const navLinks = document.querySelectorAll('nav a');
 
-  navLinks.forEach(link => {
-    // Remove any existing active class
-    link.classList.remove('text-gray-100', 'bg-gray-700', 'bg-opacity-25');
+    navLinks.forEach(link => {
+      // Remove any existing active class
+      link.classList.remove('text-gray-100', 'bg-gray-700', 'bg-opacity-25');
 
-    // Get the current URL path
-    const currentPath = window.location.pathname;
+      // Get the current URL path
+      const currentPath = window.location.pathname;
 
-    // Check if the link's href matches the current path
-    if (link.getAttribute('href') === currentPath) {
-      // Add the active class
-      link.classList.add('text-gray-100', 'bg-gray-700', 'bg-opacity-25');
-    } else {
-      // Ensure other links are not active
-      link.classList.add('text-lime-50 font-semibold', 'hover:bg-gray-700', 'hover:bg-opacity-25',
-        'hover:text-gray-100');
-    }
+      // Check if the link's href matches the current path
+      if (link.getAttribute('href') === currentPath) {
+        // Add the active class
+        link.classList.add('text-gray-100', 'bg-gray-700', 'bg-opacity-25');
+      } else {
+        // Ensure other links are not active
+        link.classList.add('text-lime-50 font-semibold', 'hover:bg-gray-700', 'hover:bg-opacity-25',
+          'hover:text-gray-100');
+      }
+    });
   });
-});
 </script>
 
 
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
     <div class="flex items-center justify-center mt-8">
       <div class="flex items-center justify-center w-full">
         <img width="70" height="70" src="https://img.icons8.com/color/100/ramadan.png" alt="ramadan" />
-        <span class="mx-2  text-2xl font-semibold text-white">LOREM IPSUM</span>
+        <span class="mx-2  text-2xl font-semibold text-white">SIPONTREN</span>
       </div>
     </div>
 

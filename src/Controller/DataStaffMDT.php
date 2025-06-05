@@ -25,22 +25,26 @@ class DataStaffMDT
       header('Location: /auth/login');
       exit();
     }
+    $role = SessionHelper::getRole();
 
     $username = SessionHelper::getUsername();
     $isKepalaLab = SessionHelper::isKepalaLab();
-    $data = $this->staffMdtModel->getAll(); // Fetch all lembaga_mdt data
+    $data = $this->staffMdtModel->getAll('DISETUJUI'); // Fetch all lembaga_mdt data
     include __DIR__ . '/../View/DataStaffMDT/index.php';
   }
 
   public function print($id)
   {
-    $data = $this->staffMdtModel->getAll();
+    $data = $this->staffMdtModel->getAll('DISETUJUI');
     include __DIR__ . '/../View/DataStaffMDT/cetak.php';
   }
 
   // Handle lembaga_mdt editing
   public function edit($id, $data)
   {
+    if (!$data['status']) {
+      $data['status'] = 'DIPROSES';
+    }
     $result = $this->staffMdtModel->edit($id, $data);
     header('Content-Type: application/json');
     echo json_encode($result ? ['success' => true,] : ['success' => false]);
@@ -53,12 +57,18 @@ class DataStaffMDT
     header('Content-Type: application/json');
     echo json_encode($result ? ['success' => true] : ['success' => false]);
   }
+  public function updateStatus($id, $data)
+  {
+    $result = $this->staffMdtModel->updateStatus($id, $data);
+    header('Content-Type: application/json');
+    echo json_encode($result ? ['success' => true] : ['success' => false]);
+  }
 
   // Get all lembaga_mdt records in JSON format
-  public function getAllJson()
+  public function getAllJson($status)
   {
     header('Content-Type: application/json');
-    $data = $this->staffMdtModel->getAll();
+    $data = $this->staffMdtModel->getAll($status);
     echo json_encode($data);
   }
 

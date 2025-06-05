@@ -4,6 +4,7 @@
     <h2 class="text-xl font-bold mb-4">Edit Lembaga Pontren</h2>
     <form id="editForm">
       <input type="hidden" name="id" id="editId">
+      <input type="hidden" name="status" id="editStatus">
 
       <div class="mb-4">
         <label for="editLembaga" class="block text-sm font-medium text-gray-700">Nama Lembaga</label>
@@ -51,18 +52,33 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+
+
   // Open Edit Modal and Populate Form Fields
   let id = 0;
+
+  $('#slider').on('input', function() {
+    const sliderValue = $(this).val(); // Slider value (0-100)
+    const bobotR2 = sliderValue; // Bobot R2 is the slider value
+    const bobotR4 = 100 - sliderValue; // Bobot R4 is the complement of R2
+
+    // Update the labels for R2 and R4
+    $('#bobot_r4').text(`R4: ${bobotR4}%`);
+    $('#bobot_r2').text(`R2: ${bobotR2}%`);
+  });
+
   $('#lembagaTable tbody').on('click', '.edit-btn', function() {
     id = $(this).data('id');
     var lembaga = $(this).data('lembaga');
     var nomor_statistik = $(this).data('nomor_statistik');
     var alamat = $(this).data('alamat');
+    var status = $(this).data('status');
     var nama_kepala = $(this).data('nama_kepala');
     var jumlah_murid = $(this).data('jumlah_murid');
     var jumlah_pengajar = $(this).data('jumlah_pengajar');
 
     $('#editId').val(id);
+    $('#editStatus').val(status);
     $('#editLembaga').val(lembaga);
     $('#editNomorStatistik').val(nomor_statistik);
     $('#editAlamat').val(alamat);

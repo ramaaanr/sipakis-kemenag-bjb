@@ -5,7 +5,7 @@
 
   <div class="mt-4">
     <div class="flex flex-wrap -mx-6 ">
-      <a href="/barang/show" class="w-full my-4 px-6 sm:w-1/2 xl:w-1/3 cursor-pointer">
+      <a href="/pontren/show" class="w-full my-4 px-6 sm:w-1/2 xl:w-1/3 cursor-pointer">
         <div class="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
           <div class="w-12 h-12 flex justify-center items-center bg-indigo-600 bg-opacity-75 rounded-full">
             <span class="material-symbols-outlined text-lime-50">
@@ -19,7 +19,7 @@
           </div>
         </div>
       </a>
-      <a href="/barangmasuk/show" class="w-full my-4 px-6 sm:w-1/2 xl:w-1/3 cursor-pointer">
+      <a href="/mdt/show" class="w-full my-4 px-6 sm:w-1/2 xl:w-1/3 cursor-pointer">
         <div class="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
           <div class="w-12 h-12 flex justify-center items-center bg-lime-600 bg-opacity-75 rounded-full">
             <span class="material-symbols-outlined text-lime-50">
@@ -33,7 +33,7 @@
           </div>
         </div>
       </a>
-      <a href="/barangkeluar/show" class="w-full my-4 px-6 sm:w-1/2 xl:w-1/3 cursor-pointer">
+      <a href="/staff_mdt/show" class="w-full my-4 px-6 sm:w-1/2 xl:w-1/3 cursor-pointer">
         <div class="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
           <div class="w-12 h-12 flex justify-center items-center bg-amber-600 bg-opacity-75 rounded-full">
             <span class="material-symbols-outlined text-lime-50">
@@ -47,7 +47,7 @@
           </div>
         </div>
       </a>
-      <a href="/barangrusak/show" class="w-full my-4 px-6 sm:w-1/2 xl:w-1/3 cursor-pointer">
+      <a href="/murid_mdt/show" class="w-full my-4 px-6 sm:w-1/2 xl:w-1/3 cursor-pointer">
         <div class="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
           <div class="w-12 h-12 flex justify-center items-center bg-emerald-600 bg-opacity-75 rounded-full">
             <span class="material-symbols-outlined text-lime-50">

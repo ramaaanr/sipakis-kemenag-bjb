@@ -4,6 +4,7 @@ use Sfy\AplikasiDataKemenagPAI\Controller\Auth;
 use Sfy\AplikasiDataKemenagPAI\Controller\DataPontren;
 use Sfy\AplikasiDataKemenagPAI\Controller\DataMDT;
 use Sfy\AplikasiDataKemenagPAI\Controller\DataStaffMDT;
+use Sfy\AplikasiDataKemenagPAI\Controller\DataMuridMDT;
 
 return function () {
     // Instantiate controllers
@@ -11,6 +12,7 @@ return function () {
     $pontrenController = new DataPontren();
     $mdtController = new DataMDT();
     $staffMdtController = new DataStaffMDT();
+    $muridMdtController = new DataMuridMDT();
     // Get the requested URI and parse it
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $uri = trim($uri, '/'); // Trim leading and trailing slashes
@@ -48,11 +50,9 @@ return function () {
                     break;
             }
             break;
-
         case 'dashboard':
             $authController->dashboard();
             break;
-
         case 'pontren':
             switch (strtolower($method)) {
                 case 'show':
@@ -68,16 +68,21 @@ return function () {
                         echo 'Invalid request method';
                     }
                     break;
-
+                case 'update':
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                        $pontrenController->updateStatus($id, $_POST);
+                    } else {
+                        echo 'Invalid request method';
+                    }
+                    break;
                 case 'delete':
                     $pontrenController->delete($id);
                     break;
 
                 case 'getall':
-                    $pontrenController->getAllJson();
+                    $status = isset($_GET['status']) ? $_GET['status'] : 'DISETUJUI';
+                    $pontrenController->getAllJson($status);
                     break;
-
-
                 case 'add':
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $pontrenController->addPontren($_POST);
@@ -108,16 +113,21 @@ return function () {
                         echo 'Invalid request method';
                     }
                     break;
-
+                case 'update':
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                        $mdtController->updateStatus($id, $_POST);
+                    } else {
+                        echo 'Invalid request method';
+                    }
+                    break;
                 case 'delete':
                     $mdtController->delete($id);
                     break;
 
                 case 'getall':
-                    $mdtController->getAllJson();
+                    $status = isset($_GET['status']) ? $_GET['status'] : 'DISETUJUI';
+                    $mdtController->getAllJson($status);
                     break;
-
-
                 case 'add':
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $mdtController->addMDT($_POST);
@@ -148,19 +158,74 @@ return function () {
                         echo 'Invalid request method';
                     }
                     break;
-
+                case 'update':
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                        $staffMdtController->updateStatus($id, $_POST);
+                    } else {
+                        echo 'Invalid request method';
+                    }
+                    break;
                 case 'delete':
                     $staffMdtController->delete($id);
                     break;
 
                 case 'getall':
-                    $staffMdtController->getAllJson();
+                    $status = isset($_GET['status']) ? $_GET['status'] : 'DISETUJUI';
+                    $staffMdtController->getAllJson($status);
                     break;
 
 
                 case 'add':
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $staffMdtController->addStaffMDT($_POST);
+                    } else {
+                        echo 'Invalid request method';
+                    }
+                    break;
+
+                default:
+                    // Handle unknown methods
+                    header('HTTP/1.0 404 Not Found');
+                    echo '404 Not Found';
+                    break;
+            }
+            break;
+
+        case 'murid_mdt':
+            switch (strtolower($method)) {
+                case 'show':
+                    $muridMdtController->index();
+                    break;
+                case 'cetak':
+                    $muridMdtController->print($id);
+                    break;
+                case 'edit':
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                        $muridMdtController->edit($id, $_POST);
+                    } else {
+                        echo 'Invalid request method';
+                    }
+                    break;
+                case 'update':
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                        $muridMdtController->updateStatus($id, $_POST);
+                    } else {
+                        echo 'Invalid request method';
+                    }
+                    break;
+
+                case 'delete':
+                    $muridMdtController->delete($id);
+                    break;
+
+                case 'getall':
+                    $status = isset($_GET['status']) ? $_GET['status'] : 'DISETUJUI';
+                    $muridMdtController->getAllJson($status);
+                    break;
+
+                case 'add':
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                        $muridMdtController->addMuridMDT($_POST);
                     } else {
                         echo 'Invalid request method';
                     }

@@ -13,7 +13,7 @@
   <div
     class="rounded-lg w-fit shadow-lg bg-white mt-24 py-8 px-12 h-fit hover:border-2 hover:border-lime-500 relative z-30">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2 class="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-zinc-700">LOREM IPSUM
+      <h2 class="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-zinc-700">SIPONTREN
       </h2>
       <h2 class="text-center text-lg mb-8 leading-9 tracking-tight text-zinc-500">Masuk ke dalam aplikasi
         Kemenag PAI

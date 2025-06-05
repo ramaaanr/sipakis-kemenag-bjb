@@ -23,8 +23,9 @@ class Pontren
     }
 
     // Get all records
-    public function getAll()
+    public function getAll($status)
     {
+        $operator = $status == 'DISETUJUI' ? '=' : '!=';
         $stmt = $this->db->prepare("SELECT 
     lembaga_pontren.id,
     lembaga_pontren.nspp,
@@ -38,12 +39,14 @@ class Pontren
     lembaga_pontren.jumlah_santri_pria,
     lembaga_pontren.jumlah_santri_wanita,
     lembaga_pontren.jumlah_keseluruhan,
-    lembaga_pontren.deleted_at
+    lembaga_pontren.deleted_at,
+    lembaga_pontren.status,
+    lembaga_pontren.keterangan
 FROM 
     lembaga_pontren
 JOIN 
     kecamatan ON lembaga_pontren.kecamatan_id = kecamatan.id
- WHERE lembaga_pontren.deleted_at IS NULL");
+ WHERE lembaga_pontren.deleted_at IS NULL AND lembaga_pontren.status $operator 'DISETUJUI' ");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -62,6 +65,7 @@ JOIN
     {
         // Extract and quote the necessary data
         $nspp = $this->db->quote($data['nspp']);
+        $status = $this->db->quote($data['status']);
         $npsn = $this->db->quote($data['npsn']);
         $nama_lembaga = $this->db->quote($data['nama_lembaga']);
         $grup = $this->db->quote($data['grup']);
@@ -73,7 +77,7 @@ JOIN
         $jumlah_keseluruhan = $this->db->quote($data['jumlah_keseluruhan']);
 
         // Prepare the SQL query
-        $sql = "UPDATE lembaga_pontren SET nspp = $nspp, npsn = $npsn, nama_lembaga = $nama_lembaga, grup = $grup, jenjang = $jenjang, kecamatan_id = $kecamatan_id, alamat = $alamat, jumlah_santri_pria = $jumlah_santri_pria, jumlah_santri_wanita = $jumlah_santri_wanita, jumlah_keseluruhan = $jumlah_keseluruhan WHERE id = $id";
+        $sql = "UPDATE lembaga_pontren SET nspp = $nspp, npsn = $npsn, status = $status, nama_lembaga = $nama_lembaga, grup = $grup, jenjang = $jenjang, kecamatan_id = $kecamatan_id, alamat = $alamat, jumlah_santri_pria = $jumlah_santri_pria, jumlah_santri_wanita = $jumlah_santri_wanita, jumlah_keseluruhan = $jumlah_keseluruhan WHERE id = $id";
 
         // Bind and execute the query
         $stmt = $this->db->prepare($sql);
@@ -82,6 +86,16 @@ JOIN
         // Return the query for debugging purposes
         return $sql;
     }
+    public function updateStatus($id, $data)
+    {
+        $query = "UPDATE lembaga_pontren SET status = :status, keterangan = :keterangan WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':status', $data['status']);
+        $stmt->bindParam(':keterangan', $data['keterangan']);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
 
     // Soft delete a record by ID
     public function softDelete($id)

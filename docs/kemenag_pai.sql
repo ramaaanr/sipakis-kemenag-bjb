@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 03, 2025 at 12:27 PM
+-- Generation Time: Jun 05, 2025 at 04:02 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.12
 
@@ -79,13 +79,15 @@ INSERT INTO `lembaga_mdt` (`id`, `lembaga`, `nomor_statistik`, `alamat`, `nama_k
 (8, 'MAU\'IZHATUL MU\'MININ', '311263720014', 'Jl. Mr. Cokrokusumo, Bangkal', NULL, 31, 8, NULL, 0, 'DISETUJUI', 'TANPA KETERANGAN'),
 (9, 'MISBAHUL MUNIR', '311263720008', 'Batu Ampar Cempaka', 'Saifullah', 32, 8, NULL, 0, 'DISETUJUI', 'TANPA KETERANGAN'),
 (10, 'IRSYADUL AULAD', '311263720005', 'Jl.Mistar Cokrokusumo Bangkal', 'Hormansyah', 27, 5, NULL, 0, 'DISETUJUI', 'TANPA KETERANGAN'),
-(11, 'NURUL MUJAHIDIN', '311263720007', 'Jl.Transpol,Beruntung Jaya,Rt 34/Rw 11', NULL, 81, 9, NULL, 0, 'DISETUJUI', 'TANPA KETERANGAN'),
-(12, 'AL-AMANAH', '321263720015', 'Jl. Balitan Komp. Tumut Hijau No. 07 Rt. 034 Rw. 011 Kel. Loktabat Utara', 'Mahfuzh', 104, 8, NULL, 0, 'DISETUJUI', 'TANPA KETERANGAN'),
+(11, 'NURUL MUJAHIDINSSSSSSSS', '311263720007', 'Jl.Transpol,Beruntung Jaya,Rt 34/Rw 11', 'asd', 81, 9, NULL, 0, 'DISETUJUI', 'TANPA KETERANGAN'),
+(12, 'AL-AMANAHSSSSSSsssss', '321263720015', 'Jl. Balitan Komp. Tumut Hijau No. 07 Rt. 034 Rw. 011 Kel. Loktabat Utara', 'Mahfuzh', 104, 8, NULL, 0, 'DIPROSES', 'TANPA KETERANGAN'),
 (13, 'Al-Test Tambah', '123', 'Jl. A. Yani Km. 23 Pondok Pesantren Al Falah Puteri', 'Udin Tambah', 123, 231, '2024-10-26', 0, 'DISETUJUI', 'TANPA KETERANGAN'),
 (14, 'Al-AEDITEDIT', '6969', 'Jl. Veteran GangEDIT', 'Udin EditnEDIT', 234, 456, '2024-10-26', 0, 'DISETUJUI', 'TANPA KETERANGAN'),
 (15, 'AAAAAAAAAAAAAAAA', 'asdsad', 'asdasd', 'asdasd', 123, 12312312, '2025-02-03', 0, 'DIPROSES', 'TANPA KETERANGAN'),
 (16, 'AAAAAAAAAAAAAAAAAAA', 'aa', 'a', 'a', 12, 12000, '2025-02-03', 0, 'DISETUJUI', 'DATA DISETUJUI PERBIKI NAMA'),
-(17, 'AAAAaaaasddddddddd', 'asdsad', 'asd', 'asda', 123, 123, NULL, 0, 'DIPROSES', 'DATA TIDAK SESUAI');
+(17, 'AAAAaaaasdddddddddsssssss', 'asdsad', 'asd', 'asda', 123, 123, NULL, 0, 'DIPROSES', 'Disetujui tanpa keterangan'),
+(18, 'Data TEStsssssssssss', 'asd', 'asd', 'ads', 12, 12, NULL, 0, 'DIPROSES', 'Disetujui tanpa keterangan'),
+(19, 'DAta test 23', 'asd', 'ads', 'asd', 12, 12, NULL, 0, 'DIPROSES', 'Disetujui tanpa keterangan');
 
 -- --------------------------------------------------------
 
@@ -108,54 +110,57 @@ CREATE TABLE `lembaga_pontren` (
   `deleted_at` date DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   `status` enum('DISETUJUI','DIPROSES','DITOLAK','') NOT NULL DEFAULT 'DIPROSES',
-  `keterangan` text DEFAULT NULL
+  `keterangan` text DEFAULT NULL,
+  `tanggal` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `lembaga_pontren`
 --
 
-INSERT INTO `lembaga_pontren` (`id`, `nspp`, `npsn`, `nama_lembaga`, `grup`, `jenjang`, `kecamatan_id`, `alamat`, `jumlah_santri_pria`, `jumlah_santri_wanita`, `jumlah_keseluruhan`, `deleted_at`, `user_id`, `status`, `keterangan`) VALUES
-(97, '510363720010', NULL, 'WARASATUL FUQAHA', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 1, 'JL. SUMBER ILMU , GUNTUNG PINANG', 147, 0, 147, NULL, 0, 'DISETUJUI', 'asd'),
-(98, '510363720002', NULL, 'AL FALAH PUTERI', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 2, 'Jl. A. Yani Km. 23 Pondok Pesantren Al Falah Puteri', 0, 1959, 1959, NULL, 0, 'DISETUJUI', 'Disetujui tanpa keterangan'),
-(99, '510363720013', '69951836', 'SULLAMUL KHAIRIYAH', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 3, 'JL. H. MISTAR COKROKUSUMO CEMPAKA HULU', 226, 229, 455, NULL, 0, 'DISETUJUI', NULL),
-(100, '510363720019', NULL, 'Darul Hijrah 2 Banjarbaru', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 4, 'JL. HANDIL ARYA BIMA GUNTUNG HARAPAN RT 18 RW 003 BELAKANG AQUATICA WATERPARK KEL. GUNTUNG MANGGIS KEC. LANDASAN ULIN KOTA BANJARBARU', 50, 0, 50, NULL, 0, 'DISETUJUI', NULL),
-(101, '510363720017', NULL, 'RAUDHATUN NASYI`IN', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 1, 'JALAN BUMI BERKAT 7', 227, 0, 227, NULL, 0, 'DISETUJUI', NULL),
-(102, '510363720004', NULL, 'Nurul Ma`ad Putera', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 2, 'JL. GOLF', 125, 0, 125, NULL, 0, 'DISETUJUI', NULL),
-(103, '510063720033', NULL, 'DA\'WATUL ARSYADIAH', 'PONTREN', 'Kitab Kuning', 2, 'Jl. A. Yani KM. 17,5 Kota Citra graha', 250, 0, 250, NULL, 0, 'DISETUJUI', NULL),
-(104, '510363720024', NULL, 'NURUL MA\'AD PUTERI', 'PONTREN', 'Kitab Kuning', 2, 'JL. GOLF RT 10 RW 04', 0, 180, 180, NULL, 0, 'DISETUJUI', NULL),
-(105, '510063720030', NULL, 'PONDOK PESANTREN SALAFIYAH SYAIKH ABDUL QADIR AL JILANI', 'PONTREN', 'Kitab Kuning', 5, 'Jl. Guntung Manggis, Komp Raudhatul Muhibbin', 42, 73, 115, NULL, 0, 'DISETUJUI', NULL),
-(106, '510063720032', NULL, 'BAYTAL HIKMAH AL-HAMIDI AL-HASANI', 'PONTREN', 'Kitab Kuning', 2, 'Jl. Gubernur Syarkawi (Lingkar Utara)', 135, 80, 215, NULL, 0, 'DISETUJUI', NULL),
-(107, '510363720008', NULL, 'MIFTAHUL FALAH', 'PONTREN', 'Kitab Kuning', 1, 'JL. H. MR. COKROKUSUMO (BUMI BERKAT I) RT. 01 RW. 02 SUNGAI BESAR', 101, 0, 101, NULL, 0, 'DISETUJUI', NULL),
-(108, '510063720028', NULL, 'KARAMATUL AULIA', 'PONTREN', 'Kitab Kuning', 2, 'JL. Kelurahan Kel.Landasan Ulin', 250, 0, 250, NULL, 0, 'DISETUJUI', NULL),
-(109, '510363720023', NULL, 'Wali Songo Fiddarissalam Puteri', 'PONTREN', 'Kitab Kuning', 4, 'JL. ABADI III (PALM) RT/RW. 06/07', 0, 110, 110, NULL, 0, 'DISETUJUI', NULL),
-(110, '502363720022', NULL, 'MUHAMMADIYAH BOARDING SCHOOL (MBS) BANJARBARU', 'PONTREN', 'Kitab Kuning', 1, 'JL. SOEKARNO HATTA /TRIKORA NO 12 RT.02/04', 52, 43, 95, NULL, 0, 'DISETUJUI', NULL),
-(111, '510063720034', NULL, 'NURUL IMAN MA\'HAD BA\'ABUD', 'PONTREN', 'Kitab Kuning', 1, 'Jl. Amanah RT.04 RW.02', 70, 0, 70, NULL, 0, 'DISETUJUI', NULL),
-(112, '510063720016', NULL, 'Al-Bidayah', 'PONTREN', 'Kitab Kuning', 3, 'JL. AL-BIDAYAH KAMPUNG HANYAR', 87, 48, 135, NULL, 0, 'DISETUJUI', NULL),
-(113, '512363720020', NULL, 'Shafwatul qur\'aniyyah', 'PONTREN', 'Kitab Kuning', 2, 'PERUMAHAN KAMPOENG SHAFWAH ASRI LANDASAN ULIN', 76, 48, 124, NULL, 0, 'DISETUJUI', NULL),
-(114, '510063720026', NULL, 'PONDOK PESANTREN NURUL FIKRI BANJARBARU', 'PONTREN', 'Kitab Kuning', 4, 'JL. GUNTUNG PARING RT. 36 RW. 07', 226, 220, 446, NULL, 0, 'DISETUJUI', NULL),
-(115, '500363720021', NULL, 'DAARUL IHSAN ISLAMIC BOARDING SCHOOL', 'PONTREN', 'Kitab Kuning', 2, 'JLN. A. YANI KM. 24', 64, 23, 87, NULL, 0, 'DISETUJUI', NULL),
-(116, '510063720025', NULL, 'AL-MUHAJIRIN III', 'PONTREN', 'Kitab Kuning', 4, 'JL. KURANJI RT 32 RW 05', 465, 0, 465, NULL, 0, 'DISETUJUI', NULL),
-(117, '510063720031', NULL, 'QALBUN SALIM', 'PONTREN', 'Kitab Kuning', 4, 'Jl. Akasia II', 29, 9, 38, NULL, 0, 'DISETUJUI', NULL),
-(118, '510063720027', NULL, 'PONDOK PESANTREN TAHFIDZUL QURAN RAUDLATUL MUTAALLIMIN ANNAHDLIYAH', 'PONTREN', 'Kitab Kuning', 4, 'Jl. Guntung Manggis No.40 Rt.18/Rw.03', 20, 19, 39, NULL, 0, 'DISETUJUI', NULL),
-(119, '510063720029', NULL, 'PONDOK PESANTREN AL HIDAYAH BANJARBARU', 'PONTREN', 'Kitab Kuning', 1, 'Jalan Sidodadi II RT 4 RW 5', 67, 73, 140, NULL, 0, 'DISETUJUI', NULL),
-(120, '510263720035', NULL, 'Darul Karim', 'PONTREN', 'Kitab Kuning', 5, 'Jl. Hijrah Jaya RT.013 RW.003', 61, 0, 61, NULL, 0, 'DISETUJUI', NULL),
-(121, '510363726011', NULL, 'WALI SONGO FIDDARISSALAM PUTERA', 'PONTREN', 'Kitab Kuning', 4, 'JL. PESANTREN GUNTUNG MANGGIS', 98, 0, 98, NULL, 0, 'DISETUJUI', NULL),
-(122, '510263720036', NULL, 'Daarul Ghuroba', 'PONTREN', 'Kitab Kuning', 4, 'Jln Palm Raya Banjarbaru', 25, 19, 44, NULL, 0, 'DISETUJUI', NULL),
-(123, '510263720037', NULL, 'Nurul Azhar Kalimantan', 'PONTREN', 'Kitab Kuning', 3, 'Jl. Gajah Mada Rt.033 Rw.010', 73, 16, 89, NULL, 0, 'DISETUJUI', NULL),
-(124, '510263720038', NULL, 'Darul Ilmi Puteri', 'PONTREN', 'Kitab Kuning', 2, 'JL. A. YANI KM. 19.200', 0, 884, 884, NULL, 0, 'DISETUJUI', NULL),
-(125, '510363720003', NULL, 'DARUL ILMI', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 2, 'JL. A. YANI KM. 19.200 KEL. LANDASAN ULIN BARAT', 1313, 0, 1313, NULL, 0, 'DISETUJUI', NULL),
-(126, '510363720018', NULL, 'Sulaimaniyah', 'PONTREN', 'Kitab Kuning', 1, 'Jl. Sidodadi No.1 RT.01 RW.01', 13, 0, 13, NULL, 0, 'DISETUJUI', NULL),
-(127, '123', '123', 'Test Add', 'j12', '123', 1, '4', 4, 4, 8, '2024-10-26', 0, 'DISETUJUI', NULL),
-(128, '123', '123', '123', '123', '123', 2, '123', 123, 123, 123, '2024-10-26', 0, 'DISETUJUI', NULL),
-(129, '1234', '4321', '234234234', '324', '234', 4, '234', 234, 234, 234, '2024-10-26', 0, 'DISETUJUI', NULL),
-(130, 'test-delete', 'test-delete', 'test-delete', 'test-delete', 'test-delete', 2, 'test-delete', 123, 123, 123, '2024-10-02', 0, 'DISETUJUI', NULL),
-(131, '99', '99', 'AA EDIT EDIT', '99', '99', 5, '99', 99, 99, 99, '2024-10-26', 0, 'DISETUJUI', NULL),
-(132, 'ASDSAD', 'ASDASD', 'ASDASD', 'ASDASD', 'ASDASD', 3, 'ASDASD', 12, 12, 12, '2025-02-03', 0, 'DIPROSES', NULL),
-(133, 'testttt', 'asdasd', 'asdasd', 'asdsad', 'asdsad', 2, 'asdsasd', 12, 12, 12, '2025-02-03', 0, 'DISETUJUI', 'Disetujui tanpa keterangan'),
-(134, 'asda', 'asda', 'asdasd', 'asdasd', 'asdsad', 4, 'asdasd', 1213, 12, 1111111, '2025-02-03', 0, 'DISETUJUI', 'Disetujui tanpa keterangan'),
-(135, 'Data Tester', 'Data Tester', 'AAAAAAAAA', 'Data Tester', 'Data Tester', 1, 'Data Tester', 123, 12, 135, '2025-02-03', 0, 'DISETUJUI', 'dietuji'),
-(136, 'AAAAAAAaaasdddddd', 'asddd', 'asddd', 'asd', 'asd', 4, 'asd', 123, 12, 123, NULL, 0, 'DIPROSES', '');
+INSERT INTO `lembaga_pontren` (`id`, `nspp`, `npsn`, `nama_lembaga`, `grup`, `jenjang`, `kecamatan_id`, `alamat`, `jumlah_santri_pria`, `jumlah_santri_wanita`, `jumlah_keseluruhan`, `deleted_at`, `user_id`, `status`, `keterangan`, `tanggal`) VALUES
+(97, '510363720010', NULL, 'WARASATUL FUQAHA', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 1, 'JL. SUMBER ILMU , GUNTUNG PINANG', 147, 0, 147, NULL, 0, 'DISETUJUI', 'asd', '2025-02-06'),
+(98, '510363720002', NULL, 'AL FALAH PUTERI', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 2, 'Jl. A. Yani Km. 23 Pondok Pesantren Al Falah Puteri', 0, 1959, 1959, NULL, 0, 'DISETUJUI', 'Disetujui tanpa keterangan', '2025-02-06'),
+(99, '510363720013', '69951836', 'SULLAMUL KHAIRIYAH', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 3, 'JL. H. MISTAR COKROKUSUMO CEMPAKA HULU', 226, 229, 455, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(100, '510363720019', NULL, 'Darul Hijrah 2 Banjarbaru', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 4, 'JL. HANDIL ARYA BIMA GUNTUNG HARAPAN RT 18 RW 003 BELAKANG AQUATICA WATERPARK KEL. GUNTUNG MANGGIS KEC. LANDASAN ULIN KOTA BANJARBARU', 50, 0, 50, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(101, '510363720017', NULL, 'RAUDHATUN NASYI`IN', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 1, 'JALAN BUMI BERKAT 7', 227, 0, 227, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(102, '510363720004', NULL, 'Nurul Ma`ad Putera', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 2, 'JL. GOLF', 125, 0, 125, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(103, '510063720033', NULL, 'DA\'WATUL ARSYADIAH', 'PONTREN', 'Kitab Kuning', 2, 'Jl. A. Yani KM. 17,5 Kota Citra graha', 250, 0, 250, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(104, '510363720024', NULL, 'NURUL MA\'AD PUTERI', 'PONTREN', 'Kitab Kuning', 2, 'JL. GOLF RT 10 RW 04', 0, 180, 180, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(105, '510063720030', NULL, 'PONDOK PESANTREN SALAFIYAH SYAIKH ABDUL QADIR AL JILANI', 'PONTREN', 'Kitab Kuning', 5, 'Jl. Guntung Manggis, Komp Raudhatul Muhibbin', 42, 73, 115, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(106, '510063720032', NULL, 'BAYTAL HIKMAH AL-HAMIDI AL-HASANI', 'PONTREN', 'Kitab Kuning', 2, 'Jl. Gubernur Syarkawi (Lingkar Utara)', 135, 80, 215, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(107, '510363720008', NULL, 'MIFTAHUL FALAH', 'PONTREN', 'Kitab Kuning', 1, 'JL. H. MR. COKROKUSUMO (BUMI BERKAT I) RT. 01 RW. 02 SUNGAI BESAR', 101, 0, 101, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(108, '510063720028', NULL, 'KARAMATUL AULIA', 'PONTREN', 'Kitab Kuning', 2, 'JL. Kelurahan Kel.Landasan Ulin', 250, 0, 250, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(109, '510363720023', NULL, 'Wali Songo Fiddarissalam Puteri', 'PONTREN', 'Kitab Kuning', 4, 'JL. ABADI III (PALM) RT/RW. 06/07', 0, 110, 110, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(110, '502363720022', NULL, 'MUHAMMADIYAH BOARDING SCHOOL (MBS) BANJARBARU', 'PONTREN', 'Kitab Kuning', 1, 'JL. SOEKARNO HATTA /TRIKORA NO 12 RT.02/04', 52, 43, 95, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(111, '510063720034', NULL, 'NURUL IMAN MA\'HAD BA\'ABUD', 'PONTREN', 'Kitab Kuning', 1, 'Jl. Amanah RT.04 RW.02', 70, 0, 70, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(112, '510063720016', NULL, 'Al-Bidayah', 'PONTREN', 'Kitab Kuning', 3, 'JL. AL-BIDAYAH KAMPUNG HANYAR', 87, 48, 135, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(113, '512363720020', NULL, 'Shafwatul qur\'aniyyah', 'PONTREN', 'Kitab Kuning', 2, 'PERUMAHAN KAMPOENG SHAFWAH ASRI LANDASAN ULIN', 76, 48, 124, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(114, '510063720026', NULL, 'PONDOK PESANTREN NURUL FIKRI BANJARBARU', 'PONTREN', 'Kitab Kuning', 4, 'JL. GUNTUNG PARING RT. 36 RW. 07', 226, 220, 446, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(115, '500363720021', NULL, 'DAARUL IHSAN ISLAMIC BOARDING SCHOOL', 'PONTREN', 'Kitab Kuning', 2, 'JLN. A. YANI KM. 24', 64, 23, 87, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(116, '510063720025', NULL, 'AL-MUHAJIRIN III', 'PONTREN', 'Kitab Kuning', 4, 'JL. KURANJI RT 32 RW 05', 465, 0, 465, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(117, '510063720031', NULL, 'QALBUN SALIM', 'PONTREN', 'Kitab Kuning', 4, 'Jl. Akasia II', 29, 9, 38, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(118, '510063720027', NULL, 'PONDOK PESANTREN TAHFIDZUL QURAN RAUDLATUL MUTAALLIMIN ANNAHDLIYAH', 'PONTREN', 'Kitab Kuning', 4, 'Jl. Guntung Manggis No.40 Rt.18/Rw.03', 20, 19, 39, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(119, '510063720029', NULL, 'PONDOK PESANTREN AL HIDAYAH BANJARBARU', 'PONTREN', 'Kitab Kuning', 1, 'Jalan Sidodadi II RT 4 RW 5', 67, 73, 140, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(120, '510263720035', NULL, 'Darul Karim', 'PONTREN', 'Kitab Kuning', 5, 'Jl. Hijrah Jaya RT.013 RW.003', 61, 0, 61, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(121, '510363726011', NULL, 'WALI SONGO FIDDARISSALAM PUTERA', 'PONTREN', 'Kitab Kuning', 4, 'JL. PESANTREN GUNTUNG MANGGIS', 98, 0, 98, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(122, '510263720036', NULL, 'Daarul Ghuroba', 'PONTREN', 'Kitab Kuning', 4, 'Jln Palm Raya Banjarbaru', 25, 19, 44, NULL, 0, 'DISETUJUI', NULL, '2025-02-06'),
+(123, '510263720037', '', 'Nurul Azhar Kalimantan', 'PONTREN', 'Kitab Kuning', 3, 'Jl. Gajah Mada Rt.033 Rw.010', 73, 16, 89, NULL, 0, 'DIPROSES', NULL, '2025-02-06'),
+(124, '510263720038', '', 'Darul Ilmi Puterisssssss', 'PONTREN', 'Kitab Kuning', 2, 'JL. A. YANI KM. 19.200', 0, 884, 884, NULL, 0, 'DIPROSES', NULL, '2025-02-06'),
+(125, '510363720003', '', 'DARUL ILMISSS', 'PONTREN', 'Kitab Kuning & Penyelenggara Satuan Pendidikan', 2, 'JL. A. YANI KM. 19.200 KEL. LANDASAN ULIN BARAT', 1313, 0, 1313, NULL, 0, 'DIPROSES', NULL, '2025-02-06'),
+(126, '510363720018', '', 'Sulaimaniyah Gaming', 'PONTREN', 'Kitab Kuning', 1, 'Jl. Sidodadi No.1 RT.01 RW.01', 13, 0, 13, NULL, 0, 'DISETUJUI', 'Disetujui tanpa keterangan', '2025-02-06'),
+(127, '123', '123', 'Test Add', 'j12', '123', 1, '4', 4, 4, 8, '2024-10-26', 0, 'DISETUJUI', NULL, '2025-02-06'),
+(128, '123', '123', '123', '123', '123', 2, '123', 123, 123, 123, '2024-10-26', 0, 'DISETUJUI', NULL, '2025-02-06'),
+(129, '1234', '4321', '234234234', '324', '234', 4, '234', 234, 234, 234, '2024-10-26', 0, 'DISETUJUI', NULL, '2025-02-06'),
+(130, 'test-delete', 'test-delete', 'test-delete', 'test-delete', 'test-delete', 2, 'test-delete', 123, 123, 123, '2024-10-02', 0, 'DISETUJUI', NULL, '2025-02-06'),
+(131, '99', '99', 'AA EDIT EDIT', '99', '99', 5, '99', 99, 99, 99, '2024-10-26', 0, 'DISETUJUI', NULL, '2025-02-06'),
+(132, 'ASDSAD', 'ASDASD', 'ASDASD', 'ASDASD', 'ASDASD', 3, 'ASDASD', 12, 12, 12, '2025-02-03', 0, 'DIPROSES', NULL, '2025-02-06'),
+(133, 'testttt', 'asdasd', 'asdasd', 'asdsad', 'asdsad', 2, 'asdsasd', 12, 12, 12, '2025-02-03', 0, 'DISETUJUI', 'Disetujui tanpa keterangan', '2025-02-06'),
+(134, 'asda', 'asda', 'asdasd', 'asdasd', 'asdsad', 4, 'asdasd', 1213, 12, 1111111, '2025-02-03', 0, 'DISETUJUI', 'Disetujui tanpa keterangan', '2025-02-06'),
+(135, 'Data Tester', 'Data Tester', 'AAAAAAAAA', 'Data Tester', 'Data Tester', 1, 'Data Tester', 123, 12, 135, '2025-02-03', 0, 'DISETUJUI', 'dietuji', '2025-02-06'),
+(136, 'AAAAAAAaaasdddddd', 'asdddsssssssssssssss', 'asddd', 'asd', 'asd', 4, 'asd', 123, 12, 123, NULL, 0, 'DIPROSES', 'Disetujui tanpa keterangan', '2025-02-06'),
+(137, '123123', '', 'asdasdssssssssssssss', 'asdasd', 'adsasd', 1, 'asdasd', 1212, 12, 1212, NULL, 0, 'DISETUJUI', 'Disetujui tanpa keterangan', '2025-02-06'),
+(138, 'asd', '', 'Data BarussssssSSSSSSsss', 'asd', 'asd', 1, '12', 1212, 1212, 2147483647, NULL, 0, 'DISETUJUI', 'Disetujui tanpa keterangan', '2025-02-06');
 
 -- --------------------------------------------------------
 
@@ -319,7 +324,8 @@ INSERT INTO `murid_mdt` (`id`, `lembaga_id`, `nama`, `ttl`, `nisn`, `jenis_kelam
 (222, 1, 'AA Tambah', '2024-10-28', '123', 'laki-laki', '13B', 'awaiyah', '2024-10-27', 0, 'DISETUJUI', 'TANPA KETERANGAN'),
 (223, 3, 'AA EDIT EDIT LAGI', '2024-10-16', '123', 'Perempuan', '2A', 'UMY', '2024-10-27', 0, 'DISETUJUI', 'TANPA KETERANGAN'),
 (224, 1, 'AAAAAAAAAA', '2025-01-27', 'aasd', 'laki-laki', 'asd', 'asd', '2025-02-03', 0, 'DISETUJUI', 'Disetujui tanpa keterangan'),
-(225, 1, 'AAAAAAAAAAAAAasdasd', '2025-02-07', 'asd', 'laki-laki', 'asd', 'asdasd', '2025-02-03', 0, 'DISETUJUI', 'Disetujui tanpa keterangan');
+(225, 1, 'AAAAAAAAAAAAAasdasd', '2025-02-07', 'asd', 'laki-laki', 'asd', 'asdasd', '2025-02-03', 0, 'DISETUJUI', 'Disetujui tanpa keterangan'),
+(226, 1, 'asd SSSS', '2025-02-06', 'asd', 'laki-laki', 'asd', 'asd', NULL, 0, 'DISETUJUI', 'Disetujui tanpa keterangan');
 
 -- --------------------------------------------------------
 
@@ -370,7 +376,8 @@ INSERT INTO `staff_mdt` (`id`, `lembaga_id`, `nama`, `nik`, `jabatan`, `alamat`,
 (23, 11, 'AA TAMBAHA', '123', 'Kepala', 'Jl Setan', '2024-10-27', 0, 'DISETUJUI', 'TANPA KETERANGAN'),
 (24, 10, 'AA EDIT EDIT LAGI', '345', 'Wakil Presiden', 'Jl Tortiar', '2024-10-27', 0, 'DISETUJUI', 'TANPA KETERANGAN'),
 (25, 1, 'AAAAAAAAAAA', 'asd Edit', 'asd Edit', 'asdasda Edit', '2025-02-03', 0, 'DISETUJUI', 'data disetujui'),
-(26, 1, 'AAAAAAAAAAaaaaa', 'asd', 'asd', 'asdasda', NULL, 0, 'DIPROSES', 'TANPA KETERANGAN');
+(26, 1, 'AAAAAAAAAAaaaaa', 'asd', 'asd', 'asdasda', NULL, 0, 'DISETUJUI', 'Disetujui tanpa keterangan'),
+(27, 1, 'Udin Lama', 'asd', 'asd', 'asdasd', NULL, 0, 'DISETUJUI', 'Disetujui tanpa keterangan');
 
 -- --------------------------------------------------------
 
@@ -456,25 +463,25 @@ ALTER TABLE `kecamatan`
 -- AUTO_INCREMENT for table `lembaga_mdt`
 --
 ALTER TABLE `lembaga_mdt`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `lembaga_pontren`
 --
 ALTER TABLE `lembaga_pontren`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
 
 --
 -- AUTO_INCREMENT for table `murid_mdt`
 --
 ALTER TABLE `murid_mdt`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=226;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=227;
 
 --
 -- AUTO_INCREMENT for table `staff_mdt`
 --
 ALTER TABLE `staff_mdt`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `user`

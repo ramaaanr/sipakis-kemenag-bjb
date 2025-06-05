@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cetak Lembaga Pontren</title>
+  <title>Cetak Staff Madrasah Diniyah Takmiliyah</title>
   <style>
   .kop-surat {
     display: flex;
@@ -75,8 +75,9 @@
     border: 1px solid #000;
     padding: 8px;
     text-align: left;
-    font-size: 8px;
   }
+
+
 
   th {
     background-color: #f2f2f2;
@@ -100,39 +101,31 @@
       <!-- Logo di kanan -->
     </div>
   </div>
-  <p style="text-align: center; font-size: large; margin-top: 40px;">Data Lembaga Pontren</p>
+  <p style="text-align: center; font-size: large; margin-top: 40px;">Data Murid Madrasah Diniyah Takmiliyah</p>
 
   <table>
     <thead>
       <tr>
-        <th>NSPP</th>
-        <th>NPSN</th>
-        <th>Nama Lembaga</th>
-        <th>Grup</th>
-        <th>Jenjang</th>
-        <th>Kecamatan</th>
-        <th>Alamat</th>
-        <th>Jumlah Pria</th>
-        <th>Jumlah Wanita</th>
-        <th>Total Santri</th>
+        <th>Nama</th>
+        <th>MDT</th>
+        <th>ttl</th>
+        <th>NISN</th>
+        <th>Jenis Kelamin</th>
+        <th>Rombel Kelas</th>
+        <th>Tingkat</th>
       </tr>
     </thead>
     <tbody>
       <?php foreach ($data as $row): ?>
-      <?php if ($row['kecamatan_id'] == $id || is_null($id)): ?>
       <tr>
-        <td><?php echo htmlspecialchars($row['nspp']); ?></td>
-        <td><?php echo htmlspecialchars($row['npsn']); ?></td>
-        <td><?php echo htmlspecialchars($row['nama_lembaga']); ?></td>
-        <td><?php echo htmlspecialchars($row['grup']); ?></td>
-        <td><?php echo htmlspecialchars($row['jenjang']); ?></td>
-        <td><?php echo htmlspecialchars($row['nama_kecamatan']); ?></td>
-        <td><?php echo htmlspecialchars($row['alamat']); ?></td>
-        <td><?php echo htmlspecialchars($row['jumlah_santri_pria']); ?></td>
-        <td><?php echo htmlspecialchars($row['jumlah_santri_wanita']); ?></td>
-        <td><?php echo htmlspecialchars($row['jumlah_keseluruhan']); ?></td>
+        <td><?php echo htmlspecialchars($row['nama']); ?></td>
+        <td><?php echo htmlspecialchars($row['lembaga']); ?></td>
+        <td><?php echo htmlspecialchars($row['ttl']); ?></td>
+        <td><?php echo htmlspecialchars($row['nisn']); ?></td>
+        <td><?php echo htmlspecialchars($row['jenis_kelamin']); ?></td>
+        <td><?php echo htmlspecialchars($row['rombel_kelas']); ?></td>
+        <td><?php echo htmlspecialchars($row['tingkat']); ?></td>
       </tr>
-      <?php endif; ?>
       <?php endforeach; ?>
     </tbody>
 

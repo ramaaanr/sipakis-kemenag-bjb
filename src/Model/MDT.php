@@ -23,8 +23,10 @@ class MDT
   }
 
   // Get all records
-  public function getAll()
+  public function getAll($status)
   {
+    $operator = $status == 'DISETUJUI' ? '=' : '!=';
+
     $stmt = $this->db->prepare("SELECT 
             id, 
             lembaga, 
@@ -32,9 +34,11 @@ class MDT
             alamat, 
             nama_kepala, 
             jumlah_murid, 
+            status, 
+            keterangan, 
             jumlah_pengajar 
             FROM lembaga_mdt
-            WHERE deleted_at is NULL");
+            WHERE deleted_at is NULL AND status $operator 'DISETUJUI' ");
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
@@ -53,6 +57,7 @@ class MDT
   {
     $query = "UPDATE lembaga_mdt SET 
             lembaga = :lembaga,
+            status = :status,
             nomor_statistik = :nomor_statistik,
             alamat = :alamat,
             nama_kepala = :nama_kepala,
@@ -63,6 +68,7 @@ class MDT
 
     $stmt = $this->db->prepare($query);
     $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':status', $data['status']);
     $stmt->bindParam(':lembaga', $data['lembaga']);
     $stmt->bindParam(':nomor_statistik', $data['nomor_statistik']);
     $stmt->bindParam(':alamat', $data['alamat']);
@@ -70,6 +76,16 @@ class MDT
     $stmt->bindParam(':jumlah_murid', $data['jumlah_murid']);
     $stmt->bindParam(':jumlah_pengajar', $data['jumlah_pengajar']);
 
+    return $stmt->execute();
+  }
+
+  public function updateStatus($id, $data)
+  {
+    $query = "UPDATE lembaga_mdt SET status = :status, keterangan = :keterangan WHERE id = :id";
+    $stmt = $this->db->prepare($query);
+    $stmt->bindParam(':status', $data['status']);
+    $stmt->bindParam(':keterangan', $data['keterangan']);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     return $stmt->execute();
   }
 

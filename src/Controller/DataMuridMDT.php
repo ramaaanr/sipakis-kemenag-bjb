@@ -3,20 +3,20 @@
 namespace Sfy\AplikasiDataKemenagPAI\Controller;
 
 use Sfy\AplikasiDataKemenagPAI\Helpers\SessionHelper;
-use Sfy\AplikasiDataKemenagPAI\Model\MDT;
+use Sfy\AplikasiDataKemenagPAI\Model\MuridMDT;
 use Sfy\AplikasiDataKemenagPAI\Helpers\PrintDataHelper;
 
-class DataMDT
+class DataMuridMDT
 {
-  private $mdtModel;
+  private $muridMdtModel;
 
   public function __construct()
   {
-    $this->mdtModel = new MDT();
+    $this->muridMdtModel = new MuridMDT();
     SessionHelper::startSession();
   }
 
-  // Display the MDT data
+  // Display the MuridMDT data
   public function index()
   {
     // Check if admin is already logged in
@@ -29,14 +29,15 @@ class DataMDT
     $username = SessionHelper::getUsername();
     $isKepalaLab = SessionHelper::isKepalaLab();
     $role = SessionHelper::getRole();
-    $data = $this->mdtModel->getAll('DISETUJUI'); // Fetch all lembaga_mdt data
-    include __DIR__ . '/../View/DataMDT/index.php';
+
+    $data = $this->muridMdtModel->getAll('DISETUJUI'); // Fetch all lembaga_mdt data
+    include __DIR__ . '/../View/DataMuridMDT/index.php';
   }
 
   public function print($id)
   {
-    $data = $this->mdtModel->getAll('DISETUJUI');
-    include __DIR__ . '/../View/DataMDT/cetak.php';
+    $data = $this->muridMdtModel->getAll('DISETUJUI');
+    include __DIR__ . '/../View/DataMuridMDT/cetak.php';
   }
 
   // Handle lembaga_mdt editing
@@ -45,13 +46,13 @@ class DataMDT
     if (!$data['status']) {
       $data['status'] = 'DIPROSES';
     }
-    $result = $this->mdtModel->edit($id, $data);
+    $result = $this->muridMdtModel->edit($id, $data);
     header('Content-Type: application/json');
     echo json_encode($result ? ['success' => true,] : ['success' => false]);
   }
   public function updateStatus($id, $data)
   {
-    $result = $this->mdtModel->updateStatus($id, $data);
+    $result = $this->muridMdtModel->updateStatus($id, $data);
     header('Content-Type: application/json');
     echo json_encode($result ? ['success' => true] : ['success' => false]);
   }
@@ -59,7 +60,7 @@ class DataMDT
   // Handle lembaga_mdt soft deletion
   public function delete($id)
   {
-    $result = $this->mdtModel->softDelete($id);
+    $result = $this->muridMdtModel->softDelete($id);
     header('Content-Type: application/json');
     echo json_encode($result ? ['success' => true] : ['success' => false]);
   }
@@ -68,14 +69,14 @@ class DataMDT
   public function getAllJson($status)
   {
     header('Content-Type: application/json');
-    $data = $this->mdtModel->getAll($status);
+    $data = $this->muridMdtModel->getAll($status);
     echo json_encode($data);
   }
 
   // Add a new lembaga_mdt record
-  public function addMDT($data)
+  public function addMuridMDT($data)
   {
-    $result = $this->mdtModel->add($data);
+    $result = $this->muridMdtModel->add($data);
     header('Content-Type: application/json');
     echo json_encode($result ? ['success' => true] : ['success' => false]);
   }

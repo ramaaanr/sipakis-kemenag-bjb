@@ -23,8 +23,10 @@ class StaffMDT
   }
 
   // Get all staff records
-  public function getAll()
+  public function getAll($status)
   {
+    $operator = $status == 'DISETUJUI' ? '=' : '!=';
+
     $stmt = $this->db->prepare("SELECT 
     staff_mdt.id,
     staff_mdt.lembaga_id,
@@ -32,13 +34,17 @@ class StaffMDT
     staff_mdt.nik,
     staff_mdt.jabatan,
     staff_mdt.alamat,
+    staff_mdt.keterangan,
+    staff_mdt.status,
     lembaga_mdt.lembaga
 FROM 
     staff_mdt
 JOIN 
     lembaga_mdt ON staff_mdt.lembaga_id = lembaga_mdt.id
 WHERE
-    staff_mdt.deleted_at is NULL;
+    staff_mdt.deleted_at is NULL
+AND 
+    staff_mdt.status $operator 'DISETUJUI' ;
 ");
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -60,6 +66,7 @@ WHERE
               lembaga_id = :lembaga_id,
               nama = :nama,
               nik = :nik,
+              status = :status,
               jabatan = :jabatan,
               alamat = :alamat
               WHERE id = :id";
@@ -68,10 +75,21 @@ WHERE
     $stmt->bindParam(':id', $id);
     $stmt->bindParam(':lembaga_id', $data['lembaga_id']);
     $stmt->bindParam(':nama', $data['nama']);
+    $stmt->bindParam(':status', $data['status']);
     $stmt->bindParam(':nik', $data['nik']);
     $stmt->bindParam(':jabatan', $data['jabatan']);
     $stmt->bindParam(':alamat', $data['alamat']);
 
+    return $stmt->execute();
+  }
+
+  public function updateStatus($id, $data)
+  {
+    $query = "UPDATE staff_mdt SET status = :status, keterangan = :keterangan WHERE id = :id";
+    $stmt = $this->db->prepare($query);
+    $stmt->bindParam(':status', $data['status']);
+    $stmt->bindParam(':keterangan', $data['keterangan']);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     return $stmt->execute();
   }
 

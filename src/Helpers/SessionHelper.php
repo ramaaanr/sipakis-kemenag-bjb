@@ -19,6 +19,10 @@ class SessionHelper
     {
         return $_SESSION['user_username'];
     }
+    public static function getRole()
+    {
+        return $_SESSION['role'];
+    }
     public static function isKepalaLab()
     {
         return $_SESSION['role'] == 'kepala_lab';
