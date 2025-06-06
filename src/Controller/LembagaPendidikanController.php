@@ -5,16 +5,20 @@ namespace Sfy\AplikasiDataKemenagPAI\Controller;
 use Sfy\AplikasiDataKemenagPAI\Helpers\ResponseFormatter;
 use Sfy\AplikasiDataKemenagPAI\Model\LembagaPendidikan;
 use Exception;
+use Sfy\AplikasiDataKemenagPAI\Model\JenisLembagaPendidikan;
 use Sfy\AplikasiDataKemenagPAI\Model\Kecamatan;
 
 class LembagaPendidikanController
 {
     private $LembagaPendidikan;
+    private $Kecamatan;
+    private $JenisLembagaPendidikan;
 
     public function __construct()
     {
         $this->LembagaPendidikan = new LembagaPendidikan();
-        $this->LembagaPendidikan = new Kecamatan();
+        $this->Kecamatan = new Kecamatan();
+        $this->JenisLembagaPendidikan = new JenisLembagaPendidikan();
     }
 
     public function index(): string
@@ -48,9 +52,30 @@ class LembagaPendidikanController
             if (!$nama) {
                 return ResponseFormatter::error('Nama Lembaga Pendidikan wajib diisi');
             }
+            var_dump($request);
 
-            $kecamatan = $$created = $this->LembagaPendidikan->create([
-                'nama' => $nama
+
+            $kecamatan = $this->Kecamatan->getBy(['id' => $request['kecamatan_id']]);
+
+            if (!$kecamatan) {
+                return ResponseFormatter::error('Kecamatan wajib diisi');
+            }
+
+            $jenisLembagaPendidikan = $this->JenisLembagaPendidikan->getBy(['id' => $request['jenis_lembaga_pendidikan_id']]);
+
+            if (!$jenisLembagaPendidikan) {
+                return ResponseFormatter::error('Jenis Lembaga Pendidikan wajib diisi');
+            }
+            $created = $this->LembagaPendidikan->create([
+                'kecamatan_id' => $request['kecamatan_id'],
+                'jenis_lembaga_pendidikan_id' => $request['jenis_lembaga_pendidikan_id'],
+                'nama' => $nama,
+                'nspp' => $request['nspp'] ?? '',
+                'npsn' => $request['npsn'] ?? '',
+                'jenjang' => $request['jenjang'] ?? '',
+                'alamat' => $request['alamat'] ?? '',
+                'no_telepon' => $request['no_telepon'] ?? '',
+                'email' => $request['email'] ?? ''
             ]);
 
             return $created
@@ -75,8 +100,29 @@ class LembagaPendidikanController
                 return ResponseFormatter::error('Nama Lembaga Pendidikan wajib diisi');
             }
 
+
+            $kecamatan = $this->Kecamatan->getBy(['id' => $request['kecamatan_id']]);
+
+            if (!$kecamatan) {
+                return ResponseFormatter::error('Kecamatan wajib diisi');
+            }
+
+            $jenisLembagaPendidikan = $this->JenisLembagaPendidikan->getBy(['id' => $request['jenis_lembaga_pendidikan_id']]);
+
+            if (!$jenisLembagaPendidikan) {
+                return ResponseFormatter::error('Jenis Lembaga Pendidikan wajib diisi');
+            }
+
             $updated = $this->LembagaPendidikan->update($id, [
-                'nama' => $nama
+                'kecamatan_id' => $request['kecamatan_id'],
+                'jenis_lembaga_pendidikan_id' => $request['jenis_lembaga_pendidikan_id'],
+                'nama' => $nama,
+                'nspp' => $request['nspp'] ?? '',
+                'npsn' => $request['npsn'] ?? '',
+                'jenjang' => $request['jenjang'] ?? '',
+                'alamat' => $request['alamat'] ?? '',
+                'no_telepon' => $request['no_telepon'] ?? '',
+                'email' => $request['email'] ?? ''
             ]);
 
             return $updated

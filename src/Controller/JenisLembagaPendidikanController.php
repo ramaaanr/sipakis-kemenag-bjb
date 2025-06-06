@@ -42,7 +42,6 @@ class JenisLembagaPendidikanController
     {
         try {
             $nama = $request['nama'] ?? '';
-
             if (!$nama) {
                 return ResponseFormatter::error('Nama Jenis Lembaga Pendidikan wajib diisi');
             }
@@ -59,7 +58,7 @@ class JenisLembagaPendidikanController
         }
     }
 
-        public function update(int $id, array $request): string
+    public function update(int $id, array $request): string
     {
         try {
             $data = $this->JenisLembagaPendidikan->getBy(['id' => $id]);
@@ -102,5 +101,4 @@ class JenisLembagaPendidikanController
             return ResponseFormatter::error('Terjadi kesalahan: ' . $e->getMessage());
         }
     }
-
 }
