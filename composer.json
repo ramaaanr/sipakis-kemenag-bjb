@@ -12,6 +12,8 @@
     },
     "scripts": {
         "model": "php cli/make-model.php",
-        "dev": "php -S localhost:8000 -t public"
+        "route": "php cli/make-route.php",
+        "controller": "php cli/make-controller.php",
+        "dev": "php -S localhost:8080"
     }
 }

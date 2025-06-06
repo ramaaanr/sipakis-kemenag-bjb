@@ -1,0 +1,33 @@
+// 🏁 Controller ${{resource}} DIMULAI 
+
+case '{{resource}}':
+    ${{resource}}Controller = new \Sfy\AplikasiDataKemenagPAI\Controller\{{Resource}}Controller();
+
+    if (!$param) {
+        if ($httpMethod === 'GET') {
+            echo ${{resource}}Controller->index();
+        } elseif ($httpMethod === 'POST') {
+            echo ${{resource}}Controller->store($inputData);
+        } else {
+            http_response_code(405);
+            echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak didukung."]);
+        }
+    } else {
+        $id = (int) $param;
+        switch ($httpMethod) {
+            case 'GET':
+                echo ${{resource}}Controller->show($id);
+                break;
+            case 'POST':
+                echo ${{resource}}Controller->update($id, $inputData);
+                break;
+            case 'DELETE':
+                echo ${{resource}}Controller->destroy($id);
+                break;
+            default:
+                http_response_code(405);
+                echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak diizinkan untuk {{resource}}/$id"]);
+                break;
+        }
+    }
+    break;

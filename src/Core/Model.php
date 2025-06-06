@@ -63,6 +63,13 @@ abstract class Model
     $stmt = $this->db->prepare("UPDATE {$this->table} SET deleted_at = NOW() WHERE id = :id");
     return $stmt->execute([':id' => $id]);
   }
+  public function hardDelete(int $id): bool
+  {
+
+    $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE id = :id");
+    return $stmt->execute([':id' => $id]);
+  }
+
 
   protected function buildSelectQuery(array $criteria = [], bool $limitOne = false): array
   {
