@@ -1,248 +1,78 @@
 <?php
 
-use Sfy\AplikasiDataKemenagPAI\Controller\Auth;
-use Sfy\AplikasiDataKemenagPAI\Controller\DataPontren;
-use Sfy\AplikasiDataKemenagPAI\Controller\DataMDT;
-use Sfy\AplikasiDataKemenagPAI\Controller\DataStaffMDT;
-use Sfy\AplikasiDataKemenagPAI\Controller\DataMuridMDT;
+use Sfy\AplikasiDataKemenagPAI\Controller\AuthController;
 
 return function () {
-    // Instantiate controllers
-    $authController = new Auth();
-    $pontrenController = new DataPontren();
-    $mdtController = new DataMDT();
-    $staffMdtController = new DataStaffMDT();
-    $muridMdtController = new DataMuridMDT();
-    // Get the requested URI and parse it
-    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    $uri = trim($uri, '/'); // Trim leading and trailing slashes
+    header('Content-Type: application/json');
 
-    // If the URI is empty, redirect to 'auth/login'
-    if (empty($uri)) {
-        header('Location: /auth/login');
-        exit();
-    }
-
-    // Split the URI into parts
+    $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
     $parts = explode('/', $uri);
+    $controller = strtolower($parts[0] ?? 'auth');
+    $method = strtolower($parts[1] ?? 'login');
+    $httpMethod = $_SERVER['REQUEST_METHOD'];
 
-    // Get the controller and method
-    $controller = $parts[0] ?? 'auth';  // Default to 'auth' controller
-    $method = $parts[1] ?? 'login';     // Default to 'login' method
-    $id = $parts[2] ?? null;            // Get the ID if it's available
+    // Ambil input sesuai metode HTTP (POST prioritas, GET fallback)
+    $request = $httpMethod === 'POST' ? $_POST : $_GET;
 
-    // Route to the appropriate controller and method
-    switch (strtolower($controller)) {
+    switch ($controller) {
         case 'auth':
-            switch (strtolower($method)) {
+            $authController = new AuthController();
+
+            switch ($method) {
                 case 'login':
-                    $authController->login();
+                    if ($httpMethod !== 'POST') {
+                        http_response_code(405);
+                        echo json_encode([
+                            'status' => false,
+                            'message' => 'Metode HTTP harus POST untuk login',
+                        ]);
+                        break 2; // keluar switch controller + method
+                    }
+                    echo $authController->login($request);
                     break;
+
+                // case 'register':
+                //     if ($httpMethod !== 'POST') {
+                //         http_response_code(405);
+                //         echo json_encode([
+                //             'status' => false,
+                //             'message' => 'Metode HTTP harus POST untuk registrasi',
+                //         ]);
+                //         break 2;
+                //     }
+                //     echo $authController->register($request);
+                //     break;
 
                 case 'logout':
-                    $authController->logout();
+                    if ($httpMethod !== 'POST') {
+                        http_response_code(405);
+                        echo json_encode([
+                            'status' => false,
+                            'message' => 'Metode HTTP harus POST untuk logout',
+                        ]);
+                        break 2;
+                    }
+                    echo $authController->logout();
                     break;
 
                 default:
-                    // Handle unknown methods
-                    header('HTTP/1.0 404 Not Found');
-                    echo '404 Not Found';
-                    break;
-            }
-            break;
-        case 'dashboard':
-            $authController->dashboard();
-            break;
-        case 'pontren':
-            switch (strtolower($method)) {
-                case 'show':
-                    $pontrenController->index();
-                    break;
-                case 'cetak':
-                    $pontrenController->print($id);
-                    break;
-                case 'edit':
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $pontrenController->edit($id, $_POST);
-                    } else {
-                        echo 'Invalid request method';
-                    }
-                    break;
-                case 'update':
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $pontrenController->updateStatus($id, $_POST);
-                    } else {
-                        echo 'Invalid request method';
-                    }
-                    break;
-                case 'delete':
-                    $pontrenController->delete($id);
-                    break;
-
-                case 'getall':
-                    $status = isset($_GET['status']) ? $_GET['status'] : 'DISETUJUI';
-                    $pontrenController->getAllJson($status);
-                    break;
-                case 'add':
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $pontrenController->addPontren($_POST);
-                    } else {
-                        echo 'Invalid request method';
-                    }
-                    break;
-
-                default:
-                    // Handle unknown methods
-                    header('HTTP/1.0 404 Not Found');
-                    echo '404 Not Found';
-                    break;
-            }
-            break;
-        case 'mdt':
-            switch (strtolower($method)) {
-                case 'show':
-                    $mdtController->index();
-                    break;
-                case 'cetak':
-                    $mdtController->print($id);
-                    break;
-                case 'edit':
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $mdtController->edit($id, $_POST);
-                    } else {
-                        echo 'Invalid request method';
-                    }
-                    break;
-                case 'update':
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $mdtController->updateStatus($id, $_POST);
-                    } else {
-                        echo 'Invalid request method';
-                    }
-                    break;
-                case 'delete':
-                    $mdtController->delete($id);
-                    break;
-
-                case 'getall':
-                    $status = isset($_GET['status']) ? $_GET['status'] : 'DISETUJUI';
-                    $mdtController->getAllJson($status);
-                    break;
-                case 'add':
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $mdtController->addMDT($_POST);
-                    } else {
-                        echo 'Invalid request method';
-                    }
-                    break;
-
-                default:
-                    // Handle unknown methods
-                    header('HTTP/1.0 404 Not Found');
-                    echo '404 Not Found';
-                    break;
-            }
-            break;
-        case 'staff_mdt':
-            switch (strtolower($method)) {
-                case 'show':
-                    $staffMdtController->index();
-                    break;
-                case 'cetak':
-                    $staffMdtController->print($id);
-                    break;
-                case 'edit':
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $staffMdtController->edit($id, $_POST);
-                    } else {
-                        echo 'Invalid request method';
-                    }
-                    break;
-                case 'update':
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $staffMdtController->updateStatus($id, $_POST);
-                    } else {
-                        echo 'Invalid request method';
-                    }
-                    break;
-                case 'delete':
-                    $staffMdtController->delete($id);
-                    break;
-
-                case 'getall':
-                    $status = isset($_GET['status']) ? $_GET['status'] : 'DISETUJUI';
-                    $staffMdtController->getAllJson($status);
-                    break;
-
-
-                case 'add':
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $staffMdtController->addStaffMDT($_POST);
-                    } else {
-                        echo 'Invalid request method';
-                    }
-                    break;
-
-                default:
-                    // Handle unknown methods
-                    header('HTTP/1.0 404 Not Found');
-                    echo '404 Not Found';
+                    http_response_code(404);
+                    echo json_encode([
+                        'status' => false,
+                        'message' => "Oops! Halaman '$method' tidak ditemukan di Auth.",
+                    ]);
                     break;
             }
             break;
 
-        case 'murid_mdt':
-            switch (strtolower($method)) {
-                case 'show':
-                    $muridMdtController->index();
-                    break;
-                case 'cetak':
-                    $muridMdtController->print($id);
-                    break;
-                case 'edit':
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $muridMdtController->edit($id, $_POST);
-                    } else {
-                        echo 'Invalid request method';
-                    }
-                    break;
-                case 'update':
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $muridMdtController->updateStatus($id, $_POST);
-                    } else {
-                        echo 'Invalid request method';
-                    }
-                    break;
-
-                case 'delete':
-                    $muridMdtController->delete($id);
-                    break;
-
-                case 'getall':
-                    $status = isset($_GET['status']) ? $_GET['status'] : 'DISETUJUI';
-                    $muridMdtController->getAllJson($status);
-                    break;
-
-                case 'add':
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $muridMdtController->addMuridMDT($_POST);
-                    } else {
-                        echo 'Invalid request method';
-                    }
-                    break;
-
-                default:
-                    // Handle unknown methods
-                    header('HTTP/1.0 404 Not Found');
-                    echo '404 Not Found';
-                    break;
-            }
-            break;
+        // Controller lain bisa ditambahkan di sini, dengan pengecekan metode HTTP serupa
 
         default:
-            // Handle unknown controllers
-            header('HTTP/1.0 404 Not Found');
-            echo '404 Not Found';
+            http_response_code(404);
+            echo json_encode([
+                'status' => false,
+                'message' => "Ups, controller '$controller' gak ada nih.",
+            ]);
             break;
     }
 };

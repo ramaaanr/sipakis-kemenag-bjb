@@ -4,27 +4,25 @@ namespace Sfy\AplikasiDataKemenagPAI\Helpers;
 
 class SessionHelper
 {
-    public static function startSession()
+    public static function startSession(): void
     {
-        if (session_status() == PHP_SESSION_NONE) {
+        if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
     }
 
-    public static function isUserLoggedIn()
+    public static function isLoggedIn(): bool
     {
-        return isset($_SESSION['id_user']);
+        return isset($_SESSION['user']);
     }
-    public static function getUsername()
+
+    public static function destroy(): void
     {
-        return $_SESSION['user_username'];
+        session_destroy();
     }
-    public static function getRole()
+
+    public static function getUser(): ?array
     {
-        return $_SESSION['role'];
-    }
-    public static function isKepalaLab()
-    {
-        return $_SESSION['role'] == 'kepala_lab';
+        return $_SESSION['user'] ?? null;
     }
 }
