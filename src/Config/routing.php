@@ -181,6 +181,40 @@ return function () {
             }
             break;
 
+        // 🏁 Controller $JenisLembagaPendidikan DIMULAI 
+
+        case 'jenis-lembaga-pendidikan':
+            $JenisLembagaPendidikanController = new \Sfy\AplikasiDataKemenagPAI\Controller\JenisLembagaPendidikanController();
+
+            if (!$param) {
+                if ($httpMethod === 'GET') {
+                    echo $JenisLembagaPendidikanController->index();
+                } elseif ($httpMethod === 'POST') {
+                    echo $JenisLembagaPendidikanController->store($inputData);
+                } else {
+                    http_response_code(405);
+                    echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak didukung."]);
+                }
+            } else {
+                $id = (int) $param;
+                switch ($httpMethod) {
+                    case 'GET':
+                        echo $JenisLembagaPendidikanController->show($id);
+                        break;
+                    case 'POST':
+                        echo $JenisLembagaPendidikanController->update($id, $inputData);
+                        break;
+                    case 'DELETE':
+                        echo $JenisLembagaPendidikanController->destroy($id);
+                        break;
+                    default:
+                        http_response_code(405);
+                        echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak diizinkan untuk JenisLembagaPendidikan/$id"]);
+                        break;
+                }
+            }
+            break;
+
         // ✅ [ROUTE_REGISTER_MARKER]
 
         default:
