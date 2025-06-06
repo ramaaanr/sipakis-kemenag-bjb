@@ -1,15 +1,21 @@
 <?php
 
+function pascalToTitle($string)
+{
+    return trim(preg_replace('/(?<!^)([A-Z])/', ' $1', $string));
+}
+
 // Ambil argumen dari command line
 $controllerName = $argv[1] ?? null;
 
 if (!$controllerName) {
-  echo "❌ Nama controller wajib diisi. Contoh: php cli/make-controller.php Kecamatan\n";
-  exit(1);
+    echo "❌ Nama controller wajib diisi. Contoh: php cli/make-controller.php Kecamatan\n";
+    exit(1);
 }
 
 $className = ucfirst($controllerName) . 'Controller';
 $modelName = ucfirst($controllerName);
+$modelTitle = pascalToTitle($modelName); // 🧠 Gunakan untuk teks pesan
 $namespace = "Sfy\\AplikasiDataKemenagPAI\\Controller";
 $modelNamespace = "Sfy\\AplikasiDataKemenagPAI\\Model\\$modelName";
 $responseFormatterNamespace = "Sfy\\AplikasiDataKemenagPAI\\Helpers\\ResponseFormatter";
@@ -27,7 +33,7 @@ use Exception;
 
 class $className
 {
-    private $modelName \$${controllerName};
+    private \$${controllerName};
 
     public function __construct()
     {
@@ -38,7 +44,7 @@ class $className
     {
         try {
             \$data = \$this->${controllerName}->getAll();
-            return ResponseFormatter::success('Data $controllerName berhasil diambil', \$data);
+            return ResponseFormatter::success('Data $modelTitle berhasil diambil', \$data);
         } catch (Exception \$e) {
             return ResponseFormatter::error('Gagal mengambil data: ' . \$e->getMessage());
         }
@@ -47,11 +53,11 @@ class $className
     public function show(int \$id): string
     {
         try {
-            \$data = \$this->${controllerName}->getBy(['id' => \$id]);;
+            \$data = \$this->${controllerName}->getBy(['id' => \$id]);
             if (!\$data) {
-                return ResponseFormatter::error('$modelName tidak ditemukan');
+                return ResponseFormatter::error('$modelTitle tidak ditemukan');
             }
-            return ResponseFormatter::success('Data $modelName ditemukan', \$data);
+            return ResponseFormatter::success('Data $modelTitle ditemukan', \$data);
         } catch (Exception \$e) {
             return ResponseFormatter::error('Gagal mengambil data: ' . \$e->getMessage());
         }
@@ -63,7 +69,7 @@ class $className
             \$nama = \$request['nama'] ?? '';
 
             if (!\$nama) {
-                return ResponseFormatter::error('Nama $controllerName wajib diisi');
+                return ResponseFormatter::error('Nama $modelTitle wajib diisi');
             }
 
             \$created = \$this->${controllerName}->create([
@@ -71,20 +77,25 @@ class $className
             ]);
 
             return \$created
-                ? ResponseFormatter::success('$modelName berhasil ditambahkan')
-                : ResponseFormatter::error('Gagal menambahkan $modelName');
+                ? ResponseFormatter::success('$modelTitle berhasil ditambahkan')
+                : ResponseFormatter::error('Gagal menambahkan $modelTitle');
         } catch (Exception \$e) {
             return ResponseFormatter::error('Terjadi kesalahan: ' . \$e->getMessage());
         }
     }
 
-    public function update(int \$id, array \$request): string
+        public function update(int \$id, array \$request): string
     {
         try {
+            \$data = \$this->${controllerName}->getBy(['id' => \$id]);
+            if (!\$data) {
+                return ResponseFormatter::error('$modelTitle tidak ditemukan');
+            }
+
             \$nama = \$request['nama'] ?? '';
 
             if (!\$nama) {
-                return ResponseFormatter::error('Nama $controllerName wajib diisi');
+                return ResponseFormatter::error('Nama $modelTitle wajib diisi');
             }
 
             \$updated = \$this->${controllerName}->update(\$id, [
@@ -92,8 +103,8 @@ class $className
             ]);
 
             return \$updated
-                ? ResponseFormatter::success('$modelName berhasil diperbarui')
-                : ResponseFormatter::error('Gagal memperbarui $modelName');
+                ? ResponseFormatter::success('$modelTitle berhasil diperbarui')
+                : ResponseFormatter::error('Gagal memperbarui $modelTitle');
         } catch (Exception \$e) {
             return ResponseFormatter::error('Terjadi kesalahan: ' . \$e->getMessage());
         }
@@ -102,25 +113,29 @@ class $className
     public function destroy(int \$id): string
     {
         try {
+            \$data = \$this->${controllerName}->getBy(['id' => \$id]);
+            if (!\$data) {
+                return ResponseFormatter::error('$modelTitle tidak ditemukan');
+            }
+
             \$deleted = \$this->${controllerName}->delete(\$id);
 
             return \$deleted
-                ? ResponseFormatter::success('$modelName berhasil dihapus')
-                : ResponseFormatter::error('Gagal menghapus $modelName');
+                ? ResponseFormatter::success('$modelTitle berhasil dihapus')
+                : ResponseFormatter::error('Gagal menghapus $modelTitle');
         } catch (Exception \$e) {
             return ResponseFormatter::error('Terjadi kesalahan: ' . \$e->getMessage());
         }
     }
+
 }
 PHP;
 
-// Cek apakah foldernya ada
+// Buat direktori jika belum ada
 $dir = dirname($controllerPath);
 if (!is_dir($dir)) {
-  mkdir($dir, 0755, true);
+    mkdir($dir, 0755, true);
 }
 
-// Simpan file
 file_put_contents($controllerPath, $template);
-
 echo "✅ Controller '$className' berhasil dibuat di: $controllerPath\n";

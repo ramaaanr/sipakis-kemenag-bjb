@@ -110,6 +110,43 @@ return function () {
 
 
 
+
+
+
+        // 🏁 Controller $JabatanStaff DIMULAI 
+
+        case 'jabatan-staff':
+            $JabatanStaffController = new \Sfy\AplikasiDataKemenagPAI\Controller\JabatanStaffController();
+
+            if (!$param) {
+                if ($httpMethod === 'GET') {
+                    echo $JabatanStaffController->index();
+                } elseif ($httpMethod === 'POST') {
+                    echo $JabatanStaffController->store($inputData);
+                } else {
+                    http_response_code(405);
+                    echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak didukung."]);
+                }
+            } else {
+                $id = (int) $param;
+                switch ($httpMethod) {
+                    case 'GET':
+                        echo $JabatanStaffController->show($id);
+                        break;
+                    case 'POST':
+                        echo $JabatanStaffController->update($id, $inputData);
+                        break;
+                    case 'DELETE':
+                        echo $JabatanStaffController->destroy($id);
+                        break;
+                    default:
+                        http_response_code(405);
+                        echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak diizinkan untuk JabatanStaff/$id"]);
+                        break;
+                }
+            }
+            break;
+
         // ✅ [ROUTE_REGISTER_MARKER]
 
         default:

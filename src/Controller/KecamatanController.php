@@ -8,7 +8,7 @@ use Exception;
 
 class KecamatanController
 {
-    private Kecamatan $Kecamatan;
+    private $Kecamatan;
 
     public function __construct()
     {
@@ -28,7 +28,7 @@ class KecamatanController
     public function show(int $id): string
     {
         try {
-            $data = $this->Kecamatan->getBy(['id' => $id]);;
+            $data = $this->Kecamatan->getBy(['id' => $id]);
             if (!$data) {
                 return ResponseFormatter::error('Kecamatan tidak ditemukan');
             }
@@ -62,7 +62,13 @@ class KecamatanController
     public function update(int $id, array $request): string
     {
         try {
+            $data = $this->Kecamatan->getBy(['id' => $id]);
+            if (!$data) {
+                return ResponseFormatter::error('Kecamatan tidak ditemukan');
+            }
+
             $nama = $request['nama'] ?? '';
+
             if (!$nama) {
                 return ResponseFormatter::error('Nama Kecamatan wajib diisi');
             }
@@ -82,6 +88,11 @@ class KecamatanController
     public function destroy(int $id): string
     {
         try {
+            $data = $this->Kecamatan->getBy(['id' => $id]);
+            if (!$data) {
+                return ResponseFormatter::error('Kecamatan tidak ditemukan');
+            }
+
             $deleted = $this->Kecamatan->delete($id);
 
             return $deleted
