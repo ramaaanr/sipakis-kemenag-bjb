@@ -18,7 +18,14 @@ class StaffController
     public function index(): string
     {
         try {
-            $data = $this->staff->getAll();
+            if ($_GET['lembaga_pendidikan_id'] ?? false) {
+                $data = $this->staff->getBy(['lembaga_pendidikan_id' => $_GET['lembaga_pendidikan_id']]);
+                if (!$data) {
+                    return ResponseFormatter::error('Data Staff tidak ditemukan untuk lembaga pendidikan ini');
+                }
+            } else {
+                $data = $this->staff->getAll();
+            }
             return ResponseFormatter::success('Data Staff berhasil diambil', $data);
         } catch (Exception $e) {
             return ResponseFormatter::error('Gagal mengambil data: ' . $e->getMessage());
