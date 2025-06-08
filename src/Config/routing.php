@@ -249,6 +249,40 @@ return function () {
             }
             break;
 
+        // 🏁 Controller $staff DIMULAI 
+
+        case 'staff':
+            $staffController = new \Sfy\AplikasiDataKemenagPAI\Controller\StaffController();
+
+            if (!$param) {
+                if ($httpMethod === 'GET') {
+                    echo $staffController->index();
+                } elseif ($httpMethod === 'POST') {
+                    echo $staffController->store($inputData);
+                } else {
+                    http_response_code(405);
+                    echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak didukung."]);
+                }
+            } else {
+                $id = (int) $param;
+                switch ($httpMethod) {
+                    case 'GET':
+                        echo $staffController->show($id);
+                        break;
+                    case 'POST':
+                        echo $staffController->update($id, $inputData);
+                        break;
+                    case 'DELETE':
+                        echo $staffController->destroy($id);
+                        break;
+                    default:
+                        http_response_code(405);
+                        echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak diizinkan untuk staff/$id"]);
+                        break;
+                }
+            }
+            break;
+
         // ✅ [ROUTE_REGISTER_MARKER]
 
         default:
