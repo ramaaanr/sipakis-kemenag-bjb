@@ -283,6 +283,40 @@ return function () {
             }
             break;
 
+        // 🏁 Controller $murid DIMULAI 
+
+case 'murid':
+    $muridController = new \Sfy\AplikasiDataKemenagPAI\Controller\MuridController();
+
+    if (!$param) {
+        if ($httpMethod === 'GET') {
+            echo $muridController->index();
+        } elseif ($httpMethod === 'POST') {
+            echo $muridController->store($inputData);
+        } else {
+            http_response_code(405);
+            echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak didukung."]);
+        }
+    } else {
+        $id = (int) $param;
+        switch ($httpMethod) {
+            case 'GET':
+                echo $muridController->show($id);
+                break;
+            case 'POST':
+                echo $muridController->update($id, $inputData);
+                break;
+            case 'DELETE':
+                echo $muridController->destroy($id);
+                break;
+            default:
+                http_response_code(405);
+                echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak diizinkan untuk murid/$id"]);
+                break;
+        }
+    }
+    break;
+
         // ✅ [ROUTE_REGISTER_MARKER]
 
         default:
