@@ -4,22 +4,28 @@ namespace Sfy\AplikasiDataKemenagPAI\Controller;
 
 use Sfy\AplikasiDataKemenagPAI\Helpers\ResponseFormatter;
 use Sfy\AplikasiDataKemenagPAI\Model\Staff;
+use Sfy\AplikasiDataKemenagPAI\Model\LembagaPendidikan;
+use Sfy\AplikasiDataKemenagPAI\Model\JabatanStaff;
 use Exception;
 
 class StaffController
 {
     private $staff;
+    private $LembagaPendidikan;
+    private $JabatanStaff;
 
     public function __construct()
     {
         $this->staff = new Staff();
+        $this->JabatanStaff = new JabatanStaff();
+        $this->LembagaPendidikan = new LembagaPendidikan();
     }
 
     public function index(): string
     {
         try {
             if ($_GET['lembaga_pendidikan_id'] ?? false) {
-                $data = $this->staff->getBy(['lembaga_pendidikan_id' => $_GET['lembaga_pendidikan_id']]);
+                $data = $this->staff->getAll(['lembaga_pendidikan_id' => $_GET['lembaga_pendidikan_id']]);
                 if (!$data) {
                     return ResponseFormatter::error('Data Staff tidak ditemukan untuk lembaga pendidikan ini');
                 }
@@ -48,7 +54,16 @@ class StaffController
     public function store(array $request): string
     {
         try {
+            $lembagaPendidikan = $this->LembagaPendidikan->getBy(['id' => $request['lembaga_pendidikan_id']]);
 
+            if (!$lembagaPendidikan) {
+                return ResponseFormatter::error('Lembaga Pendidikan Tidak Ditemukan');
+            }
+            $jabatanStaff = $this->JabatanStaff->getBy(['id' => $request['jabatan_staff_id']]);
+
+            if (!$jabatanStaff) {
+                return ResponseFormatter::error('Jabatan Staff Tidak Ditemukan');
+            }
             $created = $this->staff->create([
                 'lembaga_pendidikan_id' => $request['lembaga_pendidikan_id'] ?? null,
                 'jabatan_staff_id' => $request['jabatan_staff_id'] ?? null,
@@ -71,7 +86,16 @@ class StaffController
     public function update(int $id, array $request): string
     {
         try {
+            $lembagaPendidikan = $this->LembagaPendidikan->getBy(['id' => $request['lembaga_pendidikan_id']]);
 
+            if (!$lembagaPendidikan) {
+                return ResponseFormatter::error('Lembaga Pendidikan Tidak Ditemukan');
+            }
+            $jabatanStaff = $this->JabatanStaff->getBy(['id' => $request['jabatan_staff_id']]);
+
+            if (!$jabatanStaff) {
+                return ResponseFormatter::error('Jabatan Staff Tidak Ditemukan');
+            }
             $updated = $this->staff->update($id, [
                 'lembaga_pendidikan_id' => $request['lembaga_pendidikan_id'] ?? null,
                 'jabatan_staff_id' => $request['jabatan_staff_id'] ?? null,
