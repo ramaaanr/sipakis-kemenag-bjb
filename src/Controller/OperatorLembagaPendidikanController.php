@@ -70,9 +70,9 @@ class OperatorLembagaPendidikanController
             }
 
             $created = $this->OperatorLembagaPendidikan->create([
-                'user_id' => $request['user_id'] ?? null,
-                'lembaga_pendidikan_id' => $request['lembaga_pendidikan_id'] ?? null,
-                'nama' => $request['nama'] ?? ''
+                'user_id' => $request['user_id'],
+                'lembaga_pendidikan_id' => $request['lembaga_pendidikan_id'],
+
             ]);
             return $created
                 ? ResponseFormatter::success('Operator Lembaga Pendidikan berhasil ditambahkan')
@@ -85,19 +85,30 @@ class OperatorLembagaPendidikanController
     public function update(int $id, array $request): string
     {
         try {
-            $data = $this->OperatorLembagaPendidikan->getBy(['id' => $id]);
-            if (!$data) {
-                return ResponseFormatter::error('Operator Lembaga Pendidikan tidak ditemukan');
+            $lembagaPendidikan = $this->LembagaPendidikan->getBy(['id' => $request['lembaga_pendidikan_id']]);
+
+            if (!$lembagaPendidikan) {
+                return ResponseFormatter::error('Lembaga Pendidikan Tidak Ditemukan');
+            }
+            $users = $this->Users->getBy(['id' => $request['user_id']]);
+
+            if (!$users) {
+                return ResponseFormatter::error('Pengguna Tidak Ditemukan');
             }
 
-            $nama = $request['nama'] ?? '';
+            if ($users['role'] !== 'operator') {
+                return ResponseFormatter::error('Pengguna harus memiliki peran sebagai Operator Lembaga Pendidikan');
+            }
 
-            if (!$nama) {
-                return ResponseFormatter::error('Nama Operator Lembaga Pendidikan wajib diisi');
+            $operatorFounded = $this->OperatorLembagaPendidikan->getAll(['user_id' => $request['user_id']]);
+
+            if (count($operatorFounded) >= 1) {
+                return ResponseFormatter::error('Pengguna sudah menjadi Operator Lembaga Pendidikan');
             }
 
             $updated = $this->OperatorLembagaPendidikan->update($id, [
-                'nama' => $nama
+                'user_id' => $request['user_id'],
+                'lembaga_pendidikan_id' => $request['lembaga_pendidikan_id'],
             ]);
 
             return $updated
