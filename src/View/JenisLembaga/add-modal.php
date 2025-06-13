@@ -21,44 +21,44 @@
 <!-- (Add a button to trigger the modal in your main HTML) -->
 
 <script>
-  // Show Modal on Button Click
-  $('#btn-add').on('click', function() {
-    $('#addModal').removeClass('hidden');
-  });
+// Show Modal on Button Click
+$('#btn-add').on('click', function() {
+  $('#addModal').removeClass('hidden');
+});
 
-  // Close Modal
-  $('#addModalClose').on('click', function() {
-    $('#addModal').addClass('hidden');
-  });
+// Close Modal
+$('#addModalClose').on('click', function() {
+  $('#addModal').addClass('hidden');
+});
 
-  // AJAX Form Submission
-  $('#addForm').on('submit', function(e) {
-    e.preventDefault(); // Prevent default form submission
+// AJAX Form Submission
+$('#addForm').on('submit', function(e) {
+  e.preventDefault(); // Prevent default form submission
 
-    $.ajax({
-      url: '/Jenis Lembaga Pendidikan',
-      method: 'POST',
-      data: $(this).serialize(),
-      success: function(response) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Berhasil',
-          showCloseButton: true,
-          text: 'Data berhasil ditambahkan!'
-        }).then(() => {
-          $('#addModal').addClass('hidden'); // Close modal
-          $('#addForm')[0].reset(); // Reset form fields
-          // Refresh the data table (use your specific table refresh function here)
-          location.reload(); // Refresh the page to show the updated data
-        });
-      },
-      error: function() {
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal',
-          text: 'Terjadi kesalahan saat menambahkan data!'
-        });
-      }
-    });
+  $.ajax({
+    url: '/jenis-lembaga-pendidikan', // Adjust the URL to your API endpoint
+    method: 'POST',
+    data: $(this).serialize(),
+    success: function(response) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        showCloseButton: true,
+        text: 'Data berhasil ditambahkan!'
+      }).then(() => {
+        $('#addModal').addClass('hidden'); // Close modal
+        $('#addForm')[0].reset(); // Reset form fields
+        // Refresh the data table (use your specific table refresh function here)
+        location.reload(); // Refresh the page to show the updated data
+      });
+    },
+    error: function() {
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: 'Terjadi kesalahan saat menambahkan data!'
+      });
+    }
   });
+});
 </script>
