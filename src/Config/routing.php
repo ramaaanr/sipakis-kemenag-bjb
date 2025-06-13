@@ -2,9 +2,11 @@
 
 use Sfy\AplikasiDataKemenagPAI\Controller\AuthController;
 use Sfy\AplikasiDataKemenagPAI\Controller\KecamatanController;
+use Sfy\AplikasiDataKemenagPAI\Helpers\SessionHelper;
+use Sfy\AplikasiDataKemenagPAI\Helpers\ViewHelper;
+use Sfy\AplikasiDataKemenagPAI\Middlewares\Middleware;
 
 return function () {
-    header('Content-Type: application/json');
 
     $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
     $parts = explode('/', $uri);
@@ -13,14 +15,22 @@ return function () {
     $httpMethod = $_SERVER['REQUEST_METHOD'];
 
     // Ambil request body untuk PUT/PATCH/DELETE
-    $inputData = in_array($httpMethod, ['PUT', 'PATCH', 'DELETE'])
-        ? json_decode(file_get_contents('php://input'), true) ?? []
+    $rawInput = file_get_contents('php://input');
+    $isJson = isset($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], 'application/json');
+
+    $inputData = $isJson
+        ? json_decode($rawInput, true)
         : ($_POST ?: $_GET);
 
+
     switch ($controller) {
+        case '':
+            if ($httpMethod === 'GET') {
+                ViewHelper::render('Login.index');
+            }
+            break;
         case 'auth':
             $authController = new AuthController();
-
             switch ($param) {
                 case 'login':
                     if ($httpMethod !== 'POST') {
@@ -47,6 +57,7 @@ return function () {
                     break;
 
                 case 'logout':
+                    Middleware::Auth();
                     if ($httpMethod !== 'POST') {
                         http_response_code(405);
                         echo json_encode([
@@ -59,6 +70,8 @@ return function () {
                     break;
 
                 default:
+
+
                     http_response_code(404);
                     echo json_encode([
                         'status' => false,
@@ -67,8 +80,127 @@ return function () {
                     break;
             }
             break;
+        case 'dashboard':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+                ViewHelper::render('Dashboard.index');
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /dashboard",
+                ]);
+            }
+            break;
+
+
+        case 'lembaga-show':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+                ViewHelper::render('Lembaga.index');
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /lembaga-show",
+                ]);
+            }
+            break;
+
+        case 'operator-show':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+                ViewHelper::render('Operator.index');
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /operator-show",
+                ]);
+            }
+            break;
+
+        case 'jenis-lembaga-show':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+                ViewHelper::render('JenisLembaga.index');
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /jenis-lembaga-show",
+                ]);
+            }
+            break;
+
+        case 'murid-show':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+                ViewHelper::render('Murid.index');
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /murid-show",
+                ]);
+            }
+            break;
+
+        case 'staff-show':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+                ViewHelper::render('Staff.index');
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /staff-show",
+                ]);
+            }
+            break;
+
+        case 'jabatan-staff-show':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+                ViewHelper::render('JabatanStaff.index');
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /jabatan-staff-show",
+                ]);
+            }
+            break;
+
+        case 'kecamatan-show':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+                ViewHelper::render('Kecamatan.index');
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /kecamatan-show",
+                ]);
+            }
+            break;
+
+        case 'user-show':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+                ViewHelper::render('User.index');
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /user-show",
+                ]);
+            }
+            break;
+
 
         case 'kecamatan':
+            Middleware::Auth();
             $kecamatanController = new KecamatanController();
 
             if (!$param) {
@@ -116,6 +248,8 @@ return function () {
         // 🏁 Controller $JabatanStaff DIMULAI 
 
         case 'jabatan-staff':
+            Middleware::Auth();
+
             $JabatanStaffController = new \Sfy\AplikasiDataKemenagPAI\Controller\JabatanStaffController();
 
             if (!$param) {
@@ -150,6 +284,8 @@ return function () {
         // 🏁 Controller $LembagaPendidikan DIMULAI 
 
         case 'lembaga-pendidikan':
+            Middleware::Auth();
+
             $LembagaPendidikanController = new \Sfy\AplikasiDataKemenagPAI\Controller\LembagaPendidikanController();
 
             if (!$param) {
@@ -184,6 +320,8 @@ return function () {
         // 🏁 Controller $JenisLembagaPendidikan DIMULAI 
 
         case 'jenis-lembaga-pendidikan':
+            Middleware::Auth();
+
             $JenisLembagaPendidikanController = new \Sfy\AplikasiDataKemenagPAI\Controller\JenisLembagaPendidikanController();
 
             if (!$param) {
@@ -218,6 +356,8 @@ return function () {
         // 🏁 Controller $OperatorLembagaPendidikan DIMULAI 
 
         case 'operator-lembaga-pendidikan':
+            Middleware::Auth();
+
             $OperatorLembagaPendidikanController = new \Sfy\AplikasiDataKemenagPAI\Controller\OperatorLembagaPendidikanController();
 
             if (!$param) {
@@ -252,6 +392,8 @@ return function () {
         // 🏁 Controller $staff DIMULAI 
 
         case 'staff':
+            Middleware::Auth();
+
             $staffController = new \Sfy\AplikasiDataKemenagPAI\Controller\StaffController();
 
             if (!$param) {
@@ -285,37 +427,39 @@ return function () {
 
         // 🏁 Controller $murid DIMULAI 
 
-case 'murid':
-    $muridController = new \Sfy\AplikasiDataKemenagPAI\Controller\MuridController();
+        case 'murid':
+            Middleware::Auth();
 
-    if (!$param) {
-        if ($httpMethod === 'GET') {
-            echo $muridController->index();
-        } elseif ($httpMethod === 'POST') {
-            echo $muridController->store($inputData);
-        } else {
-            http_response_code(405);
-            echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak didukung."]);
-        }
-    } else {
-        $id = (int) $param;
-        switch ($httpMethod) {
-            case 'GET':
-                echo $muridController->show($id);
-                break;
-            case 'POST':
-                echo $muridController->update($id, $inputData);
-                break;
-            case 'DELETE':
-                echo $muridController->destroy($id);
-                break;
-            default:
-                http_response_code(405);
-                echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak diizinkan untuk murid/$id"]);
-                break;
-        }
-    }
-    break;
+            $muridController = new \Sfy\AplikasiDataKemenagPAI\Controller\MuridController();
+
+            if (!$param) {
+                if ($httpMethod === 'GET') {
+                    echo $muridController->index();
+                } elseif ($httpMethod === 'POST') {
+                    echo $muridController->store($inputData);
+                } else {
+                    http_response_code(405);
+                    echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak didukung."]);
+                }
+            } else {
+                $id = (int) $param;
+                switch ($httpMethod) {
+                    case 'GET':
+                        echo $muridController->show($id);
+                        break;
+                    case 'POST':
+                        echo $muridController->update($id, $inputData);
+                        break;
+                    case 'DELETE':
+                        echo $muridController->destroy($id);
+                        break;
+                    default:
+                        http_response_code(405);
+                        echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak diizinkan untuk murid/$id"]);
+                        break;
+                }
+            }
+            break;
 
         // ✅ [ROUTE_REGISTER_MARKER]
 

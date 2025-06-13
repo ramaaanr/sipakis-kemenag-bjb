@@ -1,27 +1,31 @@
 <?php include __DIR__ . '/../templates/header.php'; ?>
+<?php
+$username = \Sfy\AplikasiDataKemenagPAI\Helpers\SessionHelper::getUsername();
+?>
+<!-- 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const navLinks = document.querySelectorAll('nav a');
+document.addEventListener("DOMContentLoaded", function() {
+  const navLinks = document.querySelectorAll('nav a');
 
-    navLinks.forEach(link => {
-      // Remove any existing active class
-      link.classList.remove('text-gray-100', 'bg-gray-700', 'bg-opacity-25');
+  navLinks.forEach(link => {
+    // Remove any existing active class
+    link.classList.remove('text-gray-100', 'bg-gray-700', 'bg-opacity-25');
 
-      // Get the current URL path
-      const currentPath = window.location.pathname;
+    // Get the current URL path
+    const currentPath = window.location.pathname;
 
-      // Check if the link's href matches the current path
-      if (link.getAttribute('href') === currentPath) {
-        // Add the active class
-        link.classList.add('text-gray-100', 'bg-gray-700', 'bg-opacity-25');
-      } else {
-        // Ensure other links are not active
-        link.classList.add('text-lime-50 font-semibold', 'hover:bg-gray-700', 'hover:bg-opacity-25',
-          'hover:text-gray-100');
-      }
-    });
+    // Check if the link's href matches the current path
+    if (link.getAttribute('href') === currentPath) {
+      // Add the active class
+      link.classList.add('text-gray-100', 'bg-gray-700', 'bg-opacity-25');
+    } else {
+      // Ensure other links are not active
+      link.classList.add('text-lime-50 font-semibold', 'hover:bg-gray-700', 'hover:bg-opacity-25',
+        'hover:text-gray-100');
+    }
   });
-</script>
+});
+</script> -->
 
 
 <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
@@ -38,46 +42,60 @@
     </div>
 
     <nav class="mt-10">
-      <!-- Updated absolute paths for navigation links -->
       <a class="flex items-center px-6 py-2 mt-4 text-lime-50 bg-gray-700 bg-opacity-25" href="/dashboard">
-        <span class="material-symbols-outlined">
-          home
-        </span>
+        <span class="material-symbols-outlined">home</span>
         <span class="mx-3">Halaman Utama</span>
       </a>
+
       <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-        href="/pontren/show">
-        <span class="material-symbols-outlined">
-          school
-        </span>
-        <span class="mx-3">Data Pondok Pesantren</span>
+        href="/lembaga-show">
+        <span class="material-symbols-outlined">apartment</span>
+        <span class="mx-3">Lembaga Pendidikan Islam</span>
       </a>
 
       <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-        href="/mdt/show">
-        <span class="material-symbols-outlined">
-          mosque
-        </span>
-        <span class="mx-3">Data Madrasah Diniyah Takmiliyah</span>
+        href="/operator-show">
+        <span class="material-symbols-outlined">person_outline</span>
+        <span class="mx-3">Operator Lembaga</span>
       </a>
 
       <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-        href="/staff_mdt/show">
-        <span class="material-symbols-outlined">
-          person
-        </span>
-        <span class="mx-3">Data Ustad/Ustadzah Madrasah Diniyah Takmiliyah</span>
+        href="/jenis-lembaga-show">
+        <span class="material-symbols-outlined">category</span>
+        <span class="mx-3">Jenis Lembaga Pendidikan</span>
       </a>
 
       <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-        href="/murid_mdt/show">
-        <span class="material-symbols-outlined">
-          groups
-        </span>
-        <span class="mx-3">Data Murid Madrasah Diniyah Takmiliyah</span>
+        href="/murid-show">
+        <span class="material-symbols-outlined">groups</span>
+        <span class="mx-3">Murid</span>
       </a>
 
+      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+        href="/staff-show">
+        <span class="material-symbols-outlined">diversity_3</span>
+        <span class="mx-3">Staff</span>
+      </a>
+
+      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+        href="/jabatan-staff-show">
+        <span class="material-symbols-outlined">badge</span>
+        <span class="mx-3">Jabatan Staff</span>
+      </a>
+
+      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+        href="/kecamatan-show">
+        <span class="material-symbols-outlined">location_city</span>
+        <span class="mx-3">Kecamatan</span>
+      </a>
+
+      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+        href="/user-show">
+        <span class="material-symbols-outlined">manage_accounts</span>
+        <span class="mx-3">User</span>
+      </a>
     </nav>
+
 
   </div>
   <div class="flex flex-col flex-1 overflow-hidden">

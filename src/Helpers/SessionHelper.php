@@ -25,4 +25,8 @@ class SessionHelper
     {
         return $_SESSION['user'] ?? null;
     }
+    public static function getUsername(): ?string
+    {
+        return $_SESSION['user']['username'] ?? null;
+    }
 }
