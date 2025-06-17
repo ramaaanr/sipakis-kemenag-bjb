@@ -461,6 +461,40 @@ return function () {
             }
             break;
 
+        // 🏁 Controller $User DIMULAI 
+
+        case 'user':
+            $UserController = new \Sfy\AplikasiDataKemenagPAI\Controller\UserController();
+
+            if (!$param) {
+                if ($httpMethod === 'GET') {
+                    echo $UserController->index();
+                } elseif ($httpMethod === 'POST') {
+                    echo $UserController->store($inputData);
+                } else {
+                    http_response_code(405);
+                    echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak didukung."]);
+                }
+            } else {
+                $id = (int) $param;
+                switch ($httpMethod) {
+                    case 'GET':
+                        echo $UserController->show($id);
+                        break;
+                    case 'POST':
+                        echo $UserController->update($id, $inputData);
+                        break;
+                    case 'DELETE':
+                        echo $UserController->destroy($id);
+                        break;
+                    default:
+                        http_response_code(405);
+                        echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak diizinkan untuk User/$id"]);
+                        break;
+                }
+            }
+            break;
+
         // ✅ [ROUTE_REGISTER_MARKER]
 
         default:

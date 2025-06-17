@@ -13,6 +13,11 @@ class Users extends Model
 
     public function create(array $data): bool
     {
+        // Validasi apakah username sudah ada
+        $user = $this->getBy(['username' => $data["username"]]);
+        if ($user) {
+            throw new \Exception('Username Sudah terdaftar');
+        }
         if (isset($data['password'])) {
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         }
@@ -21,6 +26,21 @@ class Users extends Model
 
     public function update(int $id, array $data): bool
     {
+        $userByUsername = $this->getBy(['username' => $data["username"]]);
+        // $userById = $this->getBy(['id' => $id]);
+        if ($userByUsername) {
+            if ($userByUsername['id'] !== $id) {
+                // Jika username yang ada berbeda dengan yang ingin diupdate, berarti sudah ada yang menggunakan
+                throw new \Exception('Username Sudah terdaftar');
+            }
+        }
+
+        $oldPassword = $this->getBy(['id' => $id])['password'] ?? null;
+        $newPassword = $data['password'] ?? null;
+
+        if (password_verify($newPassword, $oldPassword) || $newPassword === '') {
+            unset($data['password']); // Jangan update password jika tidak berubah
+        }
         if (isset($data['password'])) {
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         }

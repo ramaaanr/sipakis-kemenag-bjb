@@ -2,10 +2,9 @@
 
 <div class="container px-6 py-8 mx-auto ">
   <div class="flex items-center space-x-2 ">
-    <h3 class="text-3xl font-medium text-gray-700">Data Kecamatan</h3>
-    <a id="btn-cetak-mdt" target="__blank"
-      class="cetak-container bg-blue-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:blue-700"
-      href="/mdt/cetak">
+    <h3 class="text-3xl font-medium text-gray-700">Data User</h3>
+    <a id="bk-container bg-blue-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:blue-700"
+      href="/mdt/cettn-cetak-mdt" target="__blank" class="cetaak">
       <span class="material-symbols-outlined text-sm">
         print
       </span> <span>Cetak Semua Data</span>
@@ -26,11 +25,13 @@
             <tr>
 
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nama Kecamatan
+                Username
               </th>
-
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
+                Role
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Aksi
               </th>
             </tr>
           </thead>
@@ -54,28 +55,36 @@
 
       $('#table').DataTable({
         ajax: {
-          url: `/kecamatan`, // URL to fetch data from
+          url: `/user`, // URL to fetch data from
           dataSrc: 'data' // Indicate that data is a flat array
         },
         order: [
           [0, "desc"]
         ],
         columns: [{
-            data: 'nama'
+            data: 'username'
+          }, {
+            data: 'role'
           },
           {
             data: null,
             render: function(data, type, row) {
+              console.log(data.role);
+              if (data.role === 'admin') {
+                return ``;
+              }
               return `
             <div class="flex space-x-1">
               <button class="detail-btn bg-green-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-data-nama="${row.nama}">
+data-username="${row.username}"
+data-role="${row.role}">
                 <span class="material-symbols-outlined">
 info
 </span>
               </button>
               <button class="edit-btn bg-blue-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-data-nama="${row.nama}">
+data-username="${row.username}"
+data-role="${row.role}">
                 <span class="material-symbols-outlined">
 edit
 </span>
@@ -104,7 +113,7 @@ edit
       }).then((result) => {
         if (result.isConfirmed) {
           $.ajax({
-            url: '/kecamatan/' + id, // Include id in the URL
+            url: '/user/' + id, // Include id in the URL
             type: 'DELETE',
             success: function(res) {
               const response = JSON.parse(res);
