@@ -11,12 +11,9 @@
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
       <div class="mb-4">
-        <label for="editPassword" class="block text-sm font-medium text-gray-700">Password (jangan diisi jika tidak
-          diubah)</label>
-        <input type="password" id="editPassword" name="password"
+        <label for="editPassword" class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="text" id="editPassword" name="password"
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
-        <p id="editPasswordError" class="text-red-500 text-sm mt-1 hidden"></p>
-
       </div>
 
       <div class="mb-4">
@@ -43,27 +40,7 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    function validatePassword(password) {
-      if (password.length < 6) {
-        return "Password minimal 6 karakter.";
-      }
-      if (!/[a-zA-Z]/.test(password) || !/\d/.test(password)) {
-        return "Password harus mengandung huruf dan angka.";
-      }
-      return "";
-    }
 
-    // Realtime validation
-    $('#editPassword').on('input', function() {
-      const password = $(this).val();
-      const errorMessage = validatePassword(password);
-
-      if (errorMessage) {
-        $('#editPasswordError').text(errorMessage).removeClass('hidden');
-      } else {
-        $('#editPasswordError').text('').addClass('hidden');
-      }
-    });
 
     // Open Edit Modal and Populate Form Fields
     let id = 0;
