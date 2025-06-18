@@ -20,4 +20,28 @@ class Murid extends Model
         "jenis_kelamin",
     ];
     protected array $hidden = [];
+
+    public function getAll(array $criteria = []): array
+    {
+        $sql = "
+      SELECT 
+        m.*, 
+        lp.nama AS lembaga_pendidikan
+      FROM murid m
+      LEFT JOIN lembaga_pendidikan lp ON m.lembaga_pendidikan_id = lp.id
+      WHERE m.deleted_at IS NULL
+    ";
+
+        $params = [];
+        foreach ($criteria as $field => $value) {
+            $sql .= " AND lp.{$field} = :{$field}";
+            $params[":{$field}"] = $value;
+        }
+
+        $sql .= " ORDER BY m.id DESC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
