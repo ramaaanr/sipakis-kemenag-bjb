@@ -17,12 +17,7 @@ class Auth
     if ($userLoggedIn) {
       return true;
     } else {
-      // Jika pengguna belum login, kembalikan respons 401 Unauthorized
-      http_response_code(401);
-      echo json_encode([
-        'status' => false,
-        'message' => 'Akses ditolak. Anda belum login.',
-      ]);
+      header('Location: /');
       exit();
     }
   }

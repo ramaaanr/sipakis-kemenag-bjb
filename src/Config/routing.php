@@ -463,6 +463,19 @@ return function () {
 
         // 🏁 Controller $User DIMULAI 
 
+        case 'user-operator':
+            $UserController = new \Sfy\AplikasiDataKemenagPAI\Controller\UserController();
+
+            if (!$param) {
+                if ($httpMethod === 'GET') {
+                    echo $UserController->showAvaliableOperator();
+                } else {
+                    http_response_code(405);
+                    echo json_encode(['status' => false, 'message' => "Method $httpMethod tidak didukung."]);
+                }
+            }
+            break;
+
         case 'user':
             $UserController = new \Sfy\AplikasiDataKemenagPAI\Controller\UserController();
 

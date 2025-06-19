@@ -100,11 +100,7 @@ class OperatorLembagaPendidikanController
                 return ResponseFormatter::error('Pengguna harus memiliki peran sebagai Operator Lembaga Pendidikan');
             }
 
-            $operatorFounded = $this->OperatorLembagaPendidikan->getAll(['user_id' => $request['user_id']]);
 
-            if (count($operatorFounded) >= 1) {
-                return ResponseFormatter::error('Pengguna sudah menjadi Operator Lembaga Pendidikan');
-            }
 
             $updated = $this->OperatorLembagaPendidikan->update($id, [
                 'user_id' => $request['user_id'],
@@ -127,7 +123,7 @@ class OperatorLembagaPendidikanController
                 return ResponseFormatter::error('Operator Lembaga Pendidikan tidak ditemukan');
             }
 
-            $deleted = $this->OperatorLembagaPendidikan->delete($id);
+            $deleted = $this->OperatorLembagaPendidikan->forceDelete($id);
 
             return $deleted
                 ? ResponseFormatter::success('Operator Lembaga Pendidikan berhasil dihapus')

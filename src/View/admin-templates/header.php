@@ -88,10 +88,33 @@ $username = \Sfy\AplikasiDataKemenagPAI\Helpers\SessionHelper::getUsername();
 
       <div class="flex pl-4 w-full items-center text-zinc-700 justify-between">
         <p>Selamat datang, <span class="font-bold"><?= $username ?></span></p>
-        <button
+        <button id="logoutButton"
           class="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75">
-          <a href="/auth/logout">Log Out</a>
+          Log Out
         </button>
+
       </div>
     </header>
+    <script>
+      document.getElementById('logoutButton').addEventListener('click', function() {
+        fetch('/auth/logout', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(response => {
+            if (response.ok) {
+              // redirect ke login page atau halaman utama
+              window.location.href = '/';
+            } else {
+              alert('Logout gagal.');
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      });
+    </script>
+
     <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">

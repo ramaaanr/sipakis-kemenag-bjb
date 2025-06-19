@@ -83,6 +83,7 @@ info
               </button>
               <button class="edit-btn bg-blue-500 text-white px-2 py-1 rounded" data-id="${row.id}"
 data-lembaga_pendidikan_id="${row.lembaga_pendidikan_id}"
+data-username="${row.username}"
 data-user_id="${row.user_id}"
 >
                 <span class="material-symbols-outlined">

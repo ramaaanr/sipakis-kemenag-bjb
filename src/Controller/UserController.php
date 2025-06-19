@@ -24,6 +24,15 @@ class UserController
             return ResponseFormatter::error('Gagal mengambil data: ' . $e->getMessage());
         }
     }
+    public function showAvaliableOperator(): string
+    {
+        try {
+            $data = $this->User->getAvailableOperators();
+            return ResponseFormatter::success('Data Operator yang belum terdaftar berhasil diambil', $data);
+        } catch (Exception $e) {
+            return ResponseFormatter::error('Gagal mengambil data: ' . $e->getMessage());
+        }
+    }
 
     public function show(int $id): string
     {

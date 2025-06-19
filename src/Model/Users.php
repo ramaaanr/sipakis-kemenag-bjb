@@ -56,4 +56,20 @@ class Users extends Model
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         return $user ?: null;
     }
+
+    public function getAvailableOperators(): array
+    {
+        $sql = "
+        SELECT u.*, u.username as nama
+        FROM {$this->table} u
+        LEFT JOIN operator_lembaga_pendidikan olp 
+            ON u.id = olp.user_id AND olp.deleted_at IS NULL
+        WHERE u.role = 'operator'
+            AND olp.user_id IS NULL
+            AND u.deleted_at IS NULL
+    ";
+
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
