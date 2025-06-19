@@ -33,7 +33,7 @@
                 d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
             </svg>
           </span>
-          <input value="admin" type="text" name="username" id="username"
+          <input type="text" name="username" id="username"
             class="rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-lime-500 focus:border-lime-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 "
             placeholder="username">
         </div>
@@ -49,7 +49,7 @@
             </svg>
 
           </span>
-          <input value="admin" type="password" name="password" id="password"
+          <input type="password" name="password" id="password"
             class="rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-lime-500 focus:border-lime-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 "
             placeholder="password">
         </div>
@@ -66,59 +66,59 @@
 </div>
 
 <script>
-$(document).ready(function() {
-  $('#loginForm').on('submit', function(e) {
-    e.preventDefault();
+  $(document).ready(function() {
+    $('#loginForm').on('submit', function(e) {
+      e.preventDefault();
 
-    const formData = {
-      username: $('#username').val(),
-      password: $('#password').val()
-    };
+      const formData = {
+        username: $('#username').val(),
+        password: $('#password').val()
+      };
 
-    $.ajax({
-      url: '/auth/login',
-      method: 'POST',
-      contentType: 'application/json',
-      data: JSON.stringify(formData), // ✅ KIRIM DATA JSON DI SINI
-      success: function(response) {
-        const responseJSON = JSON.parse(response);
-        if (responseJSON.status) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: responseJSON.message,
-            timer: 1200,
-            showConfirmButton: false
-          }).then(() => {
-            window.location.href = '/dashboard'; // Ganti ke halaman setelah login
-          });
-        } else {
+      $.ajax({
+        url: '/auth/login',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(formData), // ✅ KIRIM DATA JSON DI SINI
+        success: function(response) {
+          const responseJSON = JSON.parse(response);
+          if (responseJSON.status) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Berhasil!',
+              text: responseJSON.message,
+              timer: 1200,
+              showConfirmButton: false
+            }).then(() => {
+              window.location.href = '/dashboard'; // Ganti ke halaman setelah login
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Login Gagal',
+              text: responseJSON.message,
+              timer: 1500,
+              showConfirmButton: false
+            });
+          }
+        },
+        error: function(xhr) {
+          let message = 'Terjadi kesalahan saat mengirim data.';
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            message = xhr.responseJSON.message;
+          }
+
           Swal.fire({
             icon: 'error',
-            title: 'Login Gagal',
-            text: responseJSON.message,
+            title: 'Error',
+            text: message,
             timer: 1500,
             showConfirmButton: false
           });
         }
-      },
-      error: function(xhr) {
-        let message = 'Terjadi kesalahan saat mengirim data.';
-        if (xhr.responseJSON && xhr.responseJSON.message) {
-          message = xhr.responseJSON.message;
-        }
-
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: message,
-          timer: 1500,
-          showConfirmButton: false
-        });
-      }
+      });
     });
   });
-});
 </script>
 
 

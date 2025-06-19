@@ -29,4 +29,8 @@ class SessionHelper
     {
         return $_SESSION['user']['username'] ?? null;
     }
+    public static function getRole(): ?string
+    {
+        return $_SESSION['user']['role'] ?? null;
+    }
 }

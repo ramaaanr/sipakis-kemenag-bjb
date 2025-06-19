@@ -28,7 +28,6 @@ class AuthController
             }
 
             $users = $this->users->getUserForLogin($username);
-
             if (!$users || !password_verify($password, $users['password'])) {
                 return ResponseFormatter::error('Username atau password salah');
             }

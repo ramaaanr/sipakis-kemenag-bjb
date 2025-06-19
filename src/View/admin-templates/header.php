@@ -1,6 +1,7 @@
 <?php include __DIR__ . '/../templates/header.php'; ?>
 <?php
 $username = \Sfy\AplikasiDataKemenagPAI\Helpers\SessionHelper::getUsername();
+$role = \Sfy\AplikasiDataKemenagPAI\Helpers\SessionHelper::getRole();
 ?>
 
 
@@ -13,68 +14,98 @@ $username = \Sfy\AplikasiDataKemenagPAI\Helpers\SessionHelper::getUsername();
     <div class="flex items-center justify-center mt-8">
       <div class="flex items-center justify-center w-full">
         <img width="70" height="70" src="https://img.icons8.com/color/100/ramadan.png" alt="ramadan" />
-        <span class="mx-2  text-2xl font-semibold text-white">SIPONTREN</span>
+        <span class="mx-2 text-2xl font-semibold text-white">SIPONTREN</span>
       </div>
     </div>
 
     <nav class="mt-10">
-      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="/dashboard">
-
+      <!-- Semua role bisa lihat dashboard -->
+      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+        href="/dashboard">
         <span class="material-symbols-outlined">home</span>
         <span class="mx-3">Halaman Utama</span>
       </a>
 
-      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-        href="/lembaga-show">
-        <span class="material-symbols-outlined">apartment</span>
-        <span class="mx-3">Lembaga Pendidikan Islam</span>
-      </a>
+      <?php if ($role === 'admin'): ?>
+        <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+          href="/user-show">
+          <span class="material-symbols-outlined">manage_accounts</span>
+          <span class="mx-3">User</span>
+        </a>
+      <?php endif; ?>
 
-      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-        href="/operator-show">
-        <span class="material-symbols-outlined">person_outline</span>
-        <span class="mx-3">Operator Lembaga</span>
-      </a>
+      <?php if ($role === 'operator'): ?>
+        <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+          href="/lembaga-show">
+          <span class="material-symbols-outlined">apartment</span>
+          <span class="mx-3">Lembaga Pendidikan Islam</span>
+        </a>
+        <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+          href="/staff-show">
+          <span class="material-symbols-outlined">diversity_3</span>
+          <span class="mx-3">Staff</span>
+        </a>
+        <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+          href="/murid-show">
+          <span class="material-symbols-outlined">groups</span>
+          <span class="mx-3">Murid</span>
+        </a>
+      <?php endif; ?>
 
-      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-        href="/jenis-lembaga-show">
-        <span class="material-symbols-outlined">category</span>
-        <span class="mx-3">Jenis Lembaga Pendidikan</span>
-      </a>
+      <?php if ($role === 'staff'): ?>
+        <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+          href="/jabatan-staff-show">
+          <span class="material-symbols-outlined">badge</span>
+          <span class="mx-3">Jabatan Staff</span>
+        </a>
+        <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+          href="/jenis-lembaga-show">
+          <span class="material-symbols-outlined">category</span>
+          <span class="mx-3">Jenis Lembaga Pendidikan</span>
+        </a>
+        <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+          href="/lembaga-show">
+          <span class="material-symbols-outlined">apartment</span>
+          <span class="mx-3">Lembaga Pendidikan</span>
+        </a>
+        <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+          href="/operator-show">
+          <span class="material-symbols-outlined">person_outline</span>
+          <span class="mx-3">Operator Lembaga</span>
+        </a>
+        <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+          href="/kecamatan-show">
+          <span class="material-symbols-outlined">location_city</span>
+          <span class="mx-3">Kecamatan</span>
+        </a>
+      <?php endif; ?>
 
-      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-        href="/murid-show">
-        <span class="material-symbols-outlined">groups</span>
-        <span class="mx-3">Murid</span>
-      </a>
-
-      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-        href="/staff-show">
-        <span class="material-symbols-outlined">diversity_3</span>
-        <span class="mx-3">Staff</span>
-      </a>
-
-      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-        href="/jabatan-staff-show">
-        <span class="material-symbols-outlined">badge</span>
-        <span class="mx-3">Jabatan Staff</span>
-      </a>
-
-      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-        href="/kecamatan-show">
-        <span class="material-symbols-outlined">location_city</span>
-        <span class="mx-3">Kecamatan</span>
-      </a>
-
-      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-        href="/user-show">
-        <span class="material-symbols-outlined">manage_accounts</span>
-        <span class="mx-3">User</span>
-      </a>
+      <?php if ($role === 'pimpinan'): ?>
+        <!-- Pimpinan hanya lihat data dan bisa cetak, tidak ada form input -->
+        <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+          href="/lembaga-show">
+          <span class="material-symbols-outlined">apartment</span>
+          <span class="mx-3">Data Lembaga</span>
+        </a>
+        <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+          href="/murid-show">
+          <span class="material-symbols-outlined">groups</span>
+          <span class="mx-3">Data Murid</span>
+        </a>
+        <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+          href="/staff-show">
+          <span class="material-symbols-outlined">diversity_3</span>
+          <span class="mx-3">Data Staff</span>
+        </a>
+        <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+          href="/cetak">
+          <span class="material-symbols-outlined">print</span>
+          <span class="mx-3">Cetak Laporan</span>
+        </a>
+      <?php endif; ?>
     </nav>
-
-
   </div>
+
   <div class="flex flex-col flex-1 overflow-hidden">
     <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-teal-600">
       <div class="flex items-center">
@@ -92,28 +123,25 @@ $username = \Sfy\AplikasiDataKemenagPAI\Helpers\SessionHelper::getUsername();
           class="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75">
           Log Out
         </button>
-
       </div>
     </header>
+
     <script>
       document.getElementById('logoutButton').addEventListener('click', function() {
         fetch('/auth/logout', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-          .then(response => {
-            if (response.ok) {
-              // redirect ke login page atau halaman utama
-              window.location.href = '/';
-            } else {
-              alert('Logout gagal.');
-            }
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(response => {
+          if (response.ok) {
+            window.location.href = '/';
+          } else {
+            alert('Logout gagal.');
+          }
+        }).catch(error => {
+          console.error('Error:', error);
+        });
       });
     </script>
 

@@ -104,7 +104,7 @@ edit
     $('#table tbody').on('click', '.delete-btn', function() {
       var id = $(this).data('id');
       Swal.fire({
-        title: 'Yakin ingin menghapus Kecamatan ini?',
+        title: 'Yakin ingin menghapus User ini?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',

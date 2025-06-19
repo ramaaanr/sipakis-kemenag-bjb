@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Jun 06, 2025 at 10:30 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost:3306
+-- Generation Time: Jun 19, 2025 at 07:38 AM
+-- Server version: 8.0.30
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,8 +28,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `jabatan_staff` (
-  `id` int(11) NOT NULL,
-  `nama` varchar(255) NOT NULL
+  `id` int NOT NULL,
+  `nama` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -39,8 +41,10 @@ CREATE TABLE `jabatan_staff` (
 --
 
 CREATE TABLE `jenis_lembaga_pendidikan` (
-  `id` int(11) NOT NULL,
-  `nama` varchar(255) NOT NULL
+  `id` int NOT NULL,
+  `nama` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -50,9 +54,10 @@ CREATE TABLE `jenis_lembaga_pendidikan` (
 --
 
 CREATE TABLE `kecamatan` (
-  `id` int(11) NOT NULL,
-  `nama` varchar(255) NOT NULL,
-  `deleted_at` datetime DEFAULT NULL
+  `id` int NOT NULL,
+  `nama` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -62,17 +67,18 @@ CREATE TABLE `kecamatan` (
 --
 
 CREATE TABLE `lembaga_pendidikan` (
-  `id` int(11) NOT NULL,
-  `kecamatan_id` int(11) DEFAULT NULL,
-  `jenis_lembaga_pendidikan_id` int(11) DEFAULT NULL,
-  `nama` varchar(255) NOT NULL,
-  `nspp` varchar(255) DEFAULT NULL,
-  `npsn` varchar(255) DEFAULT NULL,
-  `jenjang` varchar(255) DEFAULT NULL,
-  `alamat` text NOT NULL,
-  `no_telepon` varchar(20) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL
+  `id` int NOT NULL,
+  `kecamatan_id` int DEFAULT NULL,
+  `jenis_lembaga_pendidikan_id` int DEFAULT NULL,
+  `nama` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `nspp` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `npsn` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `jenjang` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `alamat` text COLLATE utf8mb4_general_ci NOT NULL,
+  `no_telepon` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -82,14 +88,17 @@ CREATE TABLE `lembaga_pendidikan` (
 --
 
 CREATE TABLE `murid` (
-  `id` int(11) NOT NULL,
-  `lembaga_pendidikan_id` int(11) DEFAULT NULL,
-  `nama` varchar(255) NOT NULL,
-  `alamat` text NOT NULL,
-  `tempat_tanggal_lahir` varchar(255) NOT NULL,
-  `rombel_kelas` varchar(100) NOT NULL,
-  `tingkat` varchar(50) NOT NULL,
-  `nisn` varchar(20) DEFAULT NULL
+  `id` int NOT NULL,
+  `lembaga_pendidikan_id` int DEFAULT NULL,
+  `nama` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `alamat` text COLLATE utf8mb4_general_ci NOT NULL,
+  `tempat_tanggal_lahir` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `rombel_kelas` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `tingkat` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `nisn` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `jenis_kelamin` enum('L','P') COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -99,10 +108,11 @@ CREATE TABLE `murid` (
 --
 
 CREATE TABLE `operator_lembaga_pendidikan` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `lembaga_pendidikan_id` int(11) DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL
+  `id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
+  `lembaga_pendidikan_id` int DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -112,15 +122,17 @@ CREATE TABLE `operator_lembaga_pendidikan` (
 --
 
 CREATE TABLE `staff` (
-  `id` int(11) NOT NULL,
-  `lembaga_pendidikan_id` int(11) DEFAULT NULL,
-  `jabatan_staff_id` int(11) DEFAULT NULL,
-  `nama` varchar(255) NOT NULL,
-  `alamat` text NOT NULL,
-  `no_hp` varchar(20) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `jenis_kelamin` enum('L','P') DEFAULT NULL,
-  `nik` varchar(20) DEFAULT NULL
+  `id` int NOT NULL,
+  `lembaga_pendidikan_id` int DEFAULT NULL,
+  `jabatan_staff_id` int DEFAULT NULL,
+  `nama` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `alamat` text COLLATE utf8mb4_general_ci NOT NULL,
+  `no_hp` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `jenis_kelamin` enum('L','P') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nik` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -130,12 +142,12 @@ CREATE TABLE `staff` (
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` enum('admin','pimpinan','staff','operator') NOT NULL,
+  `id` int NOT NULL,
+  `username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `role` enum('admin','pimpinan','staff','operator') COLLATE utf8mb4_general_ci NOT NULL,
   `deleted_at` datetime DEFAULT NULL,
-  `created_at` datetime DEFAULT current_timestamp()
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -180,7 +192,7 @@ ALTER TABLE `murid`
 --
 ALTER TABLE `operator_lembaga_pendidikan`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
+  ADD UNIQUE KEY `unique_user_id` (`user_id`),
   ADD KEY `lembaga_pendidikan_id` (`lembaga_pendidikan_id`);
 
 --
@@ -206,49 +218,49 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `jabatan_staff`
 --
 ALTER TABLE `jabatan_staff`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `jenis_lembaga_pendidikan`
 --
 ALTER TABLE `jenis_lembaga_pendidikan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `kecamatan`
 --
 ALTER TABLE `kecamatan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `lembaga_pendidikan`
 --
 ALTER TABLE `lembaga_pendidikan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `murid`
 --
 ALTER TABLE `murid`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `operator_lembaga_pendidikan`
 --
 ALTER TABLE `operator_lembaga_pendidikan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
