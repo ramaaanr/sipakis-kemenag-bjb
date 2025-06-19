@@ -2,30 +2,6 @@
 <?php
 $username = \Sfy\AplikasiDataKemenagPAI\Helpers\SessionHelper::getUsername();
 ?>
-<!-- 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const navLinks = document.querySelectorAll('nav a');
-
-  navLinks.forEach(link => {
-    // Remove any existing active class
-    link.classList.remove('text-gray-100', 'bg-gray-700', 'bg-opacity-25');
-
-    // Get the current URL path
-    const currentPath = window.location.pathname;
-
-    // Check if the link's href matches the current path
-    if (link.getAttribute('href') === currentPath) {
-      // Add the active class
-      link.classList.add('text-gray-100', 'bg-gray-700', 'bg-opacity-25');
-    } else {
-      // Ensure other links are not active
-      link.classList.add('text-lime-50 font-semibold', 'hover:bg-gray-700', 'hover:bg-opacity-25',
-        'hover:text-gray-100');
-    }
-  });
-});
-</script> -->
 
 
 <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
@@ -42,7 +18,8 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
     <nav class="mt-10">
-      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 bg-gray-700 bg-opacity-25" href="/dashboard">
+      <a class="flex items-center px-6 py-2 mt-4 text-lime-50 font-semibold hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="/dashboard">
+
         <span class="material-symbols-outlined">home</span>
         <span class="mx-3">Halaman Utama</span>
       </a>
