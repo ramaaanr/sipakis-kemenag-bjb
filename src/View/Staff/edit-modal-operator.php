@@ -11,11 +11,6 @@
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
 
-      <div class="mb-4">
-        <label for="edit_nisn" class="block text-sm font-medium text-gray-700">NISN</label>
-        <input type="text" id="edit_nisn" name="nisn" required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
-      </div>
 
       <input type="hidden" id="edit_lembaga_pendidikan_id" name="lembaga_pendidikan_id" required />
 
@@ -25,6 +20,13 @@
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
 
+      <div class="mb-4">
+        <label for="edit_jabatan_staff_id" class="block text-sm font-medium text-gray-700">Jabatan</label>
+        <select id="edit_jabatan_staff_id" name="jabatan_staff_id" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
+
+        </select>
+      </div>
 
       <div class="mb-4">
         <label for="edit_alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
@@ -32,23 +34,15 @@
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
       <div class="mb-4">
-        <label for="edit_tempat_tanggal_lahir" class="block text-sm font-medium text-gray-700">Tempat Tanggal
-          Lahir</label>
-        <input type="text" id="edit_tempat_tanggal_lahir" name="tempat_tanggal_lahir" required
+        <label for="edit_no_hp" class="block text-sm font-medium text-gray-700">No HP</label>
+        <input type="text" id="edit_no_hp" name="no_hp" required
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
       <div class="mb-4">
-        <label for="edit_rombel_kelas" class="block text-sm font-medium text-gray-700">Rombel Kelas</label>
-        <input type="text" id="edit_rombel_kelas" name="rombel_kelas" required
+        <label for="edit_email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="text" id="edit_email" name="email" required
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
-      <div class="mb-4">
-        <label for="edit_tingkat" class="block text-sm font-medium text-gray-700">Tingkat</label>
-        <input type="text" id="edit_tingkat" name="tingkat" required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
-      </div>
-
-
       <div class="mb-4">
         <label for="edit_jenis_kelamin" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
         <select id="edit_jenis_kelamin" name="jenis_kelamin" required
@@ -59,6 +53,11 @@
         </select>
       </div>
 
+      <div class="mb-4">
+        <label for="edit_nik" class="block text-sm font-medium text-gray-700">NIK</label>
+        <input type="text" id="edit_nik" name="nik" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
+      </div>
 
 
 
@@ -102,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Show Modal on Button Click
   populateSelect('/lembaga-pendidikan', '#edit_lembaga_pendidikan_id');
+  populateSelect('/jabatan-staff', '#edit_jabatan_staff_id');
   // Open Edit Modal and Populate Form Fields
   let id = 0;
 
@@ -111,21 +111,23 @@ document.addEventListener("DOMContentLoaded", function() {
     var nama = $(this).data('nama');
     var lembaga_pendidikan_id = $(this).data('lembaga_pendidikan_id')
     var lembaga_pendidikan = $(this).data('lembaga_pendidikan')
+    var jabatan = $(this).data('jabatan_staff_id')
+    var nama = $(this).data('nama')
     var alamat = $(this).data('alamat')
-    var tempat_tanggal_lahir = $(this).data('tempat_tanggal_lahir')
-    var rombel_kelas = $(this).data('rombel_kelas')
-    var tingkat = $(this).data('tingkat')
-    var nisn = $(this).data('nisn')
+    var no_hp = $(this).data('no_hp')
+    var email = $(this).data('email')
+    var nik = $(this).data('nik')
     var jenis_kelamin = $(this).data('jenis_kelamin')
     $('#editId').val(id);
     $('#edit_nama').val(nama);
     $('#edit_lembaga_pendidikan_id').val(lembaga_pendidikan_id);
     $('#edit_lembaga_pendidikan').val(lembaga_pendidikan);
+    $('#edit_jabatan_staff_id').val(jabatan);
+    $('#edit_nama').val(nama);
     $('#edit_alamat').val(alamat);
-    $('#edit_tempat_tanggal_lahir').val(tempat_tanggal_lahir);
-    $('#edit_rombel_kelas').val(rombel_kelas);
-    $('#edit_tingkat').val(tingkat);
-    $('#edit_nisn').val(nisn);
+    $('#edit_no_hp').val(no_hp);
+    $('#edit_email').val(email);
+    $('#edit_nik').val(nik);
     $('#edit_jenis_kelamin').val(jenis_kelamin);
 
     $('#editModal').removeClass('hidden');
@@ -142,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function() {
     e.preventDefault(); // Prevent default form submission
 
     $.ajax({
-      url: `/murid/${id}`,
+      url: `/staff/${id}`,
       method: 'POST',
       data: $(this).serialize(),
       success: function(res) {

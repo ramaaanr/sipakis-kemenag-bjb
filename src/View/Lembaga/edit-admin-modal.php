@@ -4,62 +4,60 @@
     <h2 class="text-xl font-bold mb-4">Edit Lembaga Pendidikan</h2>
     <form id="editForm">
       <input type="hidden" name="id" id="editId">
-
       <div class="mb-4">
-        <label for="edit_nama" class="block text-sm font-medium text-gray-700">Nama Staff</label>
+        <label for="nama" class="block text-sm font-medium text-gray-700">Nama Lembaga</label>
         <input type="text" id="edit_nama" name="nama" required
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
 
       <div class="mb-4">
-        <label for="edit_nisn" class="block text-sm font-medium text-gray-700">NISN</label>
-        <input type="text" id="edit_nisn" name="nisn" required
+        <label for="kecamatan_id" class="block text-sm font-medium text-gray-700">Kecamatan
+          Pendidikan</label>
+        <select id="edit_kecamatan_id" name="kecamatan_id" required
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
+
+        </select>
       </div>
 
-      <input type="hidden" id="edit_lembaga_pendidikan_id" name="lembaga_pendidikan_id" required />
-
       <div class="mb-4">
-        <label for="edit_lembaga_pendidikan" class="block text-sm font-medium text-gray-700">Lembaga Pendidikan</label>
-        <input type="text" id="edit_lembaga_pendidikan" name="lembaga_pendidikan" readonly
+        <label for="jenis_lembaga_pendidikan_id" class="block text-sm font-medium text-gray-700">Jenis Lembaga
+          Pendidikan</label>
+        <select id="edit_jenis_lembaga_pendidikan_id" name="jenis_lembaga_pendidikan_id" required
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
+
+        </select>
       </div>
 
-
       <div class="mb-4">
-        <label for="edit_alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
+        <label for="nspp" class="block text-sm font-medium text-gray-700">NSPP</label>
+        <input type="text" id="edit_nspp" name="nspp" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
+      </div>
+      <div class="mb-4">
+        <label for="npsn" class="block text-sm font-medium text-gray-700">NPSN</label>
+        <input type="text" id="edit_npsn" name="npsn" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
+      </div>
+      <div class="mb-4">
+        <label for="jenjang" class="block text-sm font-medium text-gray-700">Jenjang</label>
+        <input type="text" id="edit_jenjang" name="jenjang" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
+      </div>
+      <div class="mb-4">
+        <label for="alamat" class="block text-sm font-medium text-gray-700">alamat</label>
         <input type="text" id="edit_alamat" name="alamat" required
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
       <div class="mb-4">
-        <label for="edit_tempat_tanggal_lahir" class="block text-sm font-medium text-gray-700">Tempat Tanggal
-          Lahir</label>
-        <input type="text" id="edit_tempat_tanggal_lahir" name="tempat_tanggal_lahir" required
+        <label for="telepon" class="block text-sm font-medium text-gray-700">Telepon</label>
+        <input type="text" id="edit_no_telepon" name="no_telepon" required
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
       <div class="mb-4">
-        <label for="edit_rombel_kelas" class="block text-sm font-medium text-gray-700">Rombel Kelas</label>
-        <input type="text" id="edit_rombel_kelas" name="rombel_kelas" required
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="text" id="edit_email" name="email" required
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
-      <div class="mb-4">
-        <label for="edit_tingkat" class="block text-sm font-medium text-gray-700">Tingkat</label>
-        <input type="text" id="edit_tingkat" name="tingkat" required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
-      </div>
-
-
-      <div class="mb-4">
-        <label for="edit_jenis_kelamin" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
-        <select id="edit_jenis_kelamin" name="jenis_kelamin" required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
-          <option value="" disabled selected>Pilih Jenis Kelamin</option>
-          <option value="L">Laki-laki</option>
-          <option value="P">Perempuan</option>
-        </select>
-      </div>
-
-
 
 
 
@@ -101,7 +99,8 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // Show Modal on Button Click
-  populateSelect('/lembaga-pendidikan', '#edit_lembaga_pendidikan_id');
+  populateSelect('/kecamatan', '#edit_kecamatan_id');
+  populateSelect('/jenis-lembaga-pendidikan', '#edit_jenis_lembaga_pendidikan_id');
   // Open Edit Modal and Populate Form Fields
   let id = 0;
 
@@ -109,28 +108,28 @@ document.addEventListener("DOMContentLoaded", function() {
   $('#table tbody').on('click', '.edit-btn', function() {
     id = $(this).data('id');
     var nama = $(this).data('nama');
-    var lembaga_pendidikan_id = $(this).data('lembaga_pendidikan_id')
-    var lembaga_pendidikan = $(this).data('lembaga_pendidikan')
-    var alamat = $(this).data('alamat')
-    var tempat_tanggal_lahir = $(this).data('tempat_tanggal_lahir')
-    var rombel_kelas = $(this).data('rombel_kelas')
-    var tingkat = $(this).data('tingkat')
-    var nisn = $(this).data('nisn')
-    var jenis_kelamin = $(this).data('jenis_kelamin')
-    $('#editId').val(id);
+    var kecamatan_id = $(this).data('kecamatan_id');
+    var jenis_lembaga_pendidikan_id = $(this).data('jenis_lembaga_pendidikan_id');
+    var nspp = $(this).data('nspp');
+    var npsn = $(this).data('npsn');
+    var jenjang = $(this).data('jenjang');
+    var alamat = $(this).data('alamat');
+    var no_telepon = $(this).data('no_telepon');
+    var email = $(this).data('email');
+    console.log(email);
     $('#edit_nama').val(nama);
-    $('#edit_lembaga_pendidikan_id').val(lembaga_pendidikan_id);
-    $('#edit_lembaga_pendidikan').val(lembaga_pendidikan);
+    $('#edit_kecamatan_id').val(kecamatan_id);
+    $('#edit_jenis_lembaga_pendidikan_id').val(jenis_lembaga_pendidikan_id);
+    $('#edit_nspp').val(nspp);
+    $('#edit_npsn').val(npsn);
+    $('#edit_jenjang').val(jenjang);
     $('#edit_alamat').val(alamat);
-    $('#edit_tempat_tanggal_lahir').val(tempat_tanggal_lahir);
-    $('#edit_rombel_kelas').val(rombel_kelas);
-    $('#edit_tingkat').val(tingkat);
-    $('#edit_nisn').val(nisn);
-    $('#edit_jenis_kelamin').val(jenis_kelamin);
+    $('#edit_no_telepon').val(no_telepon);
+    $('#edit_email').val(email);
+    $('#editId').val(id);
 
     $('#editModal').removeClass('hidden');
   });
-  console.log(id);
 
   // Close Edit Modal
   $('#editModalClose').on('click', function() {
@@ -142,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function() {
     e.preventDefault(); // Prevent default form submission
 
     $.ajax({
-      url: `/murid/${id}`,
+      url: `/lembaga-pendidikan/${id}`,
       method: 'POST',
       data: $(this).serialize(),
       success: function(res) {

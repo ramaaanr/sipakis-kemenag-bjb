@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cetak Lembaga Madrasah Diniyah Takmiliyah</title>
+  <title>Cetak Kecamatan</title>
   <style>
   .kop-surat {
     display: flex;
@@ -99,29 +99,18 @@
       <!-- Logo di kanan -->
     </div>
   </div>
-  <p style="text-align: center; font-size: large; margin-top: 40px;">Data Lembaga Madrasah Diniyah Takmiliyah</p>
+  <p style="text-align: center; font-size: large; margin-top: 40px;">Data Kecamatan</p>
 
 
   <table>
     <thead>
       <tr>
-        <th>Lembaga</th>
-        <th>NSS</th>
-        <th>Alamat</th>
-        <th>Kepala</th>
-        <th>Jumlah Murid</th>
-        <th>Jumlah Pengajar</th>
-      </tr>
+        <th>Nama Kecamatan</th>
     </thead>
     <tbody>
       <?php foreach ($data as $row): ?>
       <tr>
-        <td><?php echo htmlspecialchars($row['lembaga']); ?></td>
-        <td><?php echo htmlspecialchars($row['nomor_statistik']); ?></td>
-        <td><?php echo htmlspecialchars($row['alamat']); ?></td>
-        <td><?php echo htmlspecialchars($row['nama_kepala']); ?></td>
-        <td><?php echo htmlspecialchars($row['jumlah_murid']); ?></td>
-        <td><?php echo htmlspecialchars($row['jumlah_pengajar']); ?></td>
+        <td><?php echo htmlspecialchars($row['nama']); ?></td>
       </tr>
       <?php endforeach; ?>
     </tbody>

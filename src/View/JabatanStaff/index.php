@@ -3,13 +3,7 @@
 <div class="container px-6 py-8 mx-auto ">
   <div class="flex items-center space-x-2 ">
     <h3 class="text-3xl font-medium text-gray-700">Data Jabatan Staff</h3>
-    <a id="btn-cetak-mdt" target="__blank"
-      class="cetak-container bg-blue-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:blue-700"
-      href="/mdt/cetak">
-      <span class="material-symbols-outlined text-sm">
-        print
-      </span> <span>Cetak Semua Data</span>
-    </a>
+
     <button id="btn-add"
       class="add-container bg-green-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:green-700">
       <span class="material-symbols-outlined text-sm">

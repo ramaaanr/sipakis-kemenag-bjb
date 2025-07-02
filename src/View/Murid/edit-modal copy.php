@@ -17,12 +17,13 @@
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
       </div>
 
-      <input type="hidden" id="edit_lembaga_pendidikan_id" name="lembaga_pendidikan_id" required />
 
       <div class="mb-4">
-        <label for="edit_lembaga_pendidikan" class="block text-sm font-medium text-gray-700">Lembaga Pendidikan</label>
-        <input type="text" id="edit_lembaga_pendidikan" name="lembaga_pendidikan" readonly
+        <label for="edit_lembaga_pendidikan_id" class="block text-sm font-medium text-gray-700">Lembaga
+          Pendidikan</label>
+        <select id="edit_lembaga_pendidikan_id" name="lembaga_pendidikan_id" required
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
+        </select>
       </div>
 
 
@@ -109,8 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
   $('#table tbody').on('click', '.edit-btn', function() {
     id = $(this).data('id');
     var nama = $(this).data('nama');
-    var lembaga_pendidikan_id = $(this).data('lembaga_pendidikan_id')
-    var lembaga_pendidikan = $(this).data('lembaga_pendidikan')
+    var lembaga_pendidikan = $(this).data('lembaga_pendidikan_id')
     var alamat = $(this).data('alamat')
     var tempat_tanggal_lahir = $(this).data('tempat_tanggal_lahir')
     var rombel_kelas = $(this).data('rombel_kelas')
@@ -119,8 +119,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var jenis_kelamin = $(this).data('jenis_kelamin')
     $('#editId').val(id);
     $('#edit_nama').val(nama);
-    $('#edit_lembaga_pendidikan_id').val(lembaga_pendidikan_id);
-    $('#edit_lembaga_pendidikan').val(lembaga_pendidikan);
+    $('#edit_lembaga_pendidikan_id').val(lembaga_pendidikan);
     $('#edit_alamat').val(alamat);
     $('#edit_tempat_tanggal_lahir').val(tempat_tanggal_lahir);
     $('#edit_rombel_kelas').val(rombel_kelas);

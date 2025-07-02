@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cetak Lembaga Madrasah Diniyah Takmiliyah</title>
+  <title>Cetak Murid Lembaga MDT</title>
   <style>
   .kop-surat {
     display: flex;
@@ -99,29 +99,49 @@
       <!-- Logo di kanan -->
     </div>
   </div>
-  <p style="text-align: center; font-size: large; margin-top: 40px;">Data Lembaga Madrasah Diniyah Takmiliyah</p>
+  <p style="text-align: center; font-size: large; margin-top: 40px;">Data Murid MDT</p>
 
 
   <table>
     <thead>
       <tr>
-        <th>Lembaga</th>
-        <th>NSS</th>
-        <th>Alamat</th>
-        <th>Kepala</th>
-        <th>Jumlah Murid</th>
-        <th>Jumlah Pengajar</th>
+        <th>
+          Nama Murid
+        </th>
+        <th>
+          Lembaga Pendidikan
+        </th>
+        <th>
+          NISN
+        </th>
+        <th>
+          Alamat
+        </th>
+        <th>
+          Tempat Tanggal Lahir
+        </th>
+        <th>
+          Rombel Kelas
+        </th>
+        <th>
+          Tingkat
+        </th>
+        <th>
+          Jenis Kelamin
+        </th>
       </tr>
     </thead>
     <tbody>
       <?php foreach ($data as $row): ?>
       <tr>
-        <td><?php echo htmlspecialchars($row['lembaga']); ?></td>
-        <td><?php echo htmlspecialchars($row['nomor_statistik']); ?></td>
+        <td><?php echo htmlspecialchars($row['nama']); ?></td>
+        <td><?php echo htmlspecialchars($row['lembaga_pendidikan']); ?></td>
+        <td><?php echo htmlspecialchars($row['nisn']); ?></td>
         <td><?php echo htmlspecialchars($row['alamat']); ?></td>
-        <td><?php echo htmlspecialchars($row['nama_kepala']); ?></td>
-        <td><?php echo htmlspecialchars($row['jumlah_murid']); ?></td>
-        <td><?php echo htmlspecialchars($row['jumlah_pengajar']); ?></td>
+        <td><?php echo htmlspecialchars($row['tempat_tanggal_lahir']); ?></td>
+        <td><?php echo htmlspecialchars($row['rombel_kelas']); ?></td>
+        <td><?php echo htmlspecialchars($row['tingkat']); ?></td>
+        <td><?php echo htmlspecialchars($row['jenis_kelamin'] === 'L' ? 'Laki-laki' : 'Perempuan'); ?></td>
       </tr>
       <?php endforeach; ?>
     </tbody>

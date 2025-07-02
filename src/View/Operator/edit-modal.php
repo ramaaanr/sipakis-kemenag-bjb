@@ -29,100 +29,100 @@
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
 
-    function populateSelect(endpoint, selectId) {
-      $.ajax({
-        url: endpoint,
-        method: 'GET',
-        dataType: 'json',
-        success: function(res) {
-          const data = res.data;
-          let select = $(selectId);
-          select.empty(); // kosongkan dulu
-          select.append('<option value="" disabled selected>Pilih data</option>');
-          $.each(data, function(index, item) {
-            select.append('<option value="' + item.id + '">' + item.nama + '</option>');
-          });
-        },
-        error: function() {
-          Swal.fire({
-            icon: 'error',
-            title: 'Gagal Ambil Data',
-            text: 'Tidak dapat mengambil data dari ' + endpoint,
-            timer: 1500,
-            showConfirmButton: false
-          });
-        }
-      });
-    }
-
-    // Show Modal on Button Click
-    populateSelect('/lembaga-pendidikan', '#edit_lembaga_pendidikan_id');
-    populateSelect('/user-operator', '#edit_user')
-    // Open Edit Modal and Populate Form Fields
-    let id = 0;
-
-
-    $('#table tbody').on('click', '.edit-btn', function() {
-      id = $(this).data('id');
-      var username = $(this).data('username');
-      var lembaga_pendidikan = $(this).data('lembaga_pendidikan_id')
-      var user_id = $(this).data('user_id')
-
-      $('#editId').val(id);
-      $('#edit_user').val(username);
-      $('#edit_user_id').val(user_id);
-      $('#edit_lembaga_pendidikan_id').val(lembaga_pendidikan);
-
-
-      $('#editModal').removeClass('hidden');
+  function populateSelect(endpoint, selectId) {
+    $.ajax({
+      url: endpoint,
+      method: 'GET',
+      dataType: 'json',
+      success: function(res) {
+        const data = res.data;
+        let select = $(selectId);
+        select.empty(); // kosongkan dulu
+        select.append('<option value="" disabled selected>Pilih data</option>');
+        $.each(data, function(index, item) {
+          select.append('<option value="' + item.id + '">' + item.nama + '</option>');
+        });
+      },
+      error: function() {
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal Ambil Data',
+          text: 'Tidak dapat mengambil data dari ' + endpoint,
+          timer: 1500,
+          showConfirmButton: false
+        });
+      }
     });
-    console.log(id);
+  }
 
-    // Close Edit Modal
-    $('#editModalClose').on('click', function() {
-      $('#editModal').addClass('hidden');
-    });
+  // Show Modal on Button Click
+  populateSelect('/lembaga-pendidikan', '#edit_lembaga_pendidikan_id');
+  populateSelect('/user-operator', '#edit_user')
+  // Open Edit Modal and Populate Form Fields
+  let id = 0;
 
-    // AJAX Form Submission for Edit
-    $('#editForm').on('submit', function(e) {
-      e.preventDefault(); // Prevent default form submission
 
-      $.ajax({
-        url: `/operator-lembaga-pendidikan/${id}`,
-        method: 'POST',
-        data: $(this).serialize(),
-        success: function(res) {
-          const response = JSON.parse(res);
-          if (!response.status) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Gagal',
-              text: response.message || 'Terjadi kesalahan saat memperbarui data!'
-            });
-            return;
-          }
-          Swal.fire({
-            icon: 'success',
-            title: 'Berhasil',
-            text: 'Data berhasil diperbarui!',
-            showCloseButton: true
-          }).then(() => {
-            $('#editModal').addClass('hidden'); // Close modal
-            $('#editForm')[0].reset(); // Reset form fields
-            // Refresh the data table (use your specific table refresh function here)
-            location.reload();
-          });
-        },
-        error: function() {
+  $('#table tbody').on('click', '.edit-btn', function() {
+    id = $(this).data('id');
+    var username = $(this).data('username');
+    var lembaga_pendidikan = $(this).data('lembaga_pendidikan_id')
+    var user_id = $(this).data('user_id')
+
+    $('#editId').val(id);
+    $('#edit_user').val(username);
+    $('#edit_user_id').val(user_id);
+    $('#edit_lembaga_pendidikan_id').val(lembaga_pendidikan);
+
+
+    $('#editModal').removeClass('hidden');
+  });
+  console.log(id);
+
+  // Close Edit Modal
+  $('#editModalClose').on('click', function() {
+    $('#editModal').addClass('hidden');
+  });
+
+  // AJAX Form Submission for Edit
+  $('#editForm').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+
+    $.ajax({
+      url: `/operator-lembaga-pendidikan/${id}`,
+      method: 'POST',
+      data: $(this).serialize(),
+      success: function(res) {
+        const response = JSON.parse(res);
+        if (!response.status) {
           Swal.fire({
             icon: 'error',
             title: 'Gagal',
-            text: 'Terjadi kesalahan saat memperbarui data!'
+            text: response.message || 'Terjadi kesalahan saat memperbarui data!'
           });
+          return;
         }
-      });
+        Swal.fire({
+          icon: 'success',
+          title: 'Berhasil',
+          text: 'Data berhasil diperbarui!',
+          showCloseButton: true
+        }).then(() => {
+          $('#editModal').addClass('hidden'); // Close modal
+          $('#editForm')[0].reset(); // Reset form fields
+          // Refresh the data table (use your specific table refresh function here)
+          location.reload();
+        });
+      },
+      error: function() {
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal',
+          text: 'Terjadi kesalahan saat memperbarui data!'
+        });
+      }
     });
   });
+});
 </script>

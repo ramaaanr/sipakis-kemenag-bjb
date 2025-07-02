@@ -34,7 +34,7 @@ class Murid extends Model
 
         $params = [];
         foreach ($criteria as $field => $value) {
-            $sql .= " AND lp.{$field} = :{$field}";
+            $sql .= " AND m.{$field} = :{$field}";
             $params[":{$field}"] = $value;
         }
 

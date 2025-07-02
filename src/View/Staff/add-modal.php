@@ -15,7 +15,6 @@
           Pendidikan</label>
         <select id="lembaga_pendidikan_id" name="lembaga_pendidikan_id" required
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
-
         </select>
       </div>
 
@@ -23,7 +22,6 @@
         <label for="jabatan_staff_id" class="block text-sm font-medium text-gray-700">Jabatan</label>
         <select id="jabatan_staff_id" name="jabatan_staff_id" required
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
-
         </select>
       </div>
 

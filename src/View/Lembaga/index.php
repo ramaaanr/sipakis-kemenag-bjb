@@ -1,183 +1,133 @@
 <?php include __DIR__ . '/../admin-templates/header.php'; ?>
 
-<div class="container px-6 py-8 mx-auto ">
-  <div class="flex items-center space-x-2 ">
-    <h3 class="text-3xl font-medium text-gray-700">Data Lembaga Pendidikan</h3>
-    <a id="btn-cetak-mdt" target="__blank"
-      class="cetak-container bg-blue-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:blue-700"
-      href="/mdt/cetak">
-      <span class="material-symbols-outlined text-sm">
-        print
-      </span> <span>Cetak Semua Data</span>
-    </a>
-    <button id="btn-add"
-      class="add-container bg-green-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:green-700">
-      <span class="material-symbols-outlined text-sm">
-        add
-      </span> <span>Tambah</span>
-    </button>
+<div class="container mx-auto px-4 py-8">
+  <div class="flex items-center justify-between mb-6">
+    <h3 class="text-3xl font-semibold text-gray-800">Profil Lembaga Pendidikan</h3>
+
   </div>
 
-  <div class="flex flex-col mt-8">
-    <div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-      <div class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-        <table id="table" class="min-w-full divide-y divide-gray-200">
-          <thead>
-            <tr>
-
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nama Lembaga Pendidikan
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Kecamatan
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Jenis
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                NSPP
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                NPSN
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Jenjang
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Alamat
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Telepon
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                email
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <!-- Data will be populated here by DataTable -->
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div id="card-container">
+    <!-- Card akan di-render di sini -->
   </div>
 </div>
 
-<?php include __DIR__ . '/add-modal.php'; ?>
-<?php include __DIR__ . '/detail-modal.php'; ?>
 <?php include __DIR__ . '/edit-modal.php'; ?>
 
 <script>
-  $(document).ready(function() {
+$(document).ready(function() {
+  const USER_ID = <?= json_encode($id ?? null) ?>;
 
-    function fetch(status = "DISETUJUI") {
-
-      $('#table').DataTable({
-        ajax: {
-          url: `/lembaga-pendidikan`, // URL to fetch data from
-          dataSrc: 'data' // Indicate that data is a flat array
-        },
-        order: [
-          [0, "desc"]
-        ],
-        columns: [{
-            data: 'nama'
-          }, {
-            data: 'nama_kecamatan'
-          }, {
-            data: 'jenis_lembaga'
-          }, {
-            data: 'nspp'
-          }, {
-            data: 'npsn'
-          }, {
-            data: 'jenjang'
-          }, {
-            data: 'alamat'
-          }, {
-            data: 'no_telepon'
-          }, {
-            data: 'email'
-          },
-          {
-            data: null,
-            render: function(data, type, row) {
-              return `
-            <div class="flex space-x-1">
-              <button class="detail-btn bg-green-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-data-nama_kecamatan="${row.nama_kecamatan}"
-data-jenis_lembaga="${row.jenis_lembaga}"
-data-nama="${row.nama}"
-data-nspp="${row.nspp}"
-data-npsn="${row.npsn}"
-data-jenjang="${row.jenjang}"
-data-alamat="${row.alamat}"
-data-email="${row.email}"
-data-no_telepon="${row.no_telepon}">
-                <span class="material-symbols-outlined">
-info
-</span>
-              </button>
-              <button class="edit-btn bg-blue-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-data-kecamatan_id="${row.kecamatan_id}"
-data-jenis_lembaga_pendidikan_id="${row.jenis_lembaga_pendidikan_id}"
-data-nama="${row.nama}"
-data-nspp="${row.nspp}"
-data-npsn="${row.npsn}"
-data-jenjang="${row.jenjang}"
-data-alamat="${row.alamat}"
-data-email="${row.email}"
-data-no_telepon="${row.no_telepon}">
-                <span class="material-symbols-outlined">
-edit
-</span>
-              </button>
-              <button class="delete-btn bg-red-500 text-white px-2 py-1 rounded" data-id="${row.id}">
-                <span class="material-symbols-outlined">delete</span>
-              </button>
-            </div>`;
-            }
-          }
-        ]
-      });
+  function getLembagaPendidikan() {
+    if (!USER_ID) {
+      console.error("User ID tidak tersedia");
+      return;
     }
-    fetch();
 
-
-    $('#table tbody').on('click', '.delete-btn', function() {
-      var id = $(this).data('id');
-      Swal.fire({
-        title: 'Yakin ingin menghapus Lembaga Pendidikan ini?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, hapus!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          $.ajax({
-            url: '/lembaga-pendidikan/' + id, // Include id in the URL
-            type: 'DELETE',
-            success: function(res) {
-              const response = JSON.parse(res);
-              if (response.status) {
-                $('#table').DataTable().ajax.reload(); // Reload DataTable data
-                Swal.fire('Deleted!', 'Lembaga Pendidikan berhasil dihapus.', 'success');
-              } else {
-                Swal.fire('Error', 'Terjadi kesalahan saat menghapus Lembaga Pendidikan', 'error');
-              }
-            },
-            error: function() {
-              Swal.fire('Error', 'Gagal menghubungi server', 'error');
-            }
-          });
+    $.ajax({
+      url: `/operator-lembaga-pendidikan?user_id=${USER_ID}`,
+      method: 'GET',
+      success: function(response) {
+        const res = typeof response === 'string' ? JSON.parse(response) : response;
+        if (res.status && res.data && res.data.lembaga_pendidikan_id) {
+          fetchLembagaDetail(res.data.lembaga_pendidikan_id);
+        } else {
+          Swal.fire('Gagal', 'Data lembaga tidak ditemukan!', 'error');
         }
-      });
+      },
+      error: function() {
+        Swal.fire('Error', 'Gagal mengambil data lembaga', 'error');
+      }
+    });
+  }
+
+  function fetchLembagaDetail(id) {
+    $.ajax({
+      url: `/lembaga-pendidikan/${id}`,
+      method: 'GET',
+      success: function(response) {
+        const res = typeof response === 'string' ? JSON.parse(response) : response;
+        if (res.status && res.data) {
+          renderCard(res.data);
+        } else {
+          Swal.fire('Gagal', 'Data tidak ditemukan', 'error');
+        }
+      },
+      error: function() {
+        Swal.fire('Error', 'Gagal mengambil detail lembaga', 'error');
+      }
+    });
+  }
+
+  function renderCard(data) {
+    const cardHtml = `
+      <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+        <h4 class="text-2xl font-bold text-gray-800 mb-4">${data.nama}</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
+          <div><span class="font-semibold text-gray-600">Jenis:</span> ${data.jenis_lembaga}</div>
+          <div><span class="font-semibold text-gray-600">Jenjang:</span> ${data.jenjang}</div>
+          <div><span class="font-semibold text-gray-600">NSPP:</span> ${data.nspp}</div>
+          <div><span class="font-semibold text-gray-600">NPSN:</span> ${data.npsn}</div>
+          <div><span class="font-semibold text-gray-600">Kecamatan:</span> ${data.nama_kecamatan}</div>
+          <div><span class="font-semibold text-gray-600">Alamat:</span> ${data.alamat}</div>
+          <div><span class="font-semibold text-gray-600">Telepon:</span> ${data.no_telepon}</div>
+          <div><span class="font-semibold text-gray-600">Email:</span> ${data.email}</div>
+        </div>
+
+        <div class="mt-6 flex gap-3">
+          <button class="edit-btn flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm"
+            data-id="${data.id}"
+            data-kecamatan_id="${data.kecamatan_id}"
+            data-jenis_lembaga_pendidikan_id="${data.jenis_lembaga_pendidikan_id}"
+            data-nama="${data.nama}"
+            data-nspp="${data.nspp}"
+            data-npsn="${data.npsn}"
+            data-jenjang="${data.jenjang}"
+            data-alamat="${data.alamat}"
+            data-email="${data.email}"
+            data-no_telepon="${data.no_telepon}">
+            <span class="material-symbols-outlined mr-1">edit</span>Edit
+          </button>
+          
+        </div>
+      </div>
+    `;
+    $('#card-container').html(cardHtml);
+  }
+
+  $('#card-container').on('click', '.delete-btn', function() {
+    const id = $(this).data('id');
+    Swal.fire({
+      title: 'Hapus lembaga ini?',
+      text: "Tindakan ini tidak dapat dibatalkan!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, hapus!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '/lembaga-pendidikan/' + id,
+          type: 'DELETE',
+          success: function(res) {
+            const response = typeof res === 'string' ? JSON.parse(res) : res;
+            if (response.status) {
+              $('#card-container').html('');
+              Swal.fire('Deleted!', 'Lembaga berhasil dihapus.', 'success');
+            } else {
+              Swal.fire('Gagal', 'Terjadi kesalahan saat menghapus', 'error');
+            }
+          },
+          error: function() {
+            Swal.fire('Error', 'Tidak dapat menghubungi server', 'error');
+          }
+        });
+      }
     });
   });
+
+  getLembagaPendidikan();
+});
 </script>
 
 <?php include __DIR__ . '/../admin-templates/footer.php'; ?>

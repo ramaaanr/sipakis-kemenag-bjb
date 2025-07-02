@@ -2,7 +2,7 @@
 
 <div class="container px-6 py-8 mx-auto ">
   <div class="flex items-center space-x-2 ">
-    <h3 class="text-3xl font-medium text-gray-700">Data Jenis Lembaga Pendidikan</h3>
+    <h3 class="text-3xl font-medium text-gray-700">Data Lembaga Pendidikan</h3>
 
     <button id="btn-add"
       class="add-container bg-green-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:green-700">
@@ -20,9 +20,32 @@
             <tr>
 
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nama Jenis Lembaga Pendidikan
+                Nama Lembaga Pendidikan
               </th>
-
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Kecamatan
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Jenis
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                NSPP
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                NPSN
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Jenjang
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Alamat
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Telepon
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                email
+              </th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
@@ -39,7 +62,7 @@
 
 <?php include __DIR__ . '/add-modal.php'; ?>
 <?php include __DIR__ . '/detail-modal.php'; ?>
-<?php include __DIR__ . '/edit-modal.php'; ?>
+<?php include __DIR__ . '/edit-admin-modal.php'; ?>
 
 <script>
 $(document).ready(function() {
@@ -48,7 +71,7 @@ $(document).ready(function() {
 
     $('#table').DataTable({
       ajax: {
-        url: `/jenis-lembaga-pendidikan`, // URL to fetch data from
+        url: `/lembaga-pendidikan`, // URL to fetch data from
         dataSrc: 'data' // Indicate that data is a flat array
       },
       order: [
@@ -56,6 +79,22 @@ $(document).ready(function() {
       ],
       columns: [{
           data: 'nama'
+        }, {
+          data: 'nama_kecamatan'
+        }, {
+          data: 'jenis_lembaga'
+        }, {
+          data: 'nspp'
+        }, {
+          data: 'npsn'
+        }, {
+          data: 'jenjang'
+        }, {
+          data: 'alamat'
+        }, {
+          data: 'no_telepon'
+        }, {
+          data: 'email'
         },
         {
           data: null,
@@ -63,13 +102,29 @@ $(document).ready(function() {
             return `
             <div class="flex space-x-1">
               <button class="detail-btn bg-green-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-data-nama="${row.nama}">
+data-nama_kecamatan="${row.nama_kecamatan}"
+data-jenis_lembaga="${row.jenis_lembaga}"
+data-nama="${row.nama}"
+data-nspp="${row.nspp}"
+data-npsn="${row.npsn}"
+data-jenjang="${row.jenjang}"
+data-alamat="${row.alamat}"
+data-email="${row.email}"
+data-no_telepon="${row.no_telepon}">
                 <span class="material-symbols-outlined">
 info
 </span>
               </button>
               <button class="edit-btn bg-blue-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-data-nama="${row.nama}">
+data-kecamatan_id="${row.kecamatan_id}"
+data-jenis_lembaga_pendidikan_id="${row.jenis_lembaga_pendidikan_id}"
+data-nama="${row.nama}"
+data-nspp="${row.nspp}"
+data-npsn="${row.npsn}"
+data-jenjang="${row.jenjang}"
+data-alamat="${row.alamat}"
+data-email="${row.email}"
+data-no_telepon="${row.no_telepon}">
                 <span class="material-symbols-outlined">
 edit
 </span>
@@ -89,7 +144,7 @@ edit
   $('#table tbody').on('click', '.delete-btn', function() {
     var id = $(this).data('id');
     Swal.fire({
-      title: 'Yakin ingin menghapus Jenis Lembaga Pendidikan ini?',
+      title: 'Yakin ingin menghapus Lembaga Pendidikan ini?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -98,17 +153,15 @@ edit
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
-          url: `/jenis-lembaga-pendidikan/${id}`, // Adjust the URL to your API endpoint
-
+          url: '/lembaga-pendidikan/' + id, // Include id in the URL
           type: 'DELETE',
           success: function(res) {
             const response = JSON.parse(res);
             if (response.status) {
               $('#table').DataTable().ajax.reload(); // Reload DataTable data
-              Swal.fire('Deleted!', 'Jenis Lembaga Pendidikan berhasil dihapus.', 'success');
+              Swal.fire('Deleted!', 'Lembaga Pendidikan berhasil dihapus.', 'success');
             } else {
-              Swal.fire('Error', 'Terjadi kesalahan saat menghapus Jenis Lembaga Pendidikan',
-                'error');
+              Swal.fire('Error', 'Terjadi kesalahan saat menghapus Lembaga Pendidikan', 'error');
             }
           },
           error: function() {

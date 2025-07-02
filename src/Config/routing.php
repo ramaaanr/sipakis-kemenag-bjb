@@ -5,6 +5,14 @@ use Sfy\AplikasiDataKemenagPAI\Controller\KecamatanController;
 use Sfy\AplikasiDataKemenagPAI\Helpers\SessionHelper;
 use Sfy\AplikasiDataKemenagPAI\Helpers\ViewHelper;
 use Sfy\AplikasiDataKemenagPAI\Middlewares\Middleware;
+use Sfy\AplikasiDataKemenagPAI\Model\JabatanStaff;
+use Sfy\AplikasiDataKemenagPAI\Model\JenisLembagaPendidikan;
+use Sfy\AplikasiDataKemenagPAI\Model\Kecamatan;
+use Sfy\AplikasiDataKemenagPAI\Model\LembagaPendidikan;
+use Sfy\AplikasiDataKemenagPAI\Model\Murid;
+use Sfy\AplikasiDataKemenagPAI\Model\OperatorLembagaPendidikan;
+use Sfy\AplikasiDataKemenagPAI\Model\staff;
+use Sfy\AplikasiDataKemenagPAI\Model\Users;
 
 return function () {
 
@@ -92,12 +100,81 @@ return function () {
                 ]);
             }
             break;
+        // 🖨️ Cetak data laporan
+        case 'laporan':
+            Middleware::Auth();
+            $LaporanController = new \Sfy\AplikasiDataKemenagPAI\Controller\LaporanController();
+
+            switch ($param) {
+                case 'lembaga':
+                    $data = $LaporanController->laporanLembaga();
+                    var_dump($data);
+                    break;
+
+                case 'murid':
+                    echo $LaporanController->laporanMurid();
+                    break;
+
+                case 'staff':
+                    echo $LaporanController->laporanStaff();
+                    break;
+
+                case 'staff-per-lembaga':
+                    $lembagaId = $_GET['lembaga_id'] ?? null;
+                    if (!$lembagaId) {
+                        echo json_encode([
+                            'status' => false,
+                            'message' => 'Parameter lembaga_id wajib diisi.'
+                        ]);
+                    } else {
+                        echo $LaporanController->laporanStaffPerLembaga($lembagaId);
+                    }
+                    break;
+
+                case 'murid-per-jenjang':
+                    echo $LaporanController->laporanMuridPerJenjang();
+                    break;
+
+                case 'jumlah-lembaga-per-kecamatan':
+                    echo $LaporanController->laporanJumlahLembagaPerKecamatan();
+                    break;
+
+                case 'jumlah-murid-per-lembaga':
+                    echo $LaporanController->laporanJumlahMuridPerLembaga();
+                    break;
+
+                case 'operator-per-lembaga':
+                    echo $LaporanController->laporanOperatorPerLembaga();
+                    break;
+
+                default:
+                    http_response_code(404);
+                    echo json_encode([
+                        'status' => false,
+                        'message' => "Endpoint laporan '$param' tidak ditemukan."
+                    ]);
+                    break;
+            }
+            break;
+
 
 
         case 'lembaga-show':
             Middleware::Auth();
             if ($httpMethod === 'GET') {
                 ViewHelper::render('Lembaga.index');
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /lembaga-show",
+                ]);
+            }
+            break;
+        case 'lembaga-admin-show':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+                ViewHelper::render('Lembaga.admin-index');
             } else {
                 http_response_code(405);
                 echo json_encode([
@@ -388,6 +465,141 @@ return function () {
                 }
             }
             break;
+        // 🖨️ Cetak data lembaga
+        case 'lembaga-cetak':
+            Middleware::Auth();
+
+
+            if ($httpMethod === 'GET') {
+                $model = new LembagaPendidikan();
+                $data = $model->getAll();
+                ViewHelper::render('Lembaga.cetak', $data);
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /lembaga-cetak",
+                ]);
+            }
+            break;
+
+        // 🖨️ Cetak data jenis lembaga pendidikanopera
+        case 'jenis-lembaga-cetak':
+            Middleware::Auth();
+
+            $model = new JenisLembagaPendidikan();
+            $data = $model->getAll();
+            if ($httpMethod === 'GET') {
+                ViewHelper::render('JenisLembaga.cetak', $data);
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /jenis-lembaga-cetak",
+                ]);
+            }
+            break;
+
+        // 🖨️ Cetak data operator lembaga pendidikan
+        case 'operator-cetak':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+
+                $model = new OperatorLembagaPendidikan();
+                $data = $model->getAllWithRelations();
+                ViewHelper::render('Operator.cetak', $data);
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /operator-cetak",
+                ]);
+            }
+            break;
+
+        // 🖨️ Cetak data kecamatan
+        case 'kecamatan-cetak':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+
+                $model = new Kecamatan();
+                $data = $model->getAll();
+                ViewHelper::render('Kecamatan.cetak', $data);
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /kecamatan-cetak",
+                ]);
+            }
+            break;
+
+        // 🖨️ Cetak data jabatan staff
+        case 'jabatan-staff-cetak':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+                $model = new JabatanStaff();
+                $data = $model->getAll();
+                ViewHelper::render('JabatanStaff.cetak', $data);
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /jabatan-staff-cetak",
+                ]);
+            }
+            break;
+
+        // 🖨️ Cetak data staff
+        case 'staff-cetak':
+            Middleware::Auth();
+
+            $model = new staff();
+            $data = $model->getAll();
+            if ($httpMethod === 'GET') {
+                ViewHelper::render('Staff.cetak', $data);
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /staff-cetak",
+                ]);
+            }
+            break;
+
+        // 🖨️ Cetak data murid
+        case 'murid-cetak':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+
+                $model = new Murid();
+                $data = $model->getAll();
+                ViewHelper::render('Murid.cetak', $data);
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /murid-cetak",
+                ]);
+            }
+            break;
+
+        // 🖨️ Cetak data user
+        case 'user-cetak':
+            Middleware::Auth();
+            if ($httpMethod === 'GET') {
+                $model = new Users();
+                $data = $model->getAll();
+                ViewHelper::render('User.cetak', $data);
+            } else {
+                http_response_code(405);
+                echo json_encode([
+                    'status' => false,
+                    'message' => "Metode $httpMethod tidak didukung untuk /user-cetak",
+                ]);
+            }
+            break;
+
 
         // 🏁 Controller $staff DIMULAI 
 

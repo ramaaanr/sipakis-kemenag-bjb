@@ -2,7 +2,7 @@
 
 <div class="container px-6 py-8 mx-auto ">
   <div class="flex items-center space-x-2 ">
-    <h3 class="text-3xl font-medium text-gray-700">Data Murid</h3>
+    <h3 class="text-3xl font-medium text-gray-700">Data Lembaga Pendidikan</h3>
 
     <button id="btn-add"
       class="add-container bg-green-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:green-700">
@@ -11,6 +11,7 @@
       </span> <span>Tambah</span>
     </button>
   </div>
+
   <div class="flex flex-col mt-8">
     <div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
       <div class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
@@ -19,28 +20,31 @@
             <tr>
 
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nama Murid
+                Nama Lembaga Pendidikan
               </th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Lembaga Pendidikan
+                Kecamatan
               </th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                NISN
+                Jenis
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                NSPP
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                NPSN
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Jenjang
               </th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Alamat
               </th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Tempat Tanggal Lahir
+                Telepon
               </th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Rombel Kelas
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Tingkat
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Jenis Kelamin
+                email
               </th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
@@ -59,13 +63,12 @@
 <?php include __DIR__ . '/add-modal.php'; ?>
 <?php include __DIR__ . '/detail-modal.php'; ?>
 <?php include __DIR__ . '/edit-modal.php'; ?>
-
 <script>
 $(document).ready(function() {
   let lembagaPendidikanId = null;
   const USER_ID = <?= json_encode($id ?? null) ?>;
 
-  function getLembagaPendidikanIdAndFetchMurid() {
+  function getLembagaPendidikanIdAndFetch() {
     if (!USER_ID) {
       console.error("User ID tidak ditemukan");
       return;
@@ -78,12 +81,7 @@ $(document).ready(function() {
         const res = typeof response === 'string' ? JSON.parse(response) : response;
         if (res.status && res.data && res.data.lembaga_pendidikan_id) {
           lembagaPendidikanId = res.data.lembaga_pendidikan_id;
-          const lembagaPendidikan = res.data.lembaga_pendidikan;
-          console.log(res.data);
-          console.log("lembaga_pendidikan_id =", lembagaPendidikanId);
-          $('#lembaga_pendidikan_id').val(lembagaPendidikanId); // set lembaga_pendidikan_id di modal
-          $('#lembaga_pendidikan').val(lembagaPendidikan);
-          fetchMurid(lembagaPendidikanId);
+          fetchDataLembaga(lembagaPendidikanId);
         } else {
           Swal.fire('Gagal', 'Data lembaga pendidikan tidak ditemukan!', 'error');
         }
@@ -94,11 +92,11 @@ $(document).ready(function() {
     });
   }
 
-  function fetchMurid(lembagaId) {
+  function fetchDataLembaga(lembagaId) {
     $('#table').DataTable({
       destroy: true,
       ajax: {
-        url: `/murid?lembaga_pendidikan_id=${lembagaId}`,
+        url: `/lembaga-pendidikan/${lembagaId}`,
         dataSrc: 'data'
       },
       order: [
@@ -108,73 +106,74 @@ $(document).ready(function() {
           data: 'nama'
         },
         {
-          data: 'lembaga_pendidikan'
+          data: 'nama_kecamatan'
         },
         {
-          data: 'nisn'
+          data: 'jenis_lembaga'
+        },
+        {
+          data: 'nspp'
+        },
+        {
+          data: 'npsn'
+        },
+        {
+          data: 'jenjang'
         },
         {
           data: 'alamat'
         },
         {
-          data: 'tempat_tanggal_lahir'
+          data: 'no_telepon'
         },
         {
-          data: 'rombel_kelas'
-        },
-        {
-          data: 'tingkat'
-        },
-        {
-          data: 'jenis_kelamin',
-          render: function(data) {
-            return data === 'L' ? 'Laki-laki' : 'Perempuan';
-          }
+          data: 'email'
         },
         {
           data: null,
           render: function(data, type, row) {
             return `
-                <div class="flex space-x-1">
-                  <button class="detail-btn bg-green-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-                    data-lembaga_pendidikan="${row.lembaga_pendidikan}"
-                    data-nama="${row.nama}"
-                    data-alamat="${row.alamat}"
-                    data-tempat_tanggal_lahir="${row.tempat_tanggal_lahir}"
-                    data-rombel_kelas="${row.rombel_kelas}"
-                    data-tingkat="${row.tingkat}"
-                    data-nisn="${row.nisn}"
-                    data-jenis_kelamin="${row.jenis_kelamin}">
-                    <span class="material-symbols-outlined">info</span>
-                  </button>
-                  <button class="edit-btn bg-blue-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-                    data-lembaga_pendidikan_id="${row.lembaga_pendidikan_id}"
-                    data-nama="${row.nama}"
-                    data-alamat="${row.alamat}"
-                    data-tempat_tanggal_lahir="${row.tempat_tanggal_lahir}"
-                    data-rombel_kelas="${row.rombel_kelas}"
-                    data-tingkat="${row.tingkat}"
-                    data-nisn="${row.nisn}"
-                    data-jenis_kelamin="${row.jenis_kelamin}">
-                    <span class="material-symbols-outlined">edit</span>
-                  </button>
-                  <button class="delete-btn bg-red-500 text-white px-2 py-1 rounded" data-id="${row.id}">
-                    <span class="material-symbols-outlined">delete</span>
-                  </button>
-                </div>`;
+            <div class="flex space-x-1">
+              <button class="detail-btn bg-green-500 text-white px-2 py-1 rounded" data-id="${row.id}"
+data-nama_kecamatan="${row.nama_kecamatan}"
+data-jenis_lembaga="${row.jenis_lembaga}"
+data-nama="${row.nama}"
+data-nspp="${row.nspp}"
+data-npsn="${row.npsn}"
+data-jenjang="${row.jenjang}"
+data-alamat="${row.alamat}"
+data-email="${row.email}"
+data-no_telepon="${row.no_telepon}">
+                <span class="material-symbols-outlined">info</span>
+              </button>
+              <button class="edit-btn bg-blue-500 text-white px-2 py-1 rounded" data-id="${row.id}"
+data-kecamatan_id="${row.kecamatan_id}"
+data-jenis_lembaga_pendidikan_id="${row.jenis_lembaga_pendidikan_id}"
+data-nama="${row.nama}"
+data-nspp="${row.nspp}"
+data-npsn="${row.npsn}"
+data-jenjang="${row.jenjang}"
+data-alamat="${row.alamat}"
+data-email="${row.email}"
+data-no_telepon="${row.no_telepon}">
+                <span class="material-symbols-outlined">edit</span>
+              </button>
+              <button class="delete-btn bg-red-500 text-white px-2 py-1 rounded" data-id="${row.id}">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </div>`;
           }
         }
       ]
     });
   }
 
-  getLembagaPendidikanIdAndFetchMurid();
+  getLembagaPendidikanIdAndFetch();
 
-  // Hapus
   $('#table tbody').on('click', '.delete-btn', function() {
     const id = $(this).data('id');
     Swal.fire({
-      title: 'Yakin ingin menghapus Murid ini?',
+      title: 'Yakin ingin menghapus Lembaga Pendidikan ini?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -183,15 +182,15 @@ $(document).ready(function() {
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
-          url: '/murid/' + id,
+          url: '/lembaga-pendidikan/' + id,
           type: 'DELETE',
           success: function(res) {
             const response = typeof res === 'string' ? JSON.parse(res) : res;
             if (response.status) {
               $('#table').DataTable().ajax.reload();
-              Swal.fire('Deleted!', 'Murid berhasil dihapus.', 'success');
+              Swal.fire('Deleted!', 'Lembaga Pendidikan berhasil dihapus.', 'success');
             } else {
-              Swal.fire('Error', 'Terjadi kesalahan saat menghapus Murid', 'error');
+              Swal.fire('Error', 'Terjadi kesalahan saat menghapus', 'error');
             }
           },
           error: function() {

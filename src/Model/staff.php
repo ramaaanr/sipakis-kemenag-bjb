@@ -34,7 +34,7 @@ class staff extends Model
 
         $params = [];
         foreach ($criteria as $field => $value) {
-            $sql .= " AND lp.{$field} = :{$field}";
+            $sql .= " AND s.{$field} = :{$field}";
             $params[":{$field}"] = $value;
         }
 

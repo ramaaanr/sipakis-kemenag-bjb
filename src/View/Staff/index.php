@@ -3,13 +3,7 @@
 <div class="container px-6 py-8 mx-auto ">
   <div class="flex items-center space-x-2 ">
     <h3 class="text-3xl font-medium text-gray-700">Data Staff</h3>
-    <a id="btn-cetak-mdt" target="__blank"
-      class="cetak-container bg-blue-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:blue-700"
-      href="/mdt/cetak">
-      <span class="material-symbols-outlined text-sm">
-        print
-      </span> <span>Cetak Semua Data</span>
-    </a>
+
     <button id="btn-add"
       class="add-container bg-green-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:green-700">
       <span class="material-symbols-outlined text-sm">
@@ -62,85 +56,126 @@
   </div>
 </div>
 
-<?php include __DIR__ . '/add-modal.php'; ?>
+<?php include __DIR__ . '/add-modal-operator.php'; ?>
+<?php include __DIR__ . '/edit-modal-operator.php'; ?>
 <?php include __DIR__ . '/detail-modal.php'; ?>
-<?php include __DIR__ . '/edit-modal.php'; ?>
 
 <script>
 $(document).ready(function() {
+  const USER_ID = <?= json_encode($id ?? null) ?>;
+  let lembagaPendidikanId = null;
 
-  function fetch(status = "DISETUJUI") {
-
+  function fetchStaff(lembagaId) {
     $('#table').DataTable({
+      destroy: true,
       ajax: {
-        url: `/staff`, // URL to fetch data from
-        dataSrc: 'data' // Indicate that data is a flat array
+        url: `/staff?lembaga_pendidikan_id=${lembagaId}`, // gunakan parameter di backend
+        dataSrc: 'data'
       },
       order: [
         [0, "desc"]
       ],
       columns: [{
           data: 'nama'
-        }, {
+        },
+        {
           data: 'lembaga_pendidikan'
-        }, {
+        },
+        {
           data: 'jabatan'
-        }, {
+        },
+        {
           data: 'nik'
-        }, {
+        },
+        {
           data: 'alamat'
-        }, {
+        },
+        {
           data: 'no_hp'
-        }, {
+        },
+        {
           data: 'email'
-        }, {
+        },
+        {
           data: 'jenis_kelamin',
-          render: function(data, type, row) {
+          render: function(data) {
             return data === 'L' ? 'Laki-laki' : 'Perempuan';
-          },
+          }
         },
         {
           data: null,
           render: function(data, type, row) {
             return `
-            <div class="flex space-x-1">
-              <button class="detail-btn bg-green-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-data-lembaga_pendidikan="${row.lembaga_pendidikan}"
-data-jabatan="${row.jabatan}"
-data-nama="${row.nama}"
-data-alamat="${row.alamat}"
-data-no_hp="${row.no_hp}"
-data-email="${row.email}"
-data-jenis_kelamin="${row.jenis_kelamin}"
-data-nik="${row.nik}">
-                <span class="material-symbols-outlined">
-info
-</span>
-              </button>
-              <button class="edit-btn bg-blue-500 text-white px-2 py-1 rounded" data-id="${row.id}"
-data-lembaga_pendidikan_id="${row.lembaga_pendidikan_id}"
-data-jabatan_staff_id="${row.jabatan_staff_id}"
-data-nama="${row.nama}"
-data-alamat="${row.alamat}"
-data-no_hp="${row.no_hp}"
-data-email="${row.email}"
-data-jenis_kelamin="${row.jenis_kelamin}"
-data-nik="${row.nik}">
-                <span class="material-symbols-outlined">
-edit
-</span>
-              </button>
-              <button class="delete-btn bg-red-500 text-white px-2 py-1 rounded" data-id="${row.id}">
-                <span class="material-symbols-outlined">delete</span>
-              </button>
-            </div>`;
+          <div class="flex space-x-1">
+            <button class="detail-btn bg-green-500 text-white px-2 py-1 rounded" data-id="${row.id}"
+              data-lembaga_pendidikan="${row.lembaga_pendidikan}"
+              data-jabatan="${row.jabatan}"
+              data-nama="${row.nama}"
+              data-alamat="${row.alamat}"
+              data-no_hp="${row.no_hp}"
+              data-email="${row.email}"
+              data-jenis_kelamin="${row.jenis_kelamin}"
+              data-nik="${row.nik}">
+              <span class="material-symbols-outlined">info</span>
+            </button>
+            <button class="edit-btn bg-blue-500 text-white px-2 py-1 rounded" data-id="${row.id}"
+              data-lembaga_pendidikan_id="${row.lembaga_pendidikan_id}"
+              data-lembaga_pendidikan="${row.lembaga_pendidikan}"
+              data-jabatan_staff_id="${row.jabatan_staff_id}"
+              data-nama="${row.nama}"
+              data-alamat="${row.alamat}"
+              data-no_hp="${row.no_hp}"
+              data-email="${row.email}"
+              data-jenis_kelamin="${row.jenis_kelamin}"
+              data-nik="${row.nik}">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button class="delete-btn bg-red-500 text-white px-2 py-1 rounded" data-id="${row.id}">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>`;
           }
         }
       ]
     });
   }
-  fetch();
 
+
+  function getLembagaPendidikanIdAndFetchStaff() {
+    if (!USER_ID) {
+      console.error("User ID tidak ditemukan");
+      return;
+    }
+
+    $.ajax({
+      url: `/operator-lembaga-pendidikan?user_id=${USER_ID}`,
+      method: 'GET',
+      success: function(response) {
+        // Pastikan response-nya bentuk object
+        try {
+          const res = typeof response === 'string' ? JSON.parse(response) : response;
+          if (res.status && res.data && res.data.lembaga_pendidikan_id) {
+            lembagaPendidikanId = res.data.lembaga_pendidikan_id;
+            const lembagaPendidikan = res.data.lembaga_pendidikan;
+            console.log(res.data);
+            console.log("lembaga_pendidikan_id =", lembagaPendidikanId);
+            $('#lembaga_pendidikan_id').val(lembagaPendidikanId); // set lembaga_pendidikan_id di modal
+            $('#lembaga_pendidikan').val(lembagaPendidikan); // set lembaga_pendidikan_id di modal
+            fetchStaff(lembagaPendidikanId); // fetch staff setelah dapat lembaga_id
+          } else {
+            Swal.fire('Gagal', 'Data lembaga pendidikan tidak ditemukan!', 'error');
+          }
+        } catch (e) {
+          Swal.fire('Error', 'Respon tidak valid dari server', 'error');
+        }
+      },
+      error: function() {
+        Swal.fire('Error', 'Gagal mengambil data lembaga pendidikan', 'error');
+      }
+    });
+  }
+
+  getLembagaPendidikanIdAndFetchStaff();
 
   $('#table tbody').on('click', '.delete-btn', function() {
     var id = $(this).data('id');

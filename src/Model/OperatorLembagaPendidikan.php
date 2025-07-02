@@ -53,7 +53,7 @@ class OperatorLembagaPendidikan extends Model
 
     $params = [];
     foreach ($criteria as $field => $value) {
-      $sql .= " AND lp.{$field} = :{$field}";
+      $sql .= " AND olp.{$field} = :{$field}";
       $params[":{$field}"] = $value;
     }
 

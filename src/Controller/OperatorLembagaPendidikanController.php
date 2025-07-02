@@ -24,6 +24,13 @@ class OperatorLembagaPendidikanController
     public function index(): string
     {
         try {
+            if ($_GET['user_id'] ?? false) {
+                $data = $this->OperatorLembagaPendidikan->getByWithRelations(['user_id' => $_GET['user_id']]);
+                if (!$data) {
+                    return ResponseFormatter::error('Data Operator Tidak Ditemukan');
+                }
+                return ResponseFormatter::success('Data Operator Lembaga Pendidikan Berdasarkan User Id ditemukan', $data);
+            }
             $data = $this->OperatorLembagaPendidikan->getAllWithRelations();
             return ResponseFormatter::success('Data Operator Lembaga Pendidikan berhasil diambil', $data);
         } catch (Exception $e) {
@@ -34,6 +41,7 @@ class OperatorLembagaPendidikanController
     public function show(int $id): string
     {
         try {
+
             $data = $this->OperatorLembagaPendidikan->getByWithRelations(['id' => $id]);
             if (!$data) {
                 return ResponseFormatter::error('Operator Lembaga Pendidikan tidak ditemukan');
