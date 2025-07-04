@@ -3,13 +3,15 @@
 <div class="container px-6 py-8 mx-auto ">
   <div class="flex items-center space-x-2 ">
     <h3 class="text-3xl font-medium text-gray-700">Data Staff</h3>
+    <?php if ($role === 'operator') { ?>
+      <button id="btn-add"
+        class="add-container bg-green-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:green-700">
+        <span class="material-symbols-outlined text-sm">
+          add
+        </span> <span>Tambah</span>
+      </button>
+    <?php } ?>
 
-    <button id="btn-add"
-      class="add-container bg-green-500 flex text-sm space-x-2 rounded-md px-2 py-1 h-fit text-white hover:green-700">
-      <span class="material-symbols-outlined text-sm">
-        add
-      </span> <span>Tambah</span>
-    </button>
   </div>
   <div class="flex flex-col mt-8">
     <div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
@@ -61,51 +63,51 @@
 <?php include __DIR__ . '/detail-modal.php'; ?>
 
 <script>
-$(document).ready(function() {
-  const USER_ID = <?= json_encode($id ?? null) ?>;
-  let lembagaPendidikanId = null;
+  $(document).ready(function() {
+    const USER_ID = <?= json_encode($id ?? null) ?>;
+    let lembagaPendidikanId = null;
 
-  function fetchStaff(lembagaId) {
-    $('#table').DataTable({
-      destroy: true,
-      ajax: {
-        url: `/staff?lembaga_pendidikan_id=${lembagaId}`, // gunakan parameter di backend
-        dataSrc: 'data'
-      },
-      order: [
-        [0, "desc"]
-      ],
-      columns: [{
-          data: 'nama'
+    function fetchStaff(lembagaId) {
+      $('#table').DataTable({
+        destroy: true,
+        ajax: {
+          url: `/staff${lembagaId ? `?lembaga_pendidikan_id=${lembagaId}` : ''}`,
+          dataSrc: 'data'
         },
-        {
-          data: 'lembaga_pendidikan'
-        },
-        {
-          data: 'jabatan'
-        },
-        {
-          data: 'nik'
-        },
-        {
-          data: 'alamat'
-        },
-        {
-          data: 'no_hp'
-        },
-        {
-          data: 'email'
-        },
-        {
-          data: 'jenis_kelamin',
-          render: function(data) {
-            return data === 'L' ? 'Laki-laki' : 'Perempuan';
-          }
-        },
-        {
-          data: null,
-          render: function(data, type, row) {
-            return `
+        order: [
+          [0, "desc"]
+        ],
+        columns: [{
+            data: 'nama'
+          },
+          {
+            data: 'lembaga_pendidikan'
+          },
+          {
+            data: 'jabatan'
+          },
+          {
+            data: 'nik'
+          },
+          {
+            data: 'alamat'
+          },
+          {
+            data: 'no_hp'
+          },
+          {
+            data: 'email'
+          },
+          {
+            data: 'jenis_kelamin',
+            render: function(data) {
+              return data === 'L' ? 'Laki-laki' : 'Perempuan';
+            }
+          },
+          {
+            data: null,
+            render: function(data, type, row) {
+              return `
           <div class="flex space-x-1">
             <button class="detail-btn bg-green-500 text-white px-2 py-1 rounded" data-id="${row.id}"
               data-lembaga_pendidikan="${row.lembaga_pendidikan}"
@@ -134,80 +136,83 @@ $(document).ready(function() {
               <span class="material-symbols-outlined">delete</span>
             </button>
           </div>`;
+            }
           }
-        }
-      ]
-    });
-  }
-
-
-  function getLembagaPendidikanIdAndFetchStaff() {
-    if (!USER_ID) {
-      console.error("User ID tidak ditemukan");
-      return;
+        ]
+      });
     }
 
-    $.ajax({
-      url: `/operator-lembaga-pendidikan?user_id=${USER_ID}`,
-      method: 'GET',
-      success: function(response) {
-        // Pastikan response-nya bentuk object
-        try {
-          const res = typeof response === 'string' ? JSON.parse(response) : response;
-          if (res.status && res.data && res.data.lembaga_pendidikan_id) {
-            lembagaPendidikanId = res.data.lembaga_pendidikan_id;
-            const lembagaPendidikan = res.data.lembaga_pendidikan;
-            console.log(res.data);
-            console.log("lembaga_pendidikan_id =", lembagaPendidikanId);
-            $('#lembaga_pendidikan_id').val(lembagaPendidikanId); // set lembaga_pendidikan_id di modal
-            $('#lembaga_pendidikan').val(lembagaPendidikan); // set lembaga_pendidikan_id di modal
-            fetchStaff(lembagaPendidikanId); // fetch staff setelah dapat lembaga_id
-          } else {
-            Swal.fire('Gagal', 'Data lembaga pendidikan tidak ditemukan!', 'error');
-          }
-        } catch (e) {
-          Swal.fire('Error', 'Respon tidak valid dari server', 'error');
-        }
-      },
-      error: function() {
-        Swal.fire('Error', 'Gagal mengambil data lembaga pendidikan', 'error');
+    const ROLE = <?= json_encode($role ?? null) ?>;
+
+    function getLembagaPendidikanIdAndFetchStaff() {
+      if (!USER_ID) {
+        console.error("User ID tidak ditemukan");
+        return;
       }
-    });
-  }
 
-  getLembagaPendidikanIdAndFetchStaff();
-
-  $('#table tbody').on('click', '.delete-btn', function() {
-    var id = $(this).data('id');
-    Swal.fire({
-      title: 'Yakin ingin menghapus Staff ini?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Ya, hapus!'
-    }).then((result) => {
-      if (result.isConfirmed) {
+      if (ROLE === 'admin') {
+        fetchStaff(null); // Ambil semua data
+      } else {
         $.ajax({
-          url: '/staff/' + id, // Include id in the URL
-          type: 'DELETE',
-          success: function(res) {
-            const response = JSON.parse(res);
-            if (response.status) {
-              $('#table').DataTable().ajax.reload(); // Reload DataTable data
-              Swal.fire('Deleted!', 'Staff berhasil dihapus.', 'success');
-            } else {
-              Swal.fire('Error', 'Terjadi kesalahan saat menghapus Staff', 'error');
+          url: `/operator-lembaga-pendidikan?user_id=${USER_ID}`,
+          method: 'GET',
+          success: function(response) {
+            try {
+              const res = typeof response === 'string' ? JSON.parse(response) : response;
+              if (res.status && res.data && res.data.lembaga_pendidikan_id) {
+                lembagaPendidikanId = res.data.lembaga_pendidikan_id;
+                const lembagaPendidikan = res.data.lembaga_pendidikan;
+                $('#lembaga_pendidikan_id').val(lembagaPendidikanId);
+                $('#lembaga_pendidikan').val(lembagaPendidikan);
+                fetchStaff(lembagaPendidikanId);
+              } else {
+                Swal.fire('Gagal', 'Data lembaga pendidikan tidak ditemukan!', 'error');
+              }
+            } catch (e) {
+              Swal.fire('Error', 'Respon tidak valid dari server', 'error');
             }
           },
           error: function() {
-            Swal.fire('Error', 'Gagal menghubungi server', 'error');
+            Swal.fire('Error', 'Gagal mengambil data lembaga pendidikan', 'error');
           }
         });
       }
+    }
+
+
+    getLembagaPendidikanIdAndFetchStaff();
+
+    $('#table tbody').on('click', '.delete-btn', function() {
+      var id = $(this).data('id');
+      Swal.fire({
+        title: 'Yakin ingin menghapus Staff ini?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, hapus!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: '/staff/' + id, // Include id in the URL
+            type: 'DELETE',
+            success: function(res) {
+              const response = JSON.parse(res);
+              if (response.status) {
+                $('#table').DataTable().ajax.reload(); // Reload DataTable data
+                Swal.fire('Deleted!', 'Staff berhasil dihapus.', 'success');
+              } else {
+                Swal.fire('Error', 'Terjadi kesalahan saat menghapus Staff', 'error');
+              }
+            },
+            error: function() {
+              Swal.fire('Error', 'Gagal menghubungi server', 'error');
+            }
+          });
+        }
+      });
     });
   });
-});
 </script>
 
 <?php include __DIR__ . '/../admin-templates/footer.php'; ?>

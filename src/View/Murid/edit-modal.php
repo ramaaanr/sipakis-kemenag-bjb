@@ -72,109 +72,110 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function() {
 
-  function populateSelect(endpoint, selectId) {
-    $.ajax({
-      url: endpoint,
-      method: 'GET',
-      dataType: 'json',
-      success: function(res) {
-        const data = res.data;
-        let select = $(selectId);
-        select.empty(); // kosongkan dulu
-        select.append('<option value="" disabled selected>Pilih data</option>');
-        $.each(data, function(index, item) {
-          select.append('<option value="' + item.id + '">' + item.nama + '</option>');
-        });
-      },
-      error: function() {
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal Ambil Data',
-          text: 'Tidak dapat mengambil data dari ' + endpoint,
-          timer: 1500,
-          showConfirmButton: false
-        });
-      }
+    function populateSelect(endpoint, selectId) {
+      $.ajax({
+        url: endpoint,
+        method: 'GET',
+        dataType: 'json',
+        success: function(res) {
+          const data = res.data;
+          let select = $(selectId);
+          select.empty(); // kosongkan dulu
+          select.append('<option value="" disabled selected>Pilih data</option>');
+          $.each(data, function(index, item) {
+            select.append('<option value="' + item.id + '">' + item.nama + '</option>');
+          });
+        },
+        error: function() {
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal Ambil Data',
+            text: 'Tidak dapat mengambil data dari ' + endpoint,
+            timer: 1500,
+            showConfirmButton: false
+          });
+        }
+      });
+    }
+
+    // Show Modal on Button Click
+    populateSelect('/lembaga-pendidikan', '#edit_lembaga_pendidikan_id');
+    // Open Edit Modal and Populate Form Fields
+    let id = 0;
+
+
+    $('#table tbody').on('click', '.edit-btn', function() {
+      id = $(this).data('id');
+      var nama = $(this).data('nama');
+      var lembaga_pendidikan_id = $(this).data('lembaga_pendidikan_id')
+      var lembaga_pendidikan = $(this).data('lembaga_pendidikan')
+      var alamat = $(this).data('alamat')
+      var tempat_tanggal_lahir = $(this).data('tempat_tanggal_lahir')
+      var rombel_kelas = $(this).data('rombel_kelas')
+      var tingkat = $(this).data('tingkat')
+      var nisn = $(this).data('nisn')
+      var jenis_kelamin = $(this).data('jenis_kelamin')
+      console.log($(this).data());
+      $('#editId').val(id);
+      $('#edit_nama').val(nama);
+      $('#edit_lembaga_pendidikan_id').val(lembaga_pendidikan_id);
+      $('#edit_lembaga_pendidikan').val(lembaga_pendidikan);
+      $('#edit_alamat').val(alamat);
+      $('#edit_tempat_tanggal_lahir').val(tempat_tanggal_lahir);
+      $('#edit_rombel_kelas').val(rombel_kelas);
+      $('#edit_tingkat').val(tingkat);
+      $('#edit_nisn').val(nisn);
+      $('#edit_jenis_kelamin').val(jenis_kelamin);
+
+      $('#editModal').removeClass('hidden');
     });
-  }
+    console.log(id);
 
-  // Show Modal on Button Click
-  populateSelect('/lembaga-pendidikan', '#edit_lembaga_pendidikan_id');
-  // Open Edit Modal and Populate Form Fields
-  let id = 0;
+    // Close Edit Modal
+    $('#editModalClose').on('click', function() {
+      $('#editModal').addClass('hidden');
+    });
 
+    // AJAX Form Submission for Edit
+    $('#editForm').on('submit', function(e) {
+      e.preventDefault(); // Prevent default form submission
 
-  $('#table tbody').on('click', '.edit-btn', function() {
-    id = $(this).data('id');
-    var nama = $(this).data('nama');
-    var lembaga_pendidikan_id = $(this).data('lembaga_pendidikan_id')
-    var lembaga_pendidikan = $(this).data('lembaga_pendidikan')
-    var alamat = $(this).data('alamat')
-    var tempat_tanggal_lahir = $(this).data('tempat_tanggal_lahir')
-    var rombel_kelas = $(this).data('rombel_kelas')
-    var tingkat = $(this).data('tingkat')
-    var nisn = $(this).data('nisn')
-    var jenis_kelamin = $(this).data('jenis_kelamin')
-    $('#editId').val(id);
-    $('#edit_nama').val(nama);
-    $('#edit_lembaga_pendidikan_id').val(lembaga_pendidikan_id);
-    $('#edit_lembaga_pendidikan').val(lembaga_pendidikan);
-    $('#edit_alamat').val(alamat);
-    $('#edit_tempat_tanggal_lahir').val(tempat_tanggal_lahir);
-    $('#edit_rombel_kelas').val(rombel_kelas);
-    $('#edit_tingkat').val(tingkat);
-    $('#edit_nisn').val(nisn);
-    $('#edit_jenis_kelamin').val(jenis_kelamin);
-
-    $('#editModal').removeClass('hidden');
-  });
-  console.log(id);
-
-  // Close Edit Modal
-  $('#editModalClose').on('click', function() {
-    $('#editModal').addClass('hidden');
-  });
-
-  // AJAX Form Submission for Edit
-  $('#editForm').on('submit', function(e) {
-    e.preventDefault(); // Prevent default form submission
-
-    $.ajax({
-      url: `/murid/${id}`,
-      method: 'POST',
-      data: $(this).serialize(),
-      success: function(res) {
-        const response = JSON.parse(res);
-        if (!response.status) {
+      $.ajax({
+        url: `/murid/${id}`,
+        method: 'POST',
+        data: $(this).serialize(),
+        success: function(res) {
+          const response = JSON.parse(res);
+          if (!response.status) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Gagal',
+              text: response.message || 'Terjadi kesalahan saat memperbarui data!'
+            });
+            return;
+          }
+          Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: 'Data berhasil diperbarui!',
+            showCloseButton: true
+          }).then(() => {
+            $('#editModal').addClass('hidden'); // Close modal
+            $('#editForm')[0].reset(); // Reset form fields
+            // Refresh the data table (use your specific table refresh function here)
+            location.reload();
+          });
+        },
+        error: function() {
           Swal.fire({
             icon: 'error',
             title: 'Gagal',
-            text: response.message || 'Terjadi kesalahan saat memperbarui data!'
+            text: 'Terjadi kesalahan saat memperbarui data!'
           });
-          return;
         }
-        Swal.fire({
-          icon: 'success',
-          title: 'Berhasil',
-          text: 'Data berhasil diperbarui!',
-          showCloseButton: true
-        }).then(() => {
-          $('#editModal').addClass('hidden'); // Close modal
-          $('#editForm')[0].reset(); // Reset form fields
-          // Refresh the data table (use your specific table refresh function here)
-          location.reload();
-        });
-      },
-      error: function() {
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal',
-          text: 'Terjadi kesalahan saat memperbarui data!'
-        });
-      }
+      });
     });
   });
-});
 </script>
